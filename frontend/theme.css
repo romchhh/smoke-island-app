@@ -291,12 +291,22 @@ input:focus,select:focus,textarea:focus{
 .cart-products,
 .dec-frame,
 .dec-visual,
-.dec-message,
-.catalog-box{
+.dec-message{
   border:0!important;
   border-radius:var(--radius-lg)!important;
   background:var(--panel)!important;
   box-shadow:none!important;
+}
+
+/* Catalog grid sits on page bg — no wrapping panel */
+.catalog-box,
+.catalog-page .catalog-box,
+.panel.catalog-box{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:0!important;
 }
 
 .badge{
@@ -708,7 +718,10 @@ a.category-tile:hover{
 .catalog-page .product-grid{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
 }
-.catalog-box{padding:1.5rem!important}
+.catalog-page .catalog-count{
+  margin:0 0 1.15rem!important;
+  color:var(--muted);
+}
 .catalog-tools .tabs{
   flex-wrap:wrap;
   gap:.5rem!important;

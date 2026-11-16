@@ -7,50 +7,43 @@
 
 На одному VPS з **elf-duck-shop** — не займайте порти `3000–3006`.
 
+## Env (один файл)
+
+У корені проєкту лише **`.env`** (шаблон: `.env.example`).  
+Його читають і Node (`backend`), і Docker Compose. Не комітити.
+
+```bash
+cp .env.example .env
+# заповни секрети + Atlas URI
+```
+
 ## Структура
 
 | Шлях | Призначення |
 |------|-------------|
-| `frontend/` | Статичний сайт (без збірки) |
-| `backend/` | API, сесії, OAuth, Telegram-боти |
-| `deploy/` | host nginx, systemd, production env |
-| `docker-compose.yml` | **лише api** (Mongo = Atlas; nginx на хості) |
+| `frontend/` | Статичний сайт |
+| `backend/` | API + Telegram-боти |
+| `deploy/` | host nginx, systemd |
+| `docker-compose.yml` | лише **api** (Mongo = Atlas) |
 
-## Порти на хості
+## Порти
 
 | Порт | Сервіс |
 |------|--------|
-| **3010** | API |
+| **3010** | API (host → container `3000`) |
 
 ## MongoDB
 
-Той самий Atlas-кластер, що й Elf Duck, **інша база**:
+Той самий Atlas, що Elf Duck, інша база (`DATABASE_NAME`, напр. `SmokeIslandProduction`).
 
-| Проєкт | БД |
-|--------|-----|
-| Elf Duck | `test` / `elfduck` (як у їхньому URI) |
-| Smoke Island | `SmokeIslandLocal` (dev) / `SmokeIslandProduction` (prod) |
+## Host nginx
 
-```bash
-DATABASE_URL=mongodb+srv://USER:PASS@….mongodb.net/?retryWrites=true&w=majority&appName=smoke-island
-DATABASE_NAME=SmokeIslandProduction
-```
+`deploy/nginx.conf.example` — статика з `frontend/`, `/api` → `127.0.0.1:3010`.
 
-У Network Access Atlas має бути IP VPS (як для Elf Duck).
-
-## Домени (host nginx → localhost)
-
-| Домен | Upstream |
-|-------|----------|
-| `smoke-island.telebots.site` | статика `frontend/` + `/api` → `127.0.0.1:3010` |
-
-Шаблон: `deploy/nginx.conf.example`.
-
-## Docker (api)
+## Docker
 
 ```bash
-cp .env.docker.example .env.docker
-# встав Atlas DATABASE_URL + DATABASE_NAME
+# потрібен кореневий .env
 npm run docker:build
 npm run docker:up
 npm run docker:seed
@@ -58,43 +51,24 @@ npm run docker:seed
 
 Health: http://127.0.0.1:3010/api/health
 
-Prod: `NODE_ENV=production` і **лише HTTPS** URL у `.env.docker`.
-
-Старий локальний mongo-контейнер більше не потрібен:
-`docker compose --env-file .env.docker down --remove-orphans`
-
-## Host nginx + TLS
-
 ```bash
-sudo nginx -t && sudo systemctl reload nginx
-sudo certbot --nginx -d smoke-island.telebots.site
+docker compose up -d --force-recreate api   # після зміни .env
+docker compose exec api printenv DATABASE_URL DATABASE_NAME NODE_ENV FRONTEND_URL
 ```
 
 ## Локально без Docker
 
 ```bash
-cp .env.example .env.local
-# Atlas DATABASE_URL + DATABASE_NAME=SmokeIslandLocal
 cd backend && npm ci && cd ..
 npm run seed
-npm run dev    # API :3010 + статика :8765
+npm run dev
 ```
-
-## Env
-
-| Файл | Навіщо |
-|------|--------|
-| `.env.example` | Шаблон `.env.local` |
-| `.env.docker.example` | Шаблон Compose |
-| `deploy/production.env.example` | Prod |
 
 ## Команди
 
 ```bash
-npm run docker:build
 npm run docker:up
 npm run docker:rebuild:api
-npm run docker:seed
 npm run docker:logs
 npm run docker:down
 npm test

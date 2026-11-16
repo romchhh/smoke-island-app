@@ -1,5 +1,5 @@
 import {webcrypto} from 'node:crypto';globalThis.crypto??=webcrypto;
-import dotenv from 'dotenv';dotenv.config({path:process.env.ENV_FILE||'../.env.local',quiet:true});
+import dotenv from 'dotenv';dotenv.config({path:process.env.ENV_FILE||'../.env',quiet:true});
 import mongoose from 'mongoose';
 const schema=new mongoose.Schema({slug:{type:String,unique:true},name:String,description:String,category:String,image:String,active:{type:Boolean,default:true},variants:[{key:String,label:String,priceMinor:Number,stock:Number,active:{type:Boolean,default:true}}]},{timestamps:true});
 const Product=mongoose.models.Product||mongoose.model('Product',schema);

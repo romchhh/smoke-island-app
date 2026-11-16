@@ -7,7 +7,7 @@ import { webcrypto } from 'node:crypto';
 import * as nodeCrypto from 'node:crypto';
 globalThis.crypto ??= webcrypto;
 import dotenv from 'dotenv';
-dotenv.config({path:process.env.ENV_FILE||'../.env.local',quiet:true});
+dotenv.config({path:process.env.ENV_FILE||'../.env',quiet:true});
 import express from 'express';
 import mongoose from 'mongoose';
 import helmet from 'helmet';

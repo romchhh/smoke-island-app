@@ -11,6 +11,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       # Use development for local HTTP; set NODE_ENV=production + HTTPS URLs on a real host.
       NODE_ENV: ${NODE_ENV:-development}
@@ -55,6 +57,8 @@ services:
   seed:
     profiles: ["seed"]
     image: smoke-island-api:local
+    env_file:
+      - .env
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL to MongoDB Atlas (mongodb+srv://...)}
       DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}

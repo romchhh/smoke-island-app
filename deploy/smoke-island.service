@@ -7,10 +7,10 @@ Wants=network-online.target
 Type=simple
 User=smokeisland
 Group=smokeisland
-WorkingDirectory=/srv/smoke-island/backend
+WorkingDirectory=/root/smoke-island/backend
 Environment=NODE_ENV=production
-Environment=ENV_FILE=/etc/smoke-island.env
-ExecStart=/usr/bin/node /srv/smoke-island/backend/src/server.js
+Environment=ENV_FILE=/root/smoke-island/.env
+ExecStart=/usr/bin/node /root/smoke-island/backend/src/server.js
 Restart=on-failure
 RestartSec=5
 TimeoutStopSec=30

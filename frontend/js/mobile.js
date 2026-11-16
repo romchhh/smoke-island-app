@@ -81,7 +81,7 @@ function mobileHome() {
   const featured = products.slice(0, 6);
   return `<div class="m-home"><div class="hero-grid m-home-banners"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div>${mobileSection("Kategorie", "Wybierz kategorię i zamów w kilka minut!")}<section class="m-categories" aria-label="Kategorie">${
     categories
-      .map((cat) => categoryTileHTML(cat, "category-tile"))
+      .map((cat) => categoryTileHTML(cat, "mobile"))
       .join("") || '<p class="muted">Katalog ładuje się…</p>'
   }</section>${mobileSection("Popularne produkty", "Najczęściej wybierane produkty")}<div class="product-grid home-product-grid m-home-products">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div>${mobileSection("Informacja", "Promocje, nowości i ważne informacje!")}<div class="m-promo-carousel" aria-label="Promocje"><a href="#catalog"><img src="assets/mobile-sale-custom.png" alt="Gorąca wyprzedaż"></a><a class="m-promo-news" href="#catalog"><img src="assets/mobile-about-custom.png" alt="O nas — Smoke Island"></a></div></div>`;
 }

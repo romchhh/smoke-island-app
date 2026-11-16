@@ -552,66 +552,48 @@ const categoryMedia = (src, alt = "") => {
   return img(src, alt, "category-media");
 };
 const categoryImages = {
-  Jednorazówki: "assets/category-disposable.png",
-  Liquidy: "assets/category-liquids.png",
-  Pody: "assets/category-pods.jpg",
+  Jednorazówki: "assets/category-disposable.webp",
+  Liquidy: "assets/category-liquids.webp",
+  Pody: "assets/category-pods.webp",
   Cartidges: "assets/category-cartridges.webp",
   Cartridges: "assets/category-cartridges.webp",
 };
 const HOME_CATEGORIES = [
   {
     name: "Jednorazówki",
-    image: "assets/category-disposable.png",
-    blurb: "Przeglądaj dostępne produkty w kategorii Jednorazówki.",
+    image: "assets/category-disposable.webp",
+    blurb: "Sprawdź dostępne produkty w kategorii Jednorazówki.",
   },
   {
     name: "Pody",
-    image: "assets/category-pods.jpg",
-    blurb: "Przeglądaj dostępne produkty w kategorii Pody.",
+    image: "assets/category-pods.webp",
+    blurb: "Sprawdź dostępne produkty w kategorii Pody.",
   },
   {
     name: "Liquidy",
-    image: "assets/category-liquids.png",
-    blurb: "Przeglądaj dostępne produkty w kategorii Liquidy.",
+    image: "assets/category-liquids.webp",
+    blurb: "Sprawdź dostępne produkty w kategorii Liquidy.",
   },
   {
     name: "Cartidges",
     image: "assets/category-cartridges.webp",
-    blurb: "Przeglądaj dostępne produkty w kategorii Cartidges.",
+    blurb: "Sprawdź dostępne produkty w kategorii Cartidges.",
     aliases: ["Cartridges", "Wkłady"],
   },
 ];
 function homeCategoryList() {
-  const present = new Set(products.map((p) => p[2]).filter(Boolean));
-  const curated = HOME_CATEGORIES.filter(
-    (c) =>
-      !present.size ||
-      present.has(c.name) ||
-      (c.aliases || []).some((a) => present.has(a)),
-  );
-  const known = new Set(
-    curated.flatMap((c) => [c.name, ...(c.aliases || [])]),
-  );
-  const extras = [...present]
-    .filter((name) => !known.has(name))
-    .map((name) => ({
-      name,
-      image: categoryImages[name] || "",
-      blurb: `Przeglądaj dostępne produkty w kategorii ${name}.`,
-    }));
-  return curated.length ? [...curated, ...extras] : extras;
+  // Always show the curated Vercel categories (with their webp art).
+  return HOME_CATEGORIES.slice();
 }
-function categoryTileHTML(cat, cls = "category category-tile") {
-  const item = products.find(
-    (p) =>
-      p[2] === cat.name || (cat.aliases || []).includes(p[2]),
-  );
-  const media = cat.image
-    ? categoryMedia(cat.image, cat.name)
-    : item
-      ? productArt(item[0], cat.name, "category-media")
-      : "";
-  return `<a class="${cls}" href="#catalog" data-category="${esc(cat.name)}" aria-label="Kategoria ${esc(cat.name)}">${media}<span class="category-shade" aria-hidden="true"></span><span class="category-copy"><strong>${esc(cat.name)}</strong><p>${esc(cat.blurb || `Przeglądaj dostępne produkty w kategorii ${cat.name}.`)}</p><span class="category-pill"><span>Zobacz produkty</span><i aria-hidden="true">↗</i></span></span></a>`;
+function categoryTileHTML(cat, mode = "desktop") {
+  const src = cat.image || categoryImages[cat.name] || "";
+  const media = src
+    ? `<img src="${esc(src)}" alt="${esc(cat.name)}" draggable="false" loading="lazy" decoding="async">`
+    : "";
+  if (mode === "mobile") {
+    return `<a href="#catalog" data-category="${esc(cat.name)}"><strong>${esc(cat.name)}</strong>${media}</a>`;
+  }
+  return `<article class="category">${media}<div><h3>${esc(cat.name)}</h3><p>${esc(cat.blurb || `Sprawdź dostępne produkty w kategorii ${cat.name}.`)}</p><a href="#catalog" data-category="${esc(cat.name)}">Zobacz produkty →</a></div></article>`;
 }
 
 
@@ -659,7 +641,7 @@ function home() {
   const categories = homeCategoryList();
   const featured = products.slice(0, 8);
   return `<div class="page home-page"><div class="hero-grid"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div><div class="section-row"><h2 class="section-title">Kategorie</h2><a class="section-link" href="#catalog">Wszystkie produkty ⟶</a></div><div class="categories">${
-    categories.map((cat) => categoryTileHTML(cat)).join("") ||
+    categories.map((cat) => categoryTileHTML(cat, "desktop")).join("") ||
     '<p class="muted">Katalog ładuje się…</p>'
   }</div><div class="section-row"><h2 class="section-title">Popularne produkty</h2><a class="section-link" href="#catalog">Zobacz wszystkie ⟶</a></div><div class="product-grid home-product-grid">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div></div>`;
 }
@@ -1607,7 +1589,7 @@ function mobileHome() {
   const featured = products.slice(0, 6);
   return `<div class="m-home"><div class="hero-grid m-home-banners"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div>${mobileSection("Kategorie", "Wybierz kategorię i zamów w kilka minut!")}<section class="m-categories" aria-label="Kategorie">${
     categories
-      .map((cat) => categoryTileHTML(cat, "category-tile"))
+      .map((cat) => categoryTileHTML(cat, "mobile"))
       .join("") || '<p class="muted">Katalog ładuje się…</p>'
   }</section>${mobileSection("Popularne produkty", "Najczęściej wybierane produkty")}<div class="product-grid home-product-grid m-home-products">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div>${mobileSection("Informacja", "Promocje, nowości i ważne informacje!")}<div class="m-promo-carousel" aria-label="Promocje"><a href="#catalog"><img src="assets/mobile-sale-custom.png" alt="Gorąca wyprzedaż"></a><a class="m-promo-news" href="#catalog"><img src="assets/mobile-about-custom.png" alt="O nas — Smoke Island"></a></div></div>`;
 }

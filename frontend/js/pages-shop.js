@@ -46,7 +46,7 @@ function home() {
   const categories = homeCategoryList();
   const featured = products.slice(0, 8);
   return `<div class="page home-page"><div class="hero-grid"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div><div class="section-row"><h2 class="section-title">Kategorie</h2><a class="section-link" href="#catalog">Wszystkie produkty ⟶</a></div><div class="categories">${
-    categories.map((cat) => categoryTileHTML(cat)).join("") ||
+    categories.map((cat) => categoryTileHTML(cat, "desktop")).join("") ||
     '<p class="muted">Katalog ładuje się…</p>'
   }</div><div class="section-row"><h2 class="section-title">Popularne produkty</h2><a class="section-link" href="#catalog">Zobacz wszystkie ⟶</a></div><div class="product-grid home-product-grid">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div></div>`;
 }

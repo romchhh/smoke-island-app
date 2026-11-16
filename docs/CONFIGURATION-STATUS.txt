@@ -1,0 +1,33 @@
+Экспорт конфигурации: 15.11.2026, production/api Railway.
+Заданные переменные приложения:
+CORS_ORIGIN
+DATABASE_NAME
+DATABASE_URL
+FRONTEND_URL
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+GOOGLE_REDIRECT_URI
+JWT_SECRET
+NODE_ENV
+PORT
+SESSION_SECRET
+TELEGRAM_ADMIN_BOT_TOKEN
+TELEGRAM_ADMIN_IDS
+TELEGRAM_CLIENT_BOT_TOKEN
+TELEGRAM_CLIENT_BOT_USERNAME
+TELEGRAM_OIDC_CLIENT_ID
+TELEGRAM_OIDC_CLIENT_SECRET
+TELEGRAM_OIDC_REDIRECT_URI
+TELEGRAM_ORDERS_CHAT_ID
+TELEGRAM_SUPPORT_CHAT_ID
+TELEGRAM_WEB_APP_URL
+
+Не заданы в текущем сервисе:
+EMAIL_FROM
+RESEND_API_KEY
+TELEGRAM_WEBHOOK_SECRET
+TELEGRAM_WEBHOOK_URL
+
+Пустые webhook-переменные допустимы: боты используют long polling.
+Resend нужен для регистрации и подтверждения email.
+Наличие значения не подтверждает действительность ключа у поставщика.

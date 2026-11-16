@@ -1,0 +1,12 @@
+.vercel
+
+# Local secrets and dependencies
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.data/
+secrets/
+backend/node_modules/

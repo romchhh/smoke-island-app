@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020810">
+<meta name="color-scheme" content="dark">
+<meta name="api-base" content="/api/v1">
+<meta name="description" content="Smoke Island - katalog, wybór wariantów, koszyk i bonusy.">
+<link rel="preload" href="styles.css?v=20261116-polish" as="style">
+<link rel="stylesheet" href="styles.css?v=20261116-polish">
+<script src="https://telegram.org/js/telegram-web-app.js?64" defer></script>
+<title>Smoke Island</title>
+<script src="config.js"></script>
+<script src="app.js?v=20261116-polish" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#app">Przejdź do treści</a>
+<div id="app"></div>
+<div id="support-layer"></div>
+<input type="file" id="support-file-input" accept="image/png,image/jpeg,image/gif,image/webp,application/pdf,text/plain,.pdf,.txt" multiple hidden aria-label="Załączniki do wiadomości">
+<div id="toast" role="status" aria-live="polite"></div>
+<dialog id="mobile-smart" class="m-smart-dialog" aria-label="Wybrane warianty i Smart Cena"></dialog>
+<dialog class="dialog" id="dialog" aria-label="Informacja"></dialog>
+<noscript>Włącz JavaScript, aby korzystać z katalogu i koszyka.</noscript>
+</body>
+</html>

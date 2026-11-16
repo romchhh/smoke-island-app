@@ -1,0 +1,24 @@
+[Unit]
+Description=Smoke Island API and Telegram bots
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=smokeisland
+Group=smokeisland
+WorkingDirectory=/srv/smoke-island/backend
+Environment=NODE_ENV=production
+Environment=ENV_FILE=/etc/smoke-island.env
+ExecStart=/usr/bin/node /srv/smoke-island/backend/src/server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

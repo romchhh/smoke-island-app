@@ -235,17 +235,36 @@ button.primary,
 .m-primary:hover,
 a.primary:hover,
 .dec-continue:hover,
-.mb-open-button:hover{
+.mb-open-button:hover,
+.mb-claim-button:hover,
+.login-link:hover,
+.product-card-cta:hover,
+.referral-guest-login:hover,
+.socials button:hover{
   background:var(--violet)!important;
-  border:0!important;
+  border-color:transparent!important;
   color:#fff!important;
-  transform:scale(.985)!important;
+  transform:none!important;
   filter:none!important;
   box-shadow:none!important;
   text-decoration:none!important;
+  margin:0!important;
 }
 .primary:active,
-.m-primary:active{transform:scale(.97);opacity:.95}
+.m-primary:active,
+.login-link:active,
+.product-card-cta:active{
+  transform:none!important;
+  opacity:.92;
+}
+.login-link{
+  border:1px solid var(--line)!important;
+  background:rgba(255,255,255,.04)!important;
+  color:#fff!important;
+  border-radius:999px!important;
+  gap:.55rem!important;
+  transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease)!important;
+}
 .secondary,
 a.secondary,
 .micro-btn{
@@ -336,7 +355,7 @@ input:focus,select:focus,textarea:focus{
   transition:transform .35s var(--ease),opacity .35s var(--ease);
 }
 .hero-grid a:hover{
-  transform:translateY(-3px);
+  transform:none!important;
   opacity:.96;
 }
 .delivery-banner{
@@ -385,9 +404,11 @@ a.category-tile{
 }
 .category:hover,
 a.category-tile:hover{
-  transform:translateY(-4px);
+  transform:none!important;
   text-decoration:none!important;
   color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
 }
 .category img,
 .category-media{
@@ -469,7 +490,7 @@ a.category-tile:hover{
 .category-tile:hover .category-pill i{
   background:var(--violet);
   color:#fff;
-  transform:translate(.1rem,-.1rem);
+  transform:none;
 }
 
 /* —— Product cards: portfolio case anatomy —— */
@@ -494,9 +515,10 @@ a.category-tile:hover{
   transition:transform .4s var(--ease),background .4s var(--ease);
 }
 .product-card:hover{
-  transform:translateY(-4px);
+  transform:none!important;
   background:var(--panel-2)!important;
   box-shadow:none!important;
+  border-color:transparent!important;
 }
 .product-card-media{
   position:relative;
@@ -644,7 +666,7 @@ a.category-tile:hover{
 }
 .product-card:hover .product-card-arrow{
   color:var(--violet-2);
-  transform:translate(.15rem,-.15rem);
+  transform:none;
 }
 .product-card-footer{
   order:3;
@@ -699,9 +721,9 @@ a.category-tile:hover{
   flex-shrink:0;
 }
 .product-card-cta:hover{
-  background:var(--violet);
+  background:var(--violet)!important;
   color:#fff!important;
-  transform:scale(.98);
+  transform:none!important;
   text-decoration:none!important;
 }
 .product-card .micro-btn{display:none!important}
@@ -1233,4 +1255,48 @@ body:has(.mb-page){
 .home-page{
   display:flex;
   flex-direction:column;
+}
+
+/* Prevent hover layout jump — buttons must stay clickable */
+.primary,
+.primary:hover,
+.primary:active,
+.secondary,
+.secondary:hover,
+.secondary:active,
+.login-link,
+.login-link:hover,
+.login-link:active,
+.product-card-cta,
+.product-card-cta:hover,
+.nav-link,
+.nav-link:hover,
+.tab,
+.tab:hover,
+.micro-btn,
+.micro-btn:hover,
+.dec-continue,
+.dec-continue:hover,
+.referral-guest-login,
+.referral-guest-login:hover,
+.socials button,
+.socials button:hover,
+.menu-toggle,
+.menu-toggle:hover,
+.product-card:hover,
+.category:hover,
+.category-tile:hover,
+.featured-card:hover{
+  transform:none!important;
+}
+.product-card:hover,
+.featured-card:hover,
+.category:hover{
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+button:hover,
+a.primary:hover,
+a.secondary:hover{
+  filter:none!important;
 }

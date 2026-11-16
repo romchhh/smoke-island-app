@@ -212,8 +212,7 @@ a:hover{color:#fff;text-decoration:none}
   height:1.15rem!important;
   color:currentColor;
 }
-.heart,
-.m-card-heart{
+.heart{
   color:rgba(255,255,255,.72)!important;
   background:rgba(0,0,0,.35)!important;
   border:1px solid var(--line)!important;
@@ -221,18 +220,15 @@ a:hover{color:#fff;text-decoration:none}
   align-items:center!important;
   justify-content:center!important;
 }
-.heart .sys-icon,
-.m-card-heart .sys-icon{
+.heart .sys-icon{
   width:1.05rem!important;
   height:1.05rem!important;
 }
-.heart.saved,
-.m-card-heart.saved{
+.heart.saved{
   color:#ff7aa2!important;
   border-color:rgba(255,122,162,.35)!important;
 }
-.heart.saved .sys-icon,
-.m-card-heart.saved .sys-icon{
+.heart.saved .sys-icon{
   fill:currentColor;
   stroke:currentColor;
 }
@@ -319,12 +315,9 @@ a:hover{color:#fff;text-decoration:none}
 
 /* —— Buttons —— */
 .primary,
-.m-primary,
 a.primary,
 button.primary,
-.dec-continue,
-.mb-open-button,
-.mb-claim-button{
+.dec-continue{
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -346,11 +339,8 @@ button.primary,
   transition:transform .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
 }
 .primary:hover,
-.m-primary:hover,
 a.primary:hover,
 .dec-continue:hover,
-.mb-open-button:hover,
-.mb-claim-button:hover,
 .login-link:hover,
 .product-card-cta:hover,
 .referral-guest-login:hover,
@@ -363,7 +353,6 @@ a.primary:hover,
   text-decoration:none!important;
 }
 .primary:active,
-.m-primary:active,
 .login-link:active,
 .product-card-cta:active{
   transform:none!important;
@@ -1337,7 +1326,6 @@ body:after,
 .mb-contents,
 .case-stage,
 .desktop-bonus-animation,
-.m-bottom-nav,
 .m-route-bonus:before,
 .m-route-opening:before{
   background-image:none!important;
@@ -2223,87 +2211,7 @@ a.secondary:hover{
 }
 
 @media(max-width:720px){
-  .m-bottom-nav{
-    position:fixed!important;
-    z-index:70!important;
-    left:.75rem!important;
-    right:.75rem!important;
-    bottom:calc(.75rem + env(safe-area-inset-bottom,0px))!important;
-    height:4.15rem!important;
-    display:grid!important;
-    grid-template-columns:repeat(5,minmax(0,1fr))!important;
-    align-items:center!important;
-    gap:.15rem!important;
-    padding:.35rem .4rem!important;
-    border:1px solid var(--line)!important;
-    border-radius:1.35rem!important;
-    background:rgba(18,18,18,.92)!important;
-    box-shadow:0 18px 40px rgba(0,0,0,.45)!important;
-    backdrop-filter:blur(18px)!important;
-    -webkit-backdrop-filter:blur(18px)!important;
-  }
-  .m-bottom-nav>a{
-    display:flex!important;
-    flex-direction:column!important;
-    align-items:center!important;
-    justify-content:center!important;
-    gap:.2rem!important;
-    min-width:0!important;
-    height:3.35rem!important;
-    padding:.25rem .15rem!important;
-    border:0!important;
-    border-radius:1rem!important;
-    background:transparent!important;
-    color:rgba(255,255,255,.48)!important;
-    font-size:.62rem!important;
-    font-weight:650!important;
-    letter-spacing:.02em;
-    text-transform:uppercase;
-    text-decoration:none!important;
-    box-shadow:none!important;
-    transition:color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)!important;
-  }
-  .m-bottom-nav>a>.sys-icon,
-  .m-bottom-nav>a>img,
-  .m-bottom-nav>a>.m-nav-heart-image{
-    width:1.35rem!important;
-    height:1.35rem!important;
-    object-fit:contain!important;
-    opacity:.7!important;
-    filter:none!important;
-    color:currentColor!important;
-    transition:opacity .25s var(--ease),transform .25s var(--ease),color .25s var(--ease)!important;
-  }
-  .m-bottom-nav>a span{
-    line-height:1.1;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:100%;
-  }
-  .m-bottom-nav>a:hover,
-  .m-bottom-nav>a:active{
-    color:rgba(255,255,255,.85)!important;
-    background:rgba(255,255,255,.04)!important;
-    transform:none!important;
-  }
-  .m-bottom-nav>a.active{
-    color:#fff!important;
-    background:rgba(155,125,255,.16)!important;
-    border:0!important;
-    box-shadow:none!important;
-  }
-  .m-bottom-nav>a.active>.sys-icon,
-  .m-bottom-nav>a.active>img,
-  .m-bottom-nav>a.active>.m-nav-heart-image{
-    opacity:1!important;
-    transform:translateY(-1px) scale(1.06)!important;
-    filter:none!important;
-    color:#fff!important;
-  }
-  .m-bottom-nav>a.active span{
-    color:#fff!important;
-  }
+  /* Mobile artboard bottom-nav kept in styles.css — do not restyle here */
   body.m-keyboard-open .m-bottom-nav{
     visibility:hidden!important;
     pointer-events:none!important;
@@ -2613,47 +2521,7 @@ a.secondary:hover{
   .mr-friend em.is-purchased{color:var(--green)!important}
   .mr-empty{color:var(--muted)!important;text-align:center!important;padding:1.5rem 0!important}
 
-  /* Catalog hub in bottom nav */
-  .m-bottom-nav>a.m-nav-catalog{
-    position:relative!important;
-    transform:translateY(-.55rem)!important;
-    height:3.85rem!important;
-    border-radius:1.2rem!important;
-    background:linear-gradient(180deg,#fff 0%,#f0ecff 100%)!important;
-    color:var(--ink)!important;
-    box-shadow:0 10px 24px rgba(155,125,255,.28)!important;
-    z-index:1;
-  }
-  .m-bottom-nav>a.m-nav-catalog>.sys-icon,
-  .m-bottom-nav>a.m-nav-catalog>img{
-    opacity:1!important;
-    width:1.5rem!important;
-    height:1.5rem!important;
-    filter:none!important;
-    color:var(--ink)!important;
-  }
-  .m-bottom-nav>a.m-nav-catalog span{
-    color:var(--ink)!important;
-    font-weight:800!important;
-  }
-  .m-bottom-nav>a.m-nav-catalog.active,
-  .m-bottom-nav>a.m-nav-catalog:hover{
-    background:var(--violet)!important;
-    color:#fff!important;
-    transform:translateY(-.55rem)!important;
-  }
-  .m-bottom-nav>a.m-nav-catalog.active>.sys-icon,
-  .m-bottom-nav>a.m-nav-catalog:hover>.sys-icon,
-  .m-bottom-nav>a.m-nav-catalog.active>img,
-  .m-bottom-nav>a.m-nav-catalog:hover>img{
-    filter:none!important;
-    opacity:1!important;
-    color:#fff!important;
-  }
-  .m-bottom-nav>a.m-nav-catalog.active span,
-  .m-bottom-nav>a.m-nav-catalog:hover span{
-    color:#fff!important;
-  }
+  /* Catalog hub: use artboard bottom-nav styles */
 }
 
 

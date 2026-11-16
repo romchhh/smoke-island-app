@@ -358,21 +358,9 @@ a.primary:hover,
   background:var(--violet)!important;
   border-color:transparent!important;
   color:#fff!important;
-  transform:none!important;
   filter:none!important;
   box-shadow:none!important;
   text-decoration:none!important;
-}
-.primary:hover,
-.m-primary:hover,
-a.primary:hover,
-.mb-open-button:hover,
-.mb-claim-button:hover,
-.login-link:hover,
-.product-card-cta:hover,
-.referral-guest-login:hover,
-.socials button:hover{
-  margin:0!important;
 }
 .primary:active,
 .m-primary:active,
@@ -1569,6 +1557,23 @@ body:has(.mb-page){
 .featured-card:hover{
   transform:none!important;
 }
+
+/* Desktop bonus CTA: center without translateX (killed by transform:none above) */
+.bonus-page .case-stage>button,
+.bonus-page .case-stage>button.primary,
+.bonus-page .case-stage>button:hover,
+.bonus-page .case-stage>button:active,
+.bonus-page .case-stage>button.primary:hover,
+.bonus-page .case-stage>button.primary:active{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:2.3rem!important;
+  width:min(24.5rem,calc(100% - 2rem))!important;
+  max-width:calc(100% - 2rem)!important;
+  margin:0 auto!important;
+  transform:none!important;
+}
 .product-card:hover,
 .featured-card:hover,
 .category:hover{
@@ -2620,92 +2625,66 @@ a.secondary:hover{
 }
 
 
-/* —— Empty-state CTA: flex column (avoids broken translateX centering) —— */
-.dec-visual{
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  justify-content:flex-end!important;
-  gap:0!important;
-  padding:1.25rem 1rem 1.35rem!important;
-  height:auto!important;
-  min-height:19rem!important;
-  box-sizing:border-box!important;
-}
-.dec-visual:after{display:none!important}
-.dec-art{
-  position:relative!important;
-  left:auto!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:auto!important;
-  inset:auto!important;
-  margin:0 auto .35rem!important;
-  width:min(17rem,70%)!important;
-  height:auto!important;
-  max-height:12rem!important;
-  transform:none!important;
-  z-index:2!important;
-}
-.dec-art>img{
-  width:100%!important;
-  height:auto!important;
-  max-height:12rem!important;
-  object-fit:contain!important;
-  object-position:center!important;
-}
-.dec-continue,
-a.dec-continue,
-button.dec-continue,
-.dec-continue:hover,
-.dec-continue:active,
-a.dec-continue:hover,
-button.dec-continue:hover{
-  position:relative!important;
-  left:auto!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:auto!important;
-  inset:auto!important;
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:min(22rem,92%)!important;
-  max-width:22rem!important;
-  min-height:3.4rem!important;
-  height:auto!important;
-  margin:0.35rem auto 0!important;
-  transform:none!important;
-  z-index:3!important;
-}
-.dec-message{
-  height:auto!important;
-  min-height:0!important;
-  margin-top:1.25rem!important;
-  padding:1.75rem 1.25rem!important;
-  gap:1rem!important;
-}
-.dec-message h2{
-  font-size:clamp(1.8rem,3.5vw,2.6rem)!important;
-  font-weight:800!important;
-  letter-spacing:-.03em!important;
-}
-.dec-message p{
-  font-size:clamp(1rem,1.6vw,1.2rem)!important;
-  max-width:28rem;
-  margin:0 auto;
-  color:rgba(255,255,255,.72)!important;
-}
-/* Keep support invitation from covering empty-state CTA on desktop */
-@media(min-width:721px){
-  .desktop-empty-cart,
-  .desktop-referral-guest,
-  .desktop-order-confirmation{
-    position:relative;
-    z-index:1;
+/* —— Desktop empty/referral/order CTA centering ——
+ * Base styles used left:50% + translateX(-50%). Theme kills transform on
+ * .dec-continue, so center with left/right + margin-inline instead.
+ */
+@media (min-width: 721px) {
+  .dec-art,
+  .desktop-empty-cart .dec-art,
+  .desktop-referral-guest .dec-art,
+  .desktop-order-confirmation .dec-art {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-inline: auto !important;
+    transform: none !important;
   }
-  .support-invitation{
-    max-width:min(20rem,28vw)!important;
+
+  .dec-continue,
+  a.dec-continue,
+  button.dec-continue,
+  a.primary.dec-continue,
+  .dec-continue:hover,
+  .dec-continue:active,
+  a.dec-continue:hover,
+  a.primary.dec-continue:hover,
+  button.dec-continue:hover {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 2.4rem !important;
+    top: auto !important;
+    inset-inline: 0 !important;
+    width: min(24.4rem, 80%) !important;
+    max-width: 80% !important;
+    margin-inline: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transform: none !important;
+    z-index: 3 !important;
+  }
+
+  .desktop-referral-guest .dec-continue,
+  .desktop-referral-guest a.dec-continue {
+    width: min(22.2rem, 80%) !important;
+  }
+
+  .desktop-order-confirmation .dec-continue,
+  .desktop-order-confirmation button.dec-continue {
+    bottom: 1.8rem !important;
+    width: min(24.2rem, 80%) !important;
+  }
+
+  /* Keep visual panel geometry from the desktop artboard */
+  .dec-visual,
+  .desktop-empty-cart .dec-visual,
+  .desktop-referral-guest .dec-visual,
+  .desktop-order-confirmation .dec-visual {
+    display: block !important;
+    height: 19.85rem !important;
+    min-height: 0 !important;
+    padding: 0 !important;
   }
 }
 

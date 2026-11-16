@@ -2550,12 +2550,13 @@ h3 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     align-items: center;
     padding: 6px 10px;
-    border: 1px solid #5982ab;
-    border-top-color: #c1d5e8;
+    border: 1px solid #477aaf;
+    border-top-color: #b9d4e9;
     border-radius: 19px;
-    background: linear-gradient(135deg, #08172d, #03070a 55%, #0b1018);
+    background: radial-gradient(ellipse at 100% 0, #14366b99, transparent 55%),
+      linear-gradient(130deg, #081a35, #03070a 75%);
     box-shadow:
-      inset 0 2px 4px #9eabbc60,
+      inset 0 2px 4px #7e9ebc55,
       0 2px 20px #0008;
   }
   .m-bottom-nav > a {
@@ -2571,11 +2572,13 @@ h3 {
     border: 1px solid transparent;
     border-radius: 15px;
   }
-  .m-bottom-nav > a > img {
-    height: 24px;
+  .m-bottom-nav > a > .sys-icon,
+  .m-bottom-nav > a > .m-nav-heart-image {
     width: 26px;
-    object-fit: contain;
+    height: 24px;
+    flex-shrink: 0;
     opacity: 0.55;
+    color: #8a8c90;
   }
   .m-bottom-nav > a.active {
     border-color: #416684;
@@ -2584,16 +2587,10 @@ h3 {
     background: linear-gradient(130deg, #0f243d, #03090f);
     box-shadow: inset 0 2px 4px #6b8eac88;
   }
-  .m-bottom-nav > a.active > img {
+  .m-bottom-nav > a.active > .sys-icon,
+  .m-bottom-nav > a.active > .m-nav-heart-image {
     opacity: 1;
-  }
-  .m-nav-heart {
-    font-size: 29px;
-    line-height: 24px;
-    color: #a0a1a2;
-  }
-  .m-bottom-nav a.active .m-nav-heart {
-    color: #fff;
+    color: #f2f5fa;
   }
   .m-hero {
     position: relative;
@@ -4743,66 +4740,6 @@ h3 {
     background: radial-gradient(ellipse at 50% 20%, #001535, transparent 60%),
       #00060d;
   }
-  body:has(.m-route-contact) .m-topbar {
-    height: 38px;
-    min-height: 38px;
-    margin: 4px 15px 0;
-    padding: 0 14px;
-    border-radius: 20px;
-    gap: 12px;
-    top: 4px;
-  }
-  body:has(.m-route-contact) .m-logo {
-    width: 68px;
-  }
-  body:has(.m-route-contact) .m-logo img {
-    height: 28px;
-  }
-  body:has(.m-route-contact) .m-points {
-    height: 27px;
-    min-width: 49px;
-    font-size: 14px;
-  }
-  body:has(.m-route-contact) .m-top-link {
-    font-size: 9px;
-  }
-  body:has(.m-route-contact) .m-top-link.contact-active {
-    color: #e6f0ff;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    border-radius: 14px;
-    background: #041a37;
-    padding: 6px 8px;
-    margin: 0 -6px;
-  }
-  body:has(.m-route-contact) .m-bottom-nav {
-    height: 50px;
-    bottom: 20px;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-  body:has(.m-route-contact) .m-bottom-nav > a {
-    height: 41px;
-    gap: 2px;
-    font-size: 8px;
-    border-radius: 13px;
-  }
-  body:has(.m-route-contact) .m-bottom-nav > a > img {
-    height: 20px;
-    width: 23px;
-  }
-  body:has(.m-route-contact) .m-nav-heart {
-    font-size: 25px;
-    line-height: 21px;
-  }
-  .m-route-contact {
-    padding-bottom: 90px;
-    overflow: visible;
-    min-height: calc(100dvh - 42px);
-  }
-  .m-route-contact:before {
-    display: none;
-  }
   .contact-page {
     max-width: 480px;
     margin: auto;
@@ -5830,33 +5767,6 @@ h3 {
   }
   .mb-another-button:active {
     background: #082652;
-  }
-  body:has(.mb-page) .m-bottom-nav {
-    height: 52px;
-    bottom: 24px;
-    padding: 4px 10px;
-    border-radius: 23px;
-  }
-  body:has(.mb-page) .m-bottom-nav > a {
-    height: 43px;
-    font-size: 8px;
-    gap: 3px;
-  }
-  body:has(.mb-page) .m-bottom-nav > a > img {
-    width: 25px;
-    height: 21px;
-  }
-  body:has(.mb-page) .m-bottom-nav > a.active {
-    background: radial-gradient(ellipse at 50% 80%, #123b6c88, transparent 75%),
-      linear-gradient(120deg, #071827, #02070b);
-    border-color: #5dc8ff;
-    border-top-color: #d6f4ff;
-    border-radius: 18px;
-    box-shadow: inset 0 0 9px #006aff66;
-  }
-  body:has(.mb-page) .m-nav-heart {
-    font-size: 27px;
-    line-height: 23px;
   }
   .is-demo-reward .m-smart-label {
     color: #bc9fff;
@@ -11596,11 +11506,6 @@ body:after {
   .m-route-home-old {
     padding-bottom: 100px;
   }
-  .m-bottom-nav {
-    height: 64px;
-    bottom: calc(13px + env(safe-area-inset-bottom, 0px));
-    border-radius: 19px;
-  }
 }
 @media (max-width: 350px) {
   .m-topbar.m-topbar-compact {
@@ -14416,26 +14321,6 @@ body:after {
     .m-hero-dots {
     display: none;
   }
-  body:has(.mb-page) .m-bottom-nav {
-    height: 64px;
-    bottom: calc(13px + env(safe-area-inset-bottom, 0px));
-    padding: 6px 10px;
-    border-radius: 19px;
-  }
-  body:has(.mb-page) .m-bottom-nav > a {
-    height: 50px;
-    font-size: 8px;
-    gap: 3px;
-    border-radius: 15px;
-  }
-  body:has(.mb-page) .m-bottom-nav > a > img {
-    height: 24px;
-    width: 26px;
-  }
-  body:has(.mb-page) .m-nav-heart {
-    font-size: 29px;
-    line-height: 24px;
-  }
   body[data-layout="mobile"]
     input:not([type="radio"]):not([type="checkbox"]):not([readonly]),
   body[data-layout="mobile"] textarea,
@@ -14672,23 +14557,6 @@ body:after {
   .m-route-contact:before {
     display: none;
   }
-  body:has(.m-route-contact) .m-topbar {
-    height: 54px;
-    min-height: 54px;
-    margin: 13px 13px 0;
-    padding: 0 20px;
-    top: 0;
-    border-radius: 19px;
-    gap: 14px;
-  }
-  body:has(.m-route-contact) .m-logo {
-    width: 72px;
-  }
-  body:has(.m-route-contact) .m-points {
-    height: 32px;
-    min-width: 54px;
-    font-size: 15px;
-  }
   body:has(.m-route-contact) .m-top-link.contact-active {
     text-decoration: none;
     padding: 6px 10px;
@@ -14696,162 +14564,9 @@ body:after {
     background: linear-gradient(#0a2945, #030a14);
     font-size: 10px;
   }
-  body:has(.m-route-contact) .m-bottom-nav {
-    height: 64px;
-    bottom: calc(13px + env(safe-area-inset-bottom, 0px));
-    padding: 6px 10px;
-    border-radius: 19px;
-  }
-  body:has(.m-route-contact) .m-bottom-nav > a {
-    height: 50px;
-    font-size: 8px;
-    gap: 3px;
-    border-radius: 15px;
-  }
-  body:has(.m-route-contact) .m-bottom-nav > a > img {
-    height: 24px;
-    width: 26px;
-  }
-  body:has(.m-route-contact) .m-nav-heart {
-    font-size: 29px;
-    line-height: 24px;
-  }
   .m-route-contact {
     padding-bottom: 100px;
     min-height: calc(100dvh - 67px);
-  }
-  .contact-page {
-    padding: 0 13px 8px;
-  }
-  .contact-hero {
-    padding-top: 28px;
-  }
-  .contact-hero h1 {
-    font-size: 27px;
-    line-height: 1.15;
-    margin: 0 auto;
-    font-weight: 650;
-  }
-  .contact-hero > p {
-    font-size: 12px;
-    line-height: 1.3;
-    margin: 8px 0 9px;
-    color: #d1d5df;
-  }
-  .contact-headset-art {
-    height: 98px;
-  }
-  .contact-hero:after {
-    height: 30px;
-    bottom: -7px;
-    left: -5%;
-    right: -5%;
-  }
-  .contact-channels {
-    gap: 10px;
-    margin: 12px 0 13px;
-  }
-  .contact-channel {
-    min-height: 50px;
-    padding: 7px 12px;
-    gap: 10px;
-    border-radius: 13px;
-  }
-  .contact-channel .support-avatar {
-    height: 31px;
-    width: 31px;
-    flex-shrink: 0;
-  }
-  .contact-channel strong {
-    font-size: 11px;
-    line-height: 1.15;
-  }
-  .contact-channel small {
-    font-size: 9px;
-    margin-top: 3px;
-    white-space: normal;
-  }
-  .contact-channel > svg {
-    width: 12px;
-    height: 12px;
-  }
-  .support-contact-chat {
-    height: 365px;
-    min-height: 365px;
-    border-radius: 19px;
-  }
-  .support-contact-chat .support-chat-header {
-    min-height: 50px;
-    padding: 9px 14px;
-    gap: 11px;
-  }
-  .support-contact-chat .support-chat-header > .support-avatar {
-    height: 32px;
-    width: 32px;
-  }
-  .support-contact-chat .support-chat-header h2 {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .support-contact-chat .support-chat-header p {
-    font-size: 9px;
-  }
-  .support-contact-chat .support-thread {
-    padding: 8px 13px;
-  }
-  .support-contact-chat .support-day {
-    font-size: 9px;
-    gap: 9px;
-    margin: 0;
-  }
-  .support-contact-chat .support-day span {
-    padding: 3px 12px;
-    border: 1px solid #4f789d;
-    border-radius: 15px;
-    background: linear-gradient(#19344b, #020c19);
-    box-shadow: inset 0 1px 3px #8ba7bc55;
-  }
-  .support-contact-chat .support-sample-label {
-    font-size: 9px;
-    margin: 9px 0;
-    line-height: 1.4;
-  }
-  .support-contact-chat .support-composer {
-    padding: 8px;
-    gap: 10px;
-  }
-  .support-contact-chat .support-composer > button {
-    width: 31px;
-    height: 31px;
-    flex-shrink: 0;
-    padding: 7px;
-  }
-  .support-contact-chat .support-input-wrap {
-    min-height: 31px;
-    border-radius: 20px;
-    padding: 0 7px 0 12px;
-  }
-  .support-contact-chat .support-input-wrap textarea {
-    min-width: 0;
-    height: 30px;
-    padding: 5px 0;
-    line-height: 20px;
-    font-weight: 400;
-    color: #dae3ee;
-  }
-  .support-contact-chat .support-input-wrap > button {
-    width: 23px;
-    height: 23px;
-    padding: 3px;
-    flex-shrink: 0;
-  }
-  .support-contact-chat .support-bubble > p {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  .support-contact-chat .support-message-meta {
-    font-size: 8px;
   }
 }
 
@@ -15148,16 +14863,6 @@ body:after {
 }
 
 @media (max-width: 720px) {
-  .m-bottom-nav > a > .m-nav-heart-image {
-    width: 27px;
-    height: 24px;
-    object-fit: contain;
-    opacity: 0.8;
-  }
-  .m-bottom-nav > a.active > .m-nav-heart-image {
-    opacity: 1;
-    filter: brightness(1.35);
-  }
   .m-card-heart:not(.saved) > img {
     opacity: 0.55;
   }

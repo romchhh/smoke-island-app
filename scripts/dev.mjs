@@ -89,14 +89,38 @@ function run(command, args, name, cwd = root) {
 }
 
 await ensureMongo();
-const api = run(process.execPath, ['src/server.js'], 'API', path.join(root, 'backend'));
-await waitPort(3000);
-const web = run(process.execPath, ['scripts/dev-static.mjs'], 'WEB');
-await waitPort(8765);
+const apiPort = Number(process.env.API_PORT || 3010);
+const webPort = Number(process.env.WEB_PORT || 8765);
+const apiEnv = { ...process.env, PORT: String(apiPort) };
+const webEnv = {
+  ...process.env,
+  PORT: String(webPort),
+  API_ORIGIN: `http://127.0.0.1:${apiPort}`,
+};
+const api = spawn(process.execPath, ['src/server.js'], {
+  cwd: path.join(root, 'backend'),
+  stdio: 'inherit',
+  env: apiEnv,
+});
+api.on('exit', (code, signal) => {
+  if (signal) console.error(`API stopped by ${signal}`);
+  else if (code) console.error(`API exited with ${code}`);
+});
+await waitPort(apiPort);
+const web = spawn(process.execPath, ['scripts/dev-static.mjs'], {
+  cwd: root,
+  stdio: 'inherit',
+  env: webEnv,
+});
+web.on('exit', (code, signal) => {
+  if (signal) console.error(`WEB stopped by ${signal}`);
+  else if (code) console.error(`WEB exited with ${code}`);
+});
+await waitPort(webPort);
 
 console.log('\nSmoke Island ready');
-console.log('  Storefront  http://127.0.0.1:8765');
-console.log('  API health  http://127.0.0.1:3000/api/health\n');
+console.log(`  Storefront  http://127.0.0.1:${webPort}`);
+console.log(`  API health  http://127.0.0.1:${apiPort}/api/health\n`);
 
 const stop = () => {
   api.kill('SIGTERM');

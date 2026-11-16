@@ -35,10 +35,32 @@ function render() {
     wishlist: () => (isMobile() ? mobileWishlist() : desktopWishlist()),
   };
   if (!pages[route]) route = "home";
+  const mobileChromeRoutes = new Set([
+    "home",
+    "home-old",
+    "catalog",
+    "catalog-old",
+    "product",
+    "mix",
+    "cart",
+    "checkout",
+    "checkout-old",
+    "checkout-delivery",
+    "wishlist",
+    "bonus",
+    "opening",
+    "order-accepted",
+    "referrals",
+    "contact",
+  ]);
   const mobile = isMobile();
+  const narrow = isNarrowViewport();
+  const showBottomNav =
+    narrow && mobileChromeRoutes.has(route);
   if (document.body) {
     document.body.dataset.layout = mobile ? "mobile" : "desktop";
     document.body.dataset.route = route;
+    document.body.dataset.mobileDock = showBottomNav ? "1" : "";
   }
   const titles = {
     "order-accepted": "Zamówienie przyjęte",
@@ -59,38 +81,28 @@ function render() {
   const app = $("#app");
   if (!app) return;
   const body = pages[route]();
-  const mobileChromeRoutes = new Set([
-    "home",
-    "home-old",
-    "catalog",
-    "catalog-old",
-    "product",
-    "mix",
-    "cart",
-    "checkout",
-    "checkout-old",
-    "checkout-delivery",
-    "wishlist",
-    "bonus",
-    "opening",
-    "order-accepted",
-    "referrals",
-    "contact",
-  ]);
+  let dockHost = document.getElementById("si-bottom-dock");
+  if (!dockHost) {
+    dockHost = document.createElement("div");
+    dockHost.id = "si-bottom-dock";
+    document.body.appendChild(dockHost);
+  }
+  dockHost.innerHTML = showBottomNav ? mobileNav(route) : "";
+
   if (mobile && mobileChromeRoutes.has(route)) {
     const compact = route === "product" || route === "mix";
     app.innerHTML =
       mobileHeader(compact, route) +
       `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
-      support() +
-      mobileNav(route);
+      support();
   } else {
     app.innerHTML =
       header(route) +
       `<main class="shell si-page-enter" id="main">${body}</main>` +
       support() +
-      `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
-      (mobile ? mobileNav(route) : "");
+      (showBottomNav
+        ? ""
+        : `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>`);
   }
   document.title = "Smoke Island · " + (titles[route] || "Smoke Island");
   refreshSupport();

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../frontend');
 const port = Number(process.env.PORT || 8765);
-const apiOrigin = process.env.API_ORIGIN || 'http://127.0.0.1:3000';
+const apiOrigin = process.env.API_ORIGIN || 'http://127.0.0.1:3010';
 
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -62,9 +62,16 @@ const server = http.createServer(async (req, res) => {
       'Content-Type': types[ext] || 'application/octet-stream',
       'X-Content-Type-Options': 'nosniff',
     };
-    if (ext === '.html') headers['Cache-Control'] = 'no-cache';
-    else if (immutableExt.has(ext)) headers['Cache-Control'] = 'public, max-age=604800, immutable';
-    else headers['Cache-Control'] = 'public, max-age=60';
+    if (ext === '.html') {
+      headers['Cache-Control'] = 'no-cache, must-revalidate';
+    } else if (ext === '.css' || ext === '.js') {
+      // Query-string cache bust in index.html; avoid stale Telegram WebView CSS.
+      headers['Cache-Control'] = 'no-cache, must-revalidate';
+    } else if (immutableExt.has(ext)) {
+      headers['Cache-Control'] = 'public, max-age=604800, immutable';
+    } else {
+      headers['Cache-Control'] = 'public, max-age=300';
+    }
     res.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(res);
   } catch (err) {

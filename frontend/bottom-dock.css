@@ -1,0 +1,176 @@
+/* Bottom dock — footer tones + catalog hub (pre–style-chaos restore). */
+@media (max-width: 720px) {
+  body[data-mobile-dock="1"] .footer-links {
+    display: none !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock {
+    position: fixed;
+    z-index: 70;
+    inset: auto 0 0;
+    pointer-events: none;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav {
+    position: fixed !important;
+    z-index: 70 !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    height: 4.15rem !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 0.15rem !important;
+    padding: 0.35rem 0.4rem !important;
+    margin: 0 auto !important;
+    pointer-events: auto !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 1.35rem !important;
+    background: rgba(18, 18, 18, 0.92) !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    font-family: "DM Sans", "Segoe UI", system-ui, sans-serif !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.2rem !important;
+    min-width: 0 !important;
+    height: 3.35rem !important;
+    padding: 0.25rem 0.15rem !important;
+    border: 0 !important;
+    border-radius: 1rem !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.48) !important;
+    font-size: 0.62rem !important;
+    font-weight: 650 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transition:
+      color 0.25s var(--ease),
+      background 0.25s var(--ease) !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a .sys-icon {
+    display: none !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a .m-nav-icon {
+    display: block !important;
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+    object-fit: contain !important;
+    opacity: 0.7 !important;
+    filter: brightness(0.85) saturate(0.9) !important;
+    pointer-events: none !important;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.25s var(--ease) !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a > span {
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    color: inherit !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a:hover,
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a:active {
+    color: rgba(255, 255, 255, 0.85) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    text-decoration: none !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.active:not(.m-nav-catalog) {
+    color: #fff !important;
+    background: rgba(155, 125, 255, 0.16) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.active:not(.m-nav-catalog) .m-nav-icon {
+    opacity: 1 !important;
+    transform: translateY(-1px) scale(1.06) !important;
+    filter: none !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.active:not(.m-nav-catalog) > span {
+    color: #fff !important;
+  }
+
+  /* Katalog — raised hub (footer accent family) */
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog {
+    position: relative !important;
+    transform: translateY(-0.55rem) !important;
+    height: 3.85rem !important;
+    border-radius: 1.2rem !important;
+    background: linear-gradient(180deg, #fff 0%, #f0ecff 100%) !important;
+    color: var(--ink) !important;
+    box-shadow: 0 10px 24px rgba(155, 125, 255, 0.28) !important;
+    z-index: 1 !important;
+    border: 0 !important;
+  }
+
+  /* White hub: violet icon (matches --violet #9b7dff) */
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog .m-nav-icon {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    opacity: 1 !important;
+    filter: brightness(0) saturate(100%) invert(52%) sepia(79%) saturate(2847%)
+      hue-rotate(232deg) brightness(100%) contrast(101%) !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog > span {
+    color: var(--violet) !important;
+    font-weight: 800 !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog.active,
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog:hover {
+    background: var(--violet) !important;
+    color: #fff !important;
+    transform: translateY(-0.55rem) !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog.active .m-nav-icon,
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog:hover .m-nav-icon {
+    filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
+  }
+
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog.active > span,
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav > a.m-nav-catalog:hover > span {
+    color: #fff !important;
+  }
+
+  body[data-mobile-dock="1"] #main.shell,
+  body[data-mobile-dock="1"] .m-main {
+    padding-bottom: calc(5.4rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-mobile-dock="1"] .support-launcher {
+    bottom: calc(5.4rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body[data-mobile-dock="1"] #toast {
+    bottom: calc(5.6rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 720px) {
+  body[data-mobile-dock="1"] #si-bottom-dock .m-bottom-nav {
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 480px !important;
+  }
+}

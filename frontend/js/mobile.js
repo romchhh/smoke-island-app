@@ -3,9 +3,15 @@
  * Part of the Smoke Island storefront. Loaded as a classic script (shared globals).
  * ========================================================================== */
 
-const isMobile = () =>
+const isNarrowViewport = () =>
   typeof window.matchMedia === "function" &&
   window.matchMedia("(max-width: 720px)").matches;
+
+/** True = separate mobile artboard (m-topbar / m-bottom-nav). Off when useDesktopLayoutOnMobile. */
+const isMobile = () => {
+  if (window.SMOKE_ISLAND_CONFIG?.useDesktopLayoutOnMobile) return false;
+  return isNarrowViewport();
+};
 let mobileQuantities = {},
   mobileCartCategory = "Wszystkie",
   mobileSheetIndex = -1;
@@ -40,6 +46,12 @@ function mobileHeader(
 ) {
   return `${["home", "home-old", "catalog", "catalog-old", "product", "mix", "cart", "checkout", "checkout-old", "checkout-delivery", "bonus", "opening", "referrals", "contact", "wishlist", "order-accepted"].includes(resolvedRoute) ? mobileCheckoutAtmosphere() : ""}<header class="m-topbar ${compact ? "m-topbar-compact" : ""}"><a class="m-logo" href="#home" aria-label="Smoke Island — strona główna">${img("logo", "Smoke Island", "", { eager: true })}</a><a class="m-top-link" href="#checkout"><span aria-hidden="true">${img("icon-orders-mobile", "")}</span> Zamówienia</a><a class="m-top-link ${location.hash === "#contact" ? "contact-active" : ""}" href="#contact"><span aria-hidden="true">${img("icon-account", "")}</span> Kontakt</a>${state.user ? `<button class="m-top-link m-account-toggle" data-action="account-toggle" aria-expanded="false"><span>${esc(state.user)}</span><span class="account-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="m4 6 6 7 6-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>` : ""}<a class="m-points" href="#bonus" aria-label="${state.points} punktów">${state.points}${img("coin", "")}</a></header>${state.user ? `<section class="m-account-dropdown" hidden><strong>${esc(state.userInfo?.email || state.user)}</strong><span>${state.points} punktów · ${state.userInfo?.telegramId ? "Telegram połączony" : "konto Smoke Island"}</span><a href="#referrals">Link polecający</a>${state.userInfo?.telegramId ? "" : `<button type="button" data-action="connect-telegram">Połącz Telegram</button><div id="telegram-login-slot"></div>`}<button type="button" data-action="account-logout">Wyloguj się</button></section>` : ""}`;
 }
+function mobileNavIcon(icon) {
+  if (icon === "heart") {
+    return `<img src="assets/nav-wishlist.png" alt="" class="m-nav-icon m-nav-heart-image" width="26" height="24" decoding="async" draggable="false" aria-hidden="true">`;
+  }
+  return `<img src="${asset(`icon-${icon}`)}" alt="" class="m-nav-icon" width="26" height="24" decoding="async" draggable="false" aria-hidden="true">`;
+}
 function mobileNav(route) {
   const active = [
     "product",
@@ -66,7 +78,7 @@ function mobileNav(route) {
   ]
     .map(
       ([id, icon, label]) =>
-        `<a href="#${id === "catalog" ? "home" : id}" class="${active === id ? "active" : ""}${id === "catalog" ? " m-nav-catalog" : ""}" ${active === id ? 'aria-current="page"' : ""}>${icon === "heart" ? sysIcon("heart", "m-nav-heart-image") : sysIcon("icon-" + icon)}<span>${label}</span></a>`,
+        `<a href="#${id === "catalog" ? "home" : id}" class="${active === id ? "active" : ""}${id === "catalog" ? " m-nav-catalog" : ""}" ${active === id ? 'aria-current="page"' : ""}>${mobileNavIcon(icon)}<span>${label}</span></a>`,
     )
     .join("")}</nav>`;
 }

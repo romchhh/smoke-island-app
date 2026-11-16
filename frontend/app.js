@@ -1507,9 +1507,15 @@ function mobileReferrals() {
 
 
 /* —— mobile.js —— */
-const isMobile = () =>
+const isNarrowViewport = () =>
   typeof window.matchMedia === "function" &&
   window.matchMedia("(max-width: 720px)").matches;
+
+/** True = separate mobile artboard (m-topbar / m-bottom-nav). Off when useDesktopLayoutOnMobile. */
+const isMobile = () => {
+  if (window.SMOKE_ISLAND_CONFIG?.useDesktopLayoutOnMobile) return false;
+  return isNarrowViewport();
+};
 let mobileQuantities = {},
   mobileCartCategory = "Wszystkie",
   mobileSheetIndex = -1;
@@ -1544,6 +1550,12 @@ function mobileHeader(
 ) {
   return `${["home", "home-old", "catalog", "catalog-old", "product", "mix", "cart", "checkout", "checkout-old", "checkout-delivery", "bonus", "opening", "referrals", "contact", "wishlist", "order-accepted"].includes(resolvedRoute) ? mobileCheckoutAtmosphere() : ""}<header class="m-topbar ${compact ? "m-topbar-compact" : ""}"><a class="m-logo" href="#home" aria-label="Smoke Island — strona główna">${img("logo", "Smoke Island", "", { eager: true })}</a><a class="m-top-link" href="#checkout"><span aria-hidden="true">${img("icon-orders-mobile", "")}</span> Zamówienia</a><a class="m-top-link ${location.hash === "#contact" ? "contact-active" : ""}" href="#contact"><span aria-hidden="true">${img("icon-account", "")}</span> Kontakt</a>${state.user ? `<button class="m-top-link m-account-toggle" data-action="account-toggle" aria-expanded="false"><span>${esc(state.user)}</span><span class="account-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="m4 6 6 7 6-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>` : ""}<a class="m-points" href="#bonus" aria-label="${state.points} punktów">${state.points}${img("coin", "")}</a></header>${state.user ? `<section class="m-account-dropdown" hidden><strong>${esc(state.userInfo?.email || state.user)}</strong><span>${state.points} punktów · ${state.userInfo?.telegramId ? "Telegram połączony" : "konto Smoke Island"}</span><a href="#referrals">Link polecający</a>${state.userInfo?.telegramId ? "" : `<button type="button" data-action="connect-telegram">Połącz Telegram</button><div id="telegram-login-slot"></div>`}<button type="button" data-action="account-logout">Wyloguj się</button></section>` : ""}`;
 }
+function mobileNavIcon(icon) {
+  if (icon === "heart") {
+    return `<img src="assets/nav-wishlist.png" alt="" class="m-nav-icon m-nav-heart-image" width="26" height="24" decoding="async" draggable="false" aria-hidden="true">`;
+  }
+  return `<img src="${asset(`icon-${icon}`)}" alt="" class="m-nav-icon" width="26" height="24" decoding="async" draggable="false" aria-hidden="true">`;
+}
 function mobileNav(route) {
   const active = [
     "product",
@@ -1570,7 +1582,7 @@ function mobileNav(route) {
   ]
     .map(
       ([id, icon, label]) =>
-        `<a href="#${id === "catalog" ? "home" : id}" class="${active === id ? "active" : ""}${id === "catalog" ? " m-nav-catalog" : ""}" ${active === id ? 'aria-current="page"' : ""}>${icon === "heart" ? sysIcon("heart", "m-nav-heart-image") : sysIcon("icon-" + icon)}<span>${label}</span></a>`,
+        `<a href="#${id === "catalog" ? "home" : id}" class="${active === id ? "active" : ""}${id === "catalog" ? " m-nav-catalog" : ""}" ${active === id ? 'aria-current="page"' : ""}>${mobileNavIcon(icon)}<span>${label}</span></a>`,
     )
     .join("")}</nav>`;
 }
@@ -2768,10 +2780,32 @@ function render() {
     wishlist: () => (isMobile() ? mobileWishlist() : desktopWishlist()),
   };
   if (!pages[route]) route = "home";
+  const mobileChromeRoutes = new Set([
+    "home",
+    "home-old",
+    "catalog",
+    "catalog-old",
+    "product",
+    "mix",
+    "cart",
+    "checkout",
+    "checkout-old",
+    "checkout-delivery",
+    "wishlist",
+    "bonus",
+    "opening",
+    "order-accepted",
+    "referrals",
+    "contact",
+  ]);
   const mobile = isMobile();
+  const narrow = isNarrowViewport();
+  const showBottomNav =
+    narrow && mobileChromeRoutes.has(route);
   if (document.body) {
     document.body.dataset.layout = mobile ? "mobile" : "desktop";
     document.body.dataset.route = route;
+    document.body.dataset.mobileDock = showBottomNav ? "1" : "";
   }
   const titles = {
     "order-accepted": "Zamówienie przyjęte",
@@ -2792,38 +2826,28 @@ function render() {
   const app = $("#app");
   if (!app) return;
   const body = pages[route]();
-  const mobileChromeRoutes = new Set([
-    "home",
-    "home-old",
-    "catalog",
-    "catalog-old",
-    "product",
-    "mix",
-    "cart",
-    "checkout",
-    "checkout-old",
-    "checkout-delivery",
-    "wishlist",
-    "bonus",
-    "opening",
-    "order-accepted",
-    "referrals",
-    "contact",
-  ]);
+  let dockHost = document.getElementById("si-bottom-dock");
+  if (!dockHost) {
+    dockHost = document.createElement("div");
+    dockHost.id = "si-bottom-dock";
+    document.body.appendChild(dockHost);
+  }
+  dockHost.innerHTML = showBottomNav ? mobileNav(route) : "";
+
   if (mobile && mobileChromeRoutes.has(route)) {
     const compact = route === "product" || route === "mix";
     app.innerHTML =
       mobileHeader(compact, route) +
       `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
-      support() +
-      mobileNav(route);
+      support();
   } else {
     app.innerHTML =
       header(route) +
       `<main class="shell si-page-enter" id="main">${body}</main>` +
       support() +
-      `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
-      (mobile ? mobileNav(route) : "");
+      (showBottomNav
+        ? ""
+        : `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>`);
   }
   document.title = "Smoke Island · " + (titles[route] || "Smoke Island");
   refreshSupport();
@@ -3783,7 +3807,7 @@ document.addEventListener("input", (e) => {
 document.addEventListener("change", (e) => {
   if (
     e.target.name === "delivery" &&
-    isMobile() &&
+    isNarrowViewport() &&
     $("#mobile-smart")?.classList.contains("mc-method-dialog")
   )
     $("#mobile-smart").close();
@@ -3800,7 +3824,7 @@ document.addEventListener("change", (e) => {
   let focusTimer;
   const reveal = () => {
     const el = document.activeElement;
-    if (!isMobile() || !editable(el)) return;
+    if (!isNarrowViewport() || !editable(el)) return;
     const viewport = window.visualViewport;
     const top = viewport?.offsetTop || 0,
       bottom = top + (viewport?.height || window.innerHeight);
@@ -3814,14 +3838,14 @@ document.addEventListener("change", (e) => {
   };
   const sync = () => {
     const viewport = window.visualViewport;
-    const editing = isMobile() && editable(document.activeElement);
+    const editing = isNarrowViewport() && editable(document.activeElement);
     const keyboard =
       editing && viewport && window.innerHeight - viewport.height > 120;
     document.body.classList.toggle("m-keyboard-open", !!keyboard);
     if (keyboard) reveal();
   };
   document.addEventListener("focusin", (e) => {
-    if (!isMobile() || !editable(e.target)) return;
+    if (!isNarrowViewport() || !editable(e.target)) return;
     clearTimeout(focusTimer);
     focusTimer = setTimeout(() => {
       sync();

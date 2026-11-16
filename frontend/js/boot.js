@@ -99,7 +99,7 @@ document.addEventListener("input", (e) => {
 document.addEventListener("change", (e) => {
   if (
     e.target.name === "delivery" &&
-    isMobile() &&
+    isNarrowViewport() &&
     $("#mobile-smart")?.classList.contains("mc-method-dialog")
   )
     $("#mobile-smart").close();
@@ -116,7 +116,7 @@ document.addEventListener("change", (e) => {
   let focusTimer;
   const reveal = () => {
     const el = document.activeElement;
-    if (!isMobile() || !editable(el)) return;
+    if (!isNarrowViewport() || !editable(el)) return;
     const viewport = window.visualViewport;
     const top = viewport?.offsetTop || 0,
       bottom = top + (viewport?.height || window.innerHeight);
@@ -130,14 +130,14 @@ document.addEventListener("change", (e) => {
   };
   const sync = () => {
     const viewport = window.visualViewport;
-    const editing = isMobile() && editable(document.activeElement);
+    const editing = isNarrowViewport() && editable(document.activeElement);
     const keyboard =
       editing && viewport && window.innerHeight - viewport.height > 120;
     document.body.classList.toggle("m-keyboard-open", !!keyboard);
     if (keyboard) reveal();
   };
   document.addEventListener("focusin", (e) => {
-    if (!isMobile() || !editable(e.target)) return;
+    if (!isNarrowViewport() || !editable(e.target)) return;
     clearTimeout(focusTimer);
     focusTimer = setTimeout(() => {
       sync();

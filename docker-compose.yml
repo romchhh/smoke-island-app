@@ -1,45 +1,21 @@
 # Host ports (same VPS as elf-duck-shop 3000–3006):
-#   3010 API · 3017 MongoDB
+#   3010 API
+# MongoDB: Atlas (same cluster as Elf Duck, different DATABASE_NAME).
 # Nginx is NOT in Compose — use host nginx (deploy/nginx.conf.example).
 name: smoke-island
 
 services:
-  mongo:
-    image: mongo:8.0
-    restart: unless-stopped
-    command: ["--replSet", "rs0", "--bind_ip_all"]
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "3017:27017"
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "mongosh",
-          "--quiet",
-          "--eval",
-          "try { const s = rs.status(); if (s.ok && s.members.some(m => m.stateStr === 'PRIMARY')) quit(0); quit(1); } catch (e) { try { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}); } catch (e2) {} quit(1); }",
-        ]
-      interval: 5s
-      timeout: 10s
-      retries: 30
-      start_period: 15s
-
   api:
     image: smoke-island-api:local
     build:
       context: ./backend
       dockerfile: Dockerfile
     restart: unless-stopped
-    depends_on:
-      mongo:
-        condition: service_healthy
     environment:
       # Use development for local HTTP; set NODE_ENV=production + HTTPS URLs on a real host.
       NODE_ENV: ${NODE_ENV:-development}
       PORT: 3000
-      DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/?replicaSet=rs0}
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL to MongoDB Atlas (mongodb+srv://...)}
       DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8765}
       BACKEND_URL: ${BACKEND_URL:-http://localhost:3010}
@@ -79,14 +55,8 @@ services:
   seed:
     profiles: ["seed"]
     image: smoke-island-api:local
-    depends_on:
-      mongo:
-        condition: service_healthy
     environment:
-      DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/?replicaSet=rs0}
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL to MongoDB Atlas (mongodb+srv://...)}
       DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}
     command: ["node", "src/seed-demo.js"]
     restart: "no"
-
-volumes:
-  mongo_data:

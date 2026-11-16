@@ -1,6 +1,6 @@
 # Smoke Island
 
-Магазин + Express API + Telegram-боти + MongoDB.
+Магазин + Express API + Telegram-боти + MongoDB Atlas.
 
 **Prod:** https://smoke-island.telebots.site  
 **Repo:** https://github.com/romchhh/smoke-island-app
@@ -14,16 +14,29 @@
 | `frontend/` | Статичний сайт (без збірки) |
 | `backend/` | API, сесії, OAuth, Telegram-боти |
 | `deploy/` | host nginx, systemd, production env |
-| `docker-compose.yml` | **api + mongo** (nginx окремо на хості) |
+| `docker-compose.yml` | **лише api** (Mongo = Atlas; nginx на хості) |
 
 ## Порти на хості
 
 | Порт | Сервіс |
 |------|--------|
 | **3010** | API |
-| **3017** | MongoDB з хоста |
 
-Усередині compose: API `3000`, Mongo `27017`.
+## MongoDB
+
+Той самий Atlas-кластер, що й Elf Duck, **інша база**:
+
+| Проєкт | БД |
+|--------|-----|
+| Elf Duck | `test` / `elfduck` (як у їхньому URI) |
+| Smoke Island | `SmokeIslandLocal` (dev) / `SmokeIslandProduction` (prod) |
+
+```bash
+DATABASE_URL=mongodb+srv://USER:PASS@….mongodb.net/?retryWrites=true&w=majority&appName=smoke-island
+DATABASE_NAME=SmokeIslandProduction
+```
+
+У Network Access Atlas має бути IP VPS (як для Elf Duck).
 
 ## Домени (host nginx → localhost)
 
@@ -33,13 +46,11 @@
 
 Шаблон: `deploy/nginx.conf.example`.
 
-Elf Duck: `elfduck-api` → 3000, `elfduck` → 3001, `elfduck-crm` → 3002, `tegger` → 3005.
-
-## Docker (api + mongo)
+## Docker (api)
 
 ```bash
 cp .env.docker.example .env.docker
-# заповни секрети
+# встав Atlas DATABASE_URL + DATABASE_NAME
 npm run docker:build
 npm run docker:up
 npm run docker:seed
@@ -47,26 +58,23 @@ npm run docker:seed
 
 Health: http://127.0.0.1:3010/api/health
 
-Перезбірка API: `npm run docker:rebuild` або `npm run docker:rebuild:api`.
+Prod: `NODE_ENV=production` і **лише HTTPS** URL у `.env.docker`.
 
-Prod: у `.env.docker` — `NODE_ENV=production` і **лише HTTPS** URL з `deploy/production.env.example`.
-
-Якщо API `unhealthy`: `docker compose logs api`; на порожній dev-базі можна `docker compose down -v`.
+Старий локальний mongo-контейнер більше не потрібен:
+`docker compose --env-file .env.docker down --remove-orphans`
 
 ## Host nginx + TLS
 
 ```bash
-# підстав deploy/nginx.conf.example (root = шлях до frontend)
 sudo nginx -t && sudo systemctl reload nginx
 sudo certbot --nginx -d smoke-island.telebots.site
-# або webroot:
-# sudo certbot certonly --webroot -w /root/smoke-island/frontend -d smoke-island.telebots.site
 ```
 
 ## Локально без Docker
 
 ```bash
 cp .env.example .env.local
+# Atlas DATABASE_URL + DATABASE_NAME=SmokeIslandLocal
 cd backend && npm ci && cd ..
 npm run seed
 npm run dev    # API :3010 + статика :8765
@@ -76,14 +84,9 @@ npm run dev    # API :3010 + статика :8765
 
 | Файл | Навіщо |
 |------|--------|
-| `.env.example` | Шаблон локального `.env.local` |
-| `.env.docker.example` | Шаблон для Compose |
-| `deploy/production.env.example` | Prod URL/секрети |
-
-Обов’язково: `DATABASE_URL` (replica set), `JWT_SECRET`, `SESSION_SECRET`, Google OAuth, окремі токени admin/client ботів, `FRONTEND_URL` / `CORS_ORIGIN`.
-
-Google redirect: `https://smoke-island.telebots.site/api/v1/auth/google/callback`  
-Telegram OIDC: `…/api/v1/auth/telegram/callback`
+| `.env.example` | Шаблон `.env.local` |
+| `.env.docker.example` | Шаблон Compose |
+| `deploy/production.env.example` | Prod |
 
 ## Команди
 

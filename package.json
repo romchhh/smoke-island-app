@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "description": "Smoke Island storefront + API local tooling",
   "scripts": {
-    "mongo": "mongod --dbpath .data/mongo --replSet rs0 --bind_ip 127.0.0.1 --port 27017 --logpath .data/mongod.log --fork",
     "seed": "npm --prefix backend run seed:demo",
     "api": "npm --prefix backend start",
     "web": "node scripts/dev-static.mjs",

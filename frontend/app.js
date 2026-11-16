@@ -585,15 +585,11 @@ function homeCategoryList() {
   // Always show the curated Vercel categories (with their webp art).
   return HOME_CATEGORIES.slice();
 }
-function categoryTileHTML(cat, mode = "desktop") {
+function categoryTileHTML(cat, _mode = "desktop") {
   const src = cat.image || categoryImages[cat.name] || "";
-  const media = src
-    ? `<img src="${esc(src)}" alt="${esc(cat.name)}" draggable="false" loading="lazy" decoding="async">`
-    : "";
-  if (mode === "mobile") {
-    return `<a href="#catalog" data-category="${esc(cat.name)}"><strong>${esc(cat.name)}</strong>${media}</a>`;
-  }
-  return `<article class="category">${media}<div><h3>${esc(cat.name)}</h3><p>${esc(cat.blurb || `Sprawdź dostępne produkty w kategorii ${cat.name}.`)}</p><a href="#catalog" data-category="${esc(cat.name)}">Zobacz produkty →</a></div></article>`;
+  const media = src ? categoryMedia(src, cat.name) : "";
+  const blurb = cat.blurb || `Sprawdź dostępne produkty w kategorii ${cat.name}.`;
+  return `<a class="category category-tile" href="#catalog" data-category="${esc(cat.name)}" aria-label="Kategoria ${esc(cat.name)}">${media}<span class="category-shade" aria-hidden="true"></span><span class="category-copy"><strong>${esc(cat.name)}</strong><p>${esc(blurb)}</p><span class="category-pill"><span>Zobacz produkty</span><i aria-hidden="true">↗</i></span></span></a>`;
 }
 
 

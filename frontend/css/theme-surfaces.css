@@ -306,6 +306,12 @@ body:has(.mb-page){
 .home-page .home-product-grid{
   margin:0!important;
 }
+.home-page .category-copy strong{
+  font-size:clamp(1.15rem,1.6vw,1.45rem)!important;
+  font-weight:800!important;
+  letter-spacing:-.03em;
+  color:#fff!important;
+}
 
 @media(max-width:720px){
   .home-page{
@@ -328,7 +334,7 @@ body:has(.mb-page){
 }
 
 /* Prevent hover layout jump — buttons must stay clickable */
-.primary, .primary:hover, .primary:active, .secondary, .secondary:hover, .secondary:active, .login-link, .login-link:hover, .login-link:active, .product-card-cta, .product-card-cta:hover, .nav-link, .nav-link:hover, .tab, .tab:hover, .micro-btn, .micro-btn:hover, .dec-continue, .dec-continue:hover, .referral-guest-login, .referral-guest-login:hover, .socials button, .socials button:hover, .menu-toggle, .menu-toggle:hover, .product-card:hover, .category:hover, .featured-card:hover{
+.primary, .primary:hover, .primary:active, .secondary, .secondary:hover, .secondary:active, .login-link, .login-link:hover, .login-link:active, .product-card-cta, .product-card-cta:hover, .nav-link, .nav-link:hover, .tab, .tab:hover, .micro-btn, .micro-btn:hover, .dec-continue, .dec-continue:hover, .referral-guest-login, .referral-guest-login:hover, .socials button, .socials button:hover, .menu-toggle, .menu-toggle:hover, .product-card:hover, .category:hover, .category-tile:hover, .featured-card:hover{
   transform:none!important;
 }
 
@@ -350,7 +356,8 @@ body:has(.mb-page){
 }
 .product-card:hover,
 .featured-card:hover,
-.category:hover{
+.category:hover,
+.category-tile:hover{
   border-color:transparent!important;
   box-shadow:none!important;
 }

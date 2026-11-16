@@ -1074,13 +1074,25 @@ body:after,
   box-shadow:none!important;
 }
 
-/* Bonus / wishlist headings: white + larger */
+/* Bonus / cart / referrals / wishlist: white titles, no wrapper panels */
 .bonus-heading h1,
 .bonus-heading h1 .blue,
+.bonus-heading h1 span,
 .mb-page-heading h1,
+.mb-page-heading h1 span,
 .wishlist-page .page-head h1,
 .wishlist-page .page-head h1 .blue,
-.m-cart-heading h1{
+.m-cart-heading h1,
+.cart-heading h1,
+.cart-heading h1 span,
+.dec-heading h1,
+.dec-heading h1 span,
+.dec-heading h1 .blue,
+.referral-account .page-head h1,
+.referral-account .page-head h1 .blue,
+.referral-guest-heading h1,
+.mr-heading h1,
+.mr-heading h1 span{
   color:#fff!important;
   background:none!important;
   -webkit-text-fill-color:#fff!important;
@@ -1092,12 +1104,35 @@ body:after,
 .bonus-heading p,
 .mb-page-heading>p,
 .wishlist-page .page-head p,
-.m-cart-heading p{
+.m-cart-heading p,
+.cart-heading p,
+.dec-heading p,
+.referral-account .page-head p,
+.referral-guest-heading p,
+.mr-heading p{
   color:#fff!important;
   opacity:.9;
   font-size:clamp(1.05rem,1.45vw,1.3rem)!important;
   font-weight:500;
   line-height:1.45;
+}
+.referral-account h2,
+.referral-account h2 .blue,
+.referral-account h2 span,
+.referral-guest-panel h2,
+.referral-guest-panel h2 span,
+.mr-frame h2,
+.mr-frame h2 span,
+.mr-friends-heading h2,
+.mr-friends-heading h2 span,
+.dec-message h2,
+.dec-message h2 span,
+.me-empty h2,
+.cart-products h2,
+.summary-panel h2{
+  color:#fff!important;
+  background:none!important;
+  -webkit-text-fill-color:#fff!important;
 }
 .mb-page-heading{
   background:transparent!important;
@@ -1105,6 +1140,39 @@ body:after,
 }
 body:has(.mb-page){
   background:var(--bg)!important;
+}
+
+.bonus-page .case-panel,
+.filled-cart .cart-products,
+.filled-cart .summary-panel,
+.referral-account-panel,
+.referral-guest-panel,
+.mr-frame,
+.desktop-empty-cart .dec-frame,
+.desktop-empty-cart .dec-visual,
+.desktop-empty-cart .dec-message,
+.desktop-referral-guest .dec-frame,
+.desktop-referral-guest .dec-visual,
+.desktop-referral-guest .dec-message,
+.m-cart-heading + .me-frame,
+.me-frame{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.filled-cart .cart-products,
+.filled-cart .summary-panel,
+.referral-account-panel,
+.referral-guest-panel,
+.mr-frame{
+  padding-left:0!important;
+  padding-right:0!important;
+  border-radius:0!important;
+}
+.desktop-empty-cart .dec-frame,
+.desktop-referral-guest .dec-frame{
+  padding:0!important;
+  border-radius:0!important;
 }
 
 /* Home banners on top (mobile) */

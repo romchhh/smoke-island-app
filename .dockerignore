@@ -1,0 +1,15 @@
+.git
+.github
+.data
+.vercel
+**/node_modules
+**/.env
+**/.env.*
+!**/.env.example
+secrets
+*.log
+**/*.log
+agent-transcripts
+SHA256SUMS
+docs
+scripts

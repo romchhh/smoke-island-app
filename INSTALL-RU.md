@@ -31,11 +31,11 @@ Linux VPS, Node.js 22.x и npm, Nginx, HTTPS-сертификат, доступ 
 | JWT_SECRET, SESSION_SECRET | Два разных случайных секрета, минимум по 32 символа. Для нового окружения: два раза `openssl rand -hex 32`. Смена завершает текущие сессии. |
 | NODE_ENV | `production`. |
 | PORT | `3000` для данного VPS-примера. В Railway берётся порт платформы. |
-| FRONTEND_URL | `https://shop.example.com`, без завершающего `/`. |
-| BACKEND_URL | Публичный адрес API; при общей схеме — `https://shop.example.com`. |
+| FRONTEND_URL | `https://smoke-island.telebots.site`, без завершающего `/`. |
+| BACKEND_URL | Публичный адрес API; при общей схеме — `https://smoke-island.telebots.site`. |
 | CORS_ORIGIN | Точный HTTPS-origin сайта; несколько — через запятую, без `*`. |
 | GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET | Google Cloud Console → OAuth web client. Существующие значения в файле secrets. |
-| GOOGLE_REDIRECT_URI | `https://shop.example.com/api/v1/auth/google/callback`. В production при заданном FRONTEND_URL код формирует именно этот callback из FRONTEND_URL. |
+| GOOGLE_REDIRECT_URI | `https://smoke-island.telebots.site/api/v1/auth/google/callback`. В production при заданном FRONTEND_URL код формирует именно этот callback из FRONTEND_URL. |
 | TELEGRAM_ADMIN_BOT_TOKEN | Токен админского бота от BotFather. |
 | TELEGRAM_ADMIN_IDS | Числовые Telegram ID администраторов через запятую. Не username. |
 | TELEGRAM_ORDERS_CHAT_ID | ID чата/группы для заказов. Бот должен иметь доступ к отправке сообщений. |
@@ -43,7 +43,7 @@ Linux VPS, Node.js 22.x и npm, Nginx, HTTPS-сертификат, доступ 
 | TELEGRAM_CLIENT_BOT_TOKEN, TELEGRAM_CLIENT_BOT_USERNAME | Отдельный клиентский бот от BotFather; username без `@`. |
 | TELEGRAM_WEB_APP_URL | Публичный HTTPS-адрес магазина для Mini App. |
 | TELEGRAM_OIDC_CLIENT_ID, TELEGRAM_OIDC_CLIENT_SECRET | Настройки website login / OIDC в BotFather. Это отдельные данные, а не токен бота. |
-| TELEGRAM_OIDC_REDIRECT_URI | `https://shop.example.com/api/v1/auth/telegram/callback`. Зарегистрируйте этот Redirect URI и origin сайта в настройках OIDC у BotFather. |
+| TELEGRAM_OIDC_REDIRECT_URI | `https://smoke-island.telebots.site/api/v1/auth/telegram/callback`. Зарегистрируйте этот Redirect URI и origin сайта в настройках OIDC у BotFather. |
 | RESEND_API_KEY, EMAIL_FROM | Resend API key и адрес с проверенного отправляющего домена. В текущем Railway НЕ заданы: без них регистрация по email возвращает EMAIL_NOT_CONFIGURED. |
 | TELEGRAM_WEBHOOK_URL, TELEGRAM_WEBHOOK_SECRET | Не нужны при long polling. При переходе на webhook задаются оба, URL проксируется в backend. Активный webhook старого бота нужно убрать перед переходом на polling. |
 | BONUS_REWARD_PRODUCT_SLUG | Необязательный fallback для Start, если приз не назначен в админке; по умолчанию `bc`. |
@@ -53,7 +53,7 @@ Linux VPS, Node.js 22.x и npm, Nginx, HTTPS-сертификат, доступ 
 
 ## 4. Развёртывание на VPS: Nginx + systemd
 
-Пример рассчитан на systemd и установленный Node.js 22 по пути `/usr/bin/node`. Проверьте `node --version` и `command -v node`; если путь другой, измените ExecStart в unit-файле. Укажите свой домен вместо `shop.example.com`, направьте его DNS A/AAAA на сервер и установите nginx, unzip, openssl, certbot и nginx-плагин certbot средствами вашей ОС.
+Пример рассчитан на systemd и установленный Node.js 22 по пути `/usr/bin/node`. Проверьте `node --version` и `command -v node`; если путь другой, измените ExecStart в unit-файле. Рабочий домен магазина: `smoke-island.telebots.site`. Направьте его DNS A/AAAA на сервер и установите nginx, unzip, openssl, certbot и nginx-плагин certbot средствами вашей ОС.
 
 1. Распакуйте архив в закрытую рабочую директорию и проверьте контрольные суммы:
 
@@ -96,7 +96,7 @@ sudoedit /etc/nginx/sites-available/smoke-island
 sudo ln -s /etc/nginx/sites-available/smoke-island /etc/nginx/sites-enabled/smoke-island
 sudo nginx -t
 sudo systemctl reload nginx
-sudo certbot --nginx -d shop.example.com
+sudo certbot --nginx -d smoke-island.telebots.site
 ```
 
 Уберите конфликтующий default vhost, если он уже обслуживает этот домен. Разрешите входящие 80/443 и административный SSH; не открывайте порт 3000 для внешних клиентов. Backend слушает 0.0.0.0, поэтому изоляция порта обеспечивается firewall/security group. HTTPS обязателен для production cookie и OAuth.
@@ -111,7 +111,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now smoke-island
 sudo systemctl status smoke-island
 sudo journalctl -u smoke-island -n 100 --no-pager
-curl --fail https://shop.example.com/api/health
+curl --fail https://smoke-island.telebots.site/api/health
 ```
 
 Ожидаемый health: `{"ok":true,"db":"connected"}`. Этот ответ подтверждает API/MongoDB, но не корректность всех внешних ключей.
@@ -169,4 +169,4 @@ npm run test:integration
 
 Перед обновлением сохраните env и backup MongoDB, замените код, выполните npm ci --omit=dev и systemctl restart smoke-island. Unit-файл не запускает миграции сторонней БД, кроме встроенной одноразовой настройки призов и служебной подготовки записей/индексов.
 
-Платежи подтверждаются вручную менеджером; эквайринга и интеграции отправки посылок нет. Восстановление пароля ещё не реализовано. Email подтверждение зависит от Resend; OIDC зависит от регистрации нового домена у провайдеров. Текущие working URL: https://smoke-island.vercel.app и https://api-production-fe38.up.railway.app.
+Платежи подтверждаются вручную менеджером; эквайринга и интеграции отправки посылок нет. Восстановление пароля ещё не реализовано. Email подтверждение зависит от Resend; OIDC зависит от регистрации нового домена у провайдеров. Текущий working URL: https://smoke-island.telebots.site.

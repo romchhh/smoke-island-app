@@ -1,0 +1,6 @@
+.git
+.gitignore
+README.txt
+Dockerfile
+vercel.json
+*.md

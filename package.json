@@ -9,6 +9,10 @@
     "api": "npm --prefix backend start",
     "web": "node scripts/dev-static.mjs",
     "dev": "node scripts/dev.mjs",
+    "docker:up": "docker compose up -d --build",
+    "docker:seed": "docker compose --profile seed run --rm seed",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f api web",
     "test": "npm --prefix backend test",
     "test:integration": "npm --prefix backend run test:integration"
   },

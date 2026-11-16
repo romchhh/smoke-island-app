@@ -1,7 +1,8 @@
-# Replace shop.example.com. Enable HTTPS with Certbot before testing login.
+# Production vhost for smoke-island.telebots.site.
+# Enable HTTPS with Certbot before testing login/OAuth.
 server {
     listen 80;
-    server_name shop.example.com;
+    server_name smoke-island.telebots.site;
     root /srv/smoke-island/frontend;
     index index.html;
     client_max_body_size 16m;

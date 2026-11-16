@@ -1,0 +1,93 @@
+services:
+  mongo:
+    image: mongo:8.0
+    restart: unless-stopped
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "--eval",
+          "try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}); 0 }",
+        ]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      # Use development for local HTTP; set NODE_ENV=production + HTTPS URLs on a real host.
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/?replicaSet=rs0}
+      DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      BACKEND_URL: ${BACKEND_URL:-http://localhost:8080}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080,http://127.0.0.1:8080}
+      JWT_SECRET: ${JWT_SECRET:-change-me-docker-jwt-secret-32chars-min}
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-docker-session-secret-32chars}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/v1/auth/google/callback}
+      TELEGRAM_ADMIN_BOT_TOKEN: ${TELEGRAM_ADMIN_BOT_TOKEN:-}
+      TELEGRAM_ADMIN_IDS: ${TELEGRAM_ADMIN_IDS:-}
+      TELEGRAM_CLIENT_BOT_TOKEN: ${TELEGRAM_CLIENT_BOT_TOKEN:-}
+      TELEGRAM_CLIENT_BOT_USERNAME: ${TELEGRAM_CLIENT_BOT_USERNAME:-}
+      TELEGRAM_WEB_APP_URL: ${TELEGRAM_WEB_APP_URL:-http://localhost:8080}
+      TELEGRAM_OIDC_CLIENT_ID: ${TELEGRAM_OIDC_CLIENT_ID:-}
+      TELEGRAM_OIDC_CLIENT_SECRET: ${TELEGRAM_OIDC_CLIENT_SECRET:-}
+      TELEGRAM_OIDC_REDIRECT_URI: ${TELEGRAM_OIDC_REDIRECT_URI:-http://localhost:8080/api/v1/auth/telegram/callback}
+      TELEGRAM_ORDERS_CHAT_ID: ${TELEGRAM_ORDERS_CHAT_ID:-}
+      TELEGRAM_SUPPORT_CHAT_ID: ${TELEGRAM_SUPPORT_CHAT_ID:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+
+  seed:
+    profiles: ["seed"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/?replicaSet=rs0}
+      DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}
+    command: ["node", "src/seed-demo.js"]
+    restart: "no"
+
+volumes:
+  mongo_data:

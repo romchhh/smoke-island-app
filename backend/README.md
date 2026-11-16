@@ -17,7 +17,7 @@ The API health endpoint is `GET /api/health`. The frontend reads products and va
 
 Configure secrets in Railway Variables, never in source control. Required values include MongoDB connection/database, JWT and session secrets, Google OAuth credentials and callback (`GOOGLE_REDIRECT_URI` or `GOOGLE_CALLBACK_URL`), separate Telegram admin and client bot tokens, client bot username, admin IDs, order/support chat IDs, frontend URL, and Telegram Mini App URL. Never use the admin bot token as the client bot token. Keep a single running bot process for each Telegram bot token. The current Railway service uses one replica and long polling.
 
-Set Railway `GOOGLE_REDIRECT_URI` to `https://smoke-island.vercel.app/api/v1/auth/google/callback` (it takes precedence over the legacy `GOOGLE_CALLBACK_URL`). Add that exact same URL under Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client → Authorized redirect URIs. Vercel proxies `/api/v1/*` to Railway so browser requests and session cookies stay on the storefront origin.
+Set Railway `GOOGLE_REDIRECT_URI` to `https://smoke-island.telebots.site/api/v1/auth/google/callback` (it takes precedence over the legacy `GOOGLE_CALLBACK_URL`). Add that exact same URL under Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client → Authorized redirect URIs. Vercel proxies `/api/v1/*` to Railway so browser requests and session cookies stay on the storefront origin.
 
 ## Storefront and support behavior
 

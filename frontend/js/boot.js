@@ -243,9 +243,14 @@ document.addEventListener("input", (e) => {
       fresh = temp.querySelector("." + cls);
     if (old && fresh) old.replaceWith(fresh);
   }
-  smart.querySelector(".track-fill").style.width = actual + "%";
+  const fill = smart.querySelector(".track-fill");
+  if (fill) fill.style.width = Math.min(100, actual) + "%";
   range.value = String(Math.max(1, actual));
-  smart.querySelector('[data-action="add-cart"]').disabled = actual < 1;
+  const addBtn = smart.querySelector('[data-action="add-cart"]');
+  if (addBtn) addBtn.disabled = actual < 1;
   range.setAttribute("aria-valuetext", actual + " szt.");
-  if (mixMode) $("#flavors").innerHTML = flavorsHTML();
+  if (mixMode) {
+    const flavors = $("#flavors");
+    if (flavors) flavors.innerHTML = flavorsHTML();
+  }
 });

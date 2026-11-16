@@ -1124,7 +1124,7 @@ a.category-tile:hover{
     min-height:14rem;
     aspect-ratio:1/1;
   }
-  .flavor-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .product-layout .flavor-grid{grid-template-columns:1fr!important}
   .cart-row{
     grid-template-columns:1fr!important;
     gap:.85rem!important;
@@ -2620,12 +2620,39 @@ a.secondary:hover{
 }
 
 
-/* —— Empty-state CTA centering (no translateX; hover kill keeps transform:none) —— */
+/* —— Empty-state CTA: flex column (avoids broken translateX centering) —— */
+.dec-visual{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:0!important;
+  padding:1.25rem 1rem 1.35rem!important;
+  height:auto!important;
+  min-height:19rem!important;
+  box-sizing:border-box!important;
+}
+.dec-visual:after{display:none!important}
 .dec-art{
-  left:0!important;
-  right:0!important;
-  margin-inline:auto!important;
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  inset:auto!important;
+  margin:0 auto .35rem!important;
+  width:min(17rem,70%)!important;
+  height:auto!important;
+  max-height:12rem!important;
   transform:none!important;
+  z-index:2!important;
+}
+.dec-art>img{
+  width:100%!important;
+  height:auto!important;
+  max-height:12rem!important;
+  object-fit:contain!important;
+  object-position:center!important;
 }
 .dec-continue,
 a.dec-continue,
@@ -2634,13 +2661,52 @@ button.dec-continue,
 .dec-continue:active,
 a.dec-continue:hover,
 button.dec-continue:hover{
-  left:0!important;
-  right:0!important;
-  margin-inline:auto!important;
-  width:min(22rem,86%)!important;
-  max-width:86%!important;
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  inset:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:min(22rem,92%)!important;
+  max-width:22rem!important;
+  min-height:3.4rem!important;
+  height:auto!important;
+  margin:0.35rem auto 0!important;
   transform:none!important;
-  inset-inline:0!important;
+  z-index:3!important;
+}
+.dec-message{
+  height:auto!important;
+  min-height:0!important;
+  margin-top:1.25rem!important;
+  padding:1.75rem 1.25rem!important;
+  gap:1rem!important;
+}
+.dec-message h2{
+  font-size:clamp(1.8rem,3.5vw,2.6rem)!important;
+  font-weight:800!important;
+  letter-spacing:-.03em!important;
+}
+.dec-message p{
+  font-size:clamp(1rem,1.6vw,1.2rem)!important;
+  max-width:28rem;
+  margin:0 auto;
+  color:rgba(255,255,255,.72)!important;
+}
+/* Keep support invitation from covering empty-state CTA on desktop */
+@media(min-width:721px){
+  .desktop-empty-cart,
+  .desktop-referral-guest,
+  .desktop-order-confirmation{
+    position:relative;
+    z-index:1;
+  }
+  .support-invitation{
+    max-width:min(20rem,28vw)!important;
+  }
 }
 
 /* —— Product page: clearer variant picking —— */

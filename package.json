@@ -16,7 +16,8 @@
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f api",
     "test": "npm --prefix backend test",
-    "test:integration": "npm --prefix backend run test:integration"
+    "test:integration": "npm --prefix backend run test:integration",
+    "build:frontend": "node scripts/build-frontend.mjs"
   },
   "engines": {
     "node": ">=22"

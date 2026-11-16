@@ -3,6 +3,10 @@
  * Part of the Smoke Island storefront. Loaded as a classic script (shared globals).
  * ========================================================================== */
 
+function compactHTML(html) {
+  return String(html).replace(/>\s+</g, "><").trim();
+}
+
 function home() {
   const categories = [...new Set(products.map((p) => p[2]).filter(Boolean))];
   const featured = products.slice(0, 8);
@@ -85,7 +89,7 @@ function flavorToolsHTML() {
     ? `<span class="flavor-picked">${picked} wybrane · ${units} szt.</span>`
     : `<span class="flavor-picked is-empty">Nic nie wybrano</span>`;
 
-  return `
+  return compactHTML(`
     <div class="flavor-tools-head">
       <div class="flavor-tools-copy">
         <span class="flavor-step">1</span>
@@ -113,7 +117,7 @@ function flavorToolsHTML() {
         ${flavorPagerHTML(entries.length)}
       </div>
     </div>
-  `;
+  `);
 }
 function flavorsHTML() {
   const entries = filteredFlavorEntries();
@@ -136,29 +140,16 @@ function flavorsHTML() {
       const hint = selected
         ? mixMode
           ? `${qty} szt. w zestawie`
-          : 'Wybrany smak'
-        : 'Dotknij, aby dodać';
+          : "Wybrany smak"
+        : "Dotknij, aby dodać";
       const qtyControls = mixMode
-        ? `
-          <div class="flavor-qty" role="group" aria-label="Ilość ${f}">
-            <button type="button" data-action="flavor-minus" data-i="${i}" aria-label="Mniej ${f}">−</button>
-            <output aria-label="Ilość ${f}">${qty}</output>
-            <button type="button" data-action="flavor-plus" data-i="${i}" aria-label="Więcej ${f}">+</button>
-          </div>
-        `
-        : '';
+        ? `<div class="flavor-qty" role="group" aria-label="Ilość ${f}"><button type="button" data-action="flavor-minus" data-i="${i}" aria-label="Mniej ${f}">−</button><output aria-label="Ilość ${f}">${qty}</output><button type="button" data-action="flavor-plus" data-i="${i}" aria-label="Więcej ${f}">+</button></div>`
+        : "";
 
-      return `
-        <div class="flavor ${selected ? 'selected' : ''}" data-flavor-index="${i}">
-          <button
-            type="button"
-            class="flavor-pick"
-            data-action="flavor"
-            data-i="${i}"
-            aria-label="Wybierz ${f}"
-            aria-pressed="${selected ? 'true' : 'false'}"
-          >
-            <span class="flavor-media">${img('fruit' + (i % 20), f)}</span>
+      return compactHTML(`
+        <div class="flavor ${selected ? "selected" : ""}" data-flavor-index="${i}">
+          <button type="button" class="flavor-pick" data-action="flavor" data-i="${i}" aria-label="Wybierz ${f}" aria-pressed="${selected ? "true" : "false"}">
+            <span class="flavor-media">${img("fruit" + (i % 20), f)}</span>
             <span class="flavor-copy">
               <span class="flavor-name">${f}</span>
               <span class="flavor-hint">${hint}</span>
@@ -167,9 +158,9 @@ function flavorsHTML() {
           </button>
           ${qtyControls}
         </div>
-      `;
+      `);
     })
-    .join('');
+    .join("");
 }
 function smartHTML() {
   const base = productBasePrice(state.selectedProduct);
@@ -230,7 +221,7 @@ function smartHTML() {
     ? ''
     : '<p class="note">• Mix wariantów możliwy w ramach wybranej ilości.</p>';
 
-  return `
+  return compactHTML(`
     <div class="smart-title">
       <div>
         <h2><span class="flavor-step">2</span> Smart Cena</h2>
@@ -270,23 +261,23 @@ function smartHTML() {
       Dodaj do koszyka
     </button>
     ${note}
-  `;
+  `);
 }
 function product() {
   if (!products.length) {
     const message = catalogUnavailable
       ? 'Katalog jest chwilowo niedostępny. Spróbuj odświeżyć stronę.'
       : 'Ładowanie produktu…';
-    return `
+    return compactHTML(`
       ${breadcrumb('Katalog', 'Produkt')}
       <div class="page">
         <section class="panel"><p class="muted">${message}</p></section>
       </div>
-    `;
+    `);
   }
 
   const p = productById(state.selectedProduct);
-  return `
+  return compactHTML(`
     ${breadcrumb('Katalog', esc(p[2]), esc(p[1]), 'Wybierz wariant')}
     <div class="page product-layout">
       <section class="panel flavor-panel">
@@ -306,7 +297,7 @@ function product() {
         ${smartHTML()}
       </section>
     </div>
-  `;
+  `);
 }
 function shippingProgress(subtotal) {
   const left = Math.max(0, FREE_SHIPPING - subtotal);

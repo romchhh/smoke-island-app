@@ -6,7 +6,8 @@
 function render() {
   mountSmokeAtmosphere();
   let route = location.hash.slice(1) || "home";
-  mixMode = true;
+  // Product page always uses mix-style qty pickers (per-flavor steppers).
+  mixMode = route === "product" || route === "mix";
   if (route === "checkout-delivery" && !state.delivery) {
     state.delivery = "inpost";
     save();
@@ -55,7 +56,9 @@ function render() {
     contact: "Kontakt",
     wishlist: "Wybrane",
   };
-  $("#app").innerHTML =
+  const app = $("#app");
+  if (!app) return;
+  app.innerHTML =
     header(route) +
     `<main class="shell si-page-enter" id="main">${pages[route]()}</main>` +
     support() +
@@ -71,15 +74,22 @@ function render() {
   });
 }
 function updateProduct() {
+  const tools = $(".flavor-tools");
+  const flavors = $("#flavors");
+  const smart = $("#smart");
+  if (!tools || !flavors || !smart) return;
+
   const active = document.activeElement;
   const activeId = active?.id;
   const sel =
     activeId === "flavor-filter"
       ? [active.selectionStart, active.selectionEnd]
       : null;
-  $(".flavor-tools").innerHTML = flavorToolsHTML();
-  $("#flavors").innerHTML = flavorsHTML();
-  $("#smart").innerHTML = smartHTML();
+
+  tools.innerHTML = flavorToolsHTML();
+  flavors.innerHTML = flavorsHTML();
+  smart.innerHTML = smartHTML();
+
   if (activeId === "quantity") $("#quantity")?.focus();
   if (activeId === "flavor-filter") {
     const el = $("#flavor-filter");

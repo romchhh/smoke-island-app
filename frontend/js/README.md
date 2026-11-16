@@ -1,7 +1,16 @@
 # Storefront JS modules
 
-Classic scripts (not ES modules) so they share one global scope without a bundler.
-`index.html` loads them in this order:
+Source of truth for the storefront. Classic scripts share one global scope.
+
+**Production loads a single built file:** `frontend/app.js`
+
+```bash
+node scripts/build-frontend.mjs
+# or
+npm run build:frontend
+```
+
+Edit modules here, then rebuild before deploy.
 
 | File | Responsibility |
 |------|----------------|

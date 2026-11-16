@@ -1484,10 +1484,12 @@ h3 {
   position: relative;
 }
 .case-stage img {
-  width: 30rem;
-  height: 16rem;
+  width: min(28rem, 72%);
+  height: 18rem;
   object-fit: contain;
-  mix-blend-mode: screen;
+  object-position: center;
+  mix-blend-mode: normal;
+  background: transparent;
 }
 .case-stage button {
   width: 24rem;
@@ -5418,18 +5420,16 @@ h3 {
   }
   .mb-star-art {
     display: block;
-    width: 228px;
-    max-width: 90%;
-    height: 126px;
+    width: min(18rem, 86vw);
+    max-width: 86%;
+    height: 18rem;
     object-fit: contain;
-    mix-blend-mode: screen;
-    margin: 16px auto 0;
-    mask-image: radial-gradient(ellipse 60% 65%, #000 68%, transparent 100%);
-    -webkit-mask-image: radial-gradient(
-      ellipse 60% 65%,
-      #000 68%,
-      transparent 100%
-    );
+    object-position: center;
+    mix-blend-mode: normal;
+    margin: 0.4rem auto 0;
+    background: transparent;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
   .mb-open-button {
     position: absolute;
@@ -13767,7 +13767,7 @@ body:after {
   }
   .mb-case-intro {
     position: relative;
-    height: 206px;
+    height: 240px;
     isolation: isolate;
     overflow: hidden;
   }
@@ -13783,14 +13783,16 @@ body:after {
   .mb-case-intro .mb-star-art {
     position: absolute;
     left: 50%;
-    top: 16px;
-    transform: translateX(-50%);
-    width: 220px;
-    height: 152px;
-    max-width: 82%;
+    top: 50%;
+    transform: translate(-50%, -58%);
+    width: min(18rem, 86%);
+    height: 11.5rem;
+    max-width: 86%;
     margin: 0;
     object-fit: contain;
+    object-position: center;
     mix-blend-mode: normal;
+    background: transparent;
     mask-image: none;
     -webkit-mask-image: none;
     z-index: 1;
@@ -15047,11 +15049,12 @@ body:after {
   }
   .me-empty > img {
     display: block;
-    height: 118px;
-    width: 155px;
-    max-width: 85%;
+    width: min(18rem, 86vw);
+    height: 18rem;
+    max-width: 86%;
     object-fit: contain;
-    margin: 0 auto 10px;
+    object-position: center;
+    margin: 0.4rem auto 1rem;
     background: transparent;
     filter: none;
   }
@@ -15542,20 +15545,22 @@ select {
     position: absolute;
     left: 0;
     right: 0;
-    top: 1.85rem;
+    top: 2.4rem;
     margin-inline: auto;
     transform: none;
-    width: 17rem;
+    width: 18rem;
     height: 11.5rem;
-    overflow: hidden;
+    overflow: visible;
     z-index: 1;
+    background: transparent;
   }
   .dec-art > img {
     display: block;
     width: 100%;
     height: 13rem;
     object-fit: contain;
-    object-position: center top;
+    object-position: center;
+    background: transparent;
   }
   .dec-visual .bonus-case-glow {
     z-index: 0;

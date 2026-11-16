@@ -1,11 +1,20 @@
-# Production vhost for smoke-island.telebots.site.
-# Enable HTTPS with Certbot before testing login/OAuth.
+# Host nginx (port 80/443) in front of Docker.
+# Static + ACME from the project frontend dir; /api → API container.
+#
+# Adjust root if the repo lives elsewhere, e.g. /root/smoke-island/frontend
+
 server {
     listen 80;
     server_name smoke-island.telebots.site;
-    root /srv/smoke-island/frontend;
+    root /root/smoke-island/frontend;
     index index.html;
     client_max_body_size 16m;
+
+    location ^~ /.well-known/acme-challenge/ {
+        default_type text/plain;
+        allow all;
+        try_files $uri =404;
+    }
 
     location /api/ {
         proxy_pass http://127.0.0.1:3010;
@@ -16,8 +25,11 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_read_timeout 60s;
     }
+
     location = /index.html { add_header Cache-Control "no-cache"; }
     location = /config.js { add_header Cache-Control "no-cache"; }
     location / { try_files $uri $uri/ /index.html; }
+
+    location ~* ^/(Dockerfile|nginx\.conf|\.dockerignore)$ { deny all; }
     location ~ /\. { deny all; }
 }

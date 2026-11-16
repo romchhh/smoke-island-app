@@ -56,6 +56,19 @@ Prod: у `.env.docker` постав `NODE_ENV=production` і **лише HTTPS** 
 
 Якщо API `unhealthy` після першого запуску Mongo: `docker compose logs api` і за потреби скинь volume (`docker compose down -v`) лише на порожній dev-базі.
 
+### TLS (certbot webroot)
+
+`web` монтує `./frontend` і віддає `/.well-known/acme-challenge/`. Після зміни volume:
+
+```bash
+docker compose --env-file .env.docker up -d --force-recreate --build web
+mkdir -p frontend/.well-known/acme-challenge
+echo ok > frontend/.well-known/acme-challenge/test
+curl -sS http://smoke-island.telebots.site/.well-known/acme-challenge/test   # → ok
+# якщо домен іде на host nginx:80 — використовуй deploy/nginx.conf.example (root = шлях до frontend)
+sudo certbot certonly --webroot -w "$(pwd)/frontend" -d smoke-island.telebots.site
+```
+
 ## Локально без Docker
 
 ```bash

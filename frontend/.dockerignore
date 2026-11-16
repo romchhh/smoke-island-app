@@ -7,3 +7,4 @@ Dockerfile
 .DS_Store
 .vercel
 vercel.json
+.well-known

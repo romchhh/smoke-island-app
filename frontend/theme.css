@@ -948,3 +948,117 @@ a.category-tile:hover{
   box-shadow:var(--shadow)!important;
   backdrop-filter:blur(16px);
 }
+
+/* —— Kill grid/cell backgrounds & decorative squares —— */
+body:before,
+body:after,
+.ambient-squares,
+.m-hero-dots,
+.mc-atmosphere:before,
+.mc-atmosphere:after,
+.bonus-case-glow,
+.bonus-case-particles,
+.delivery-particles,
+.delivery-particle,
+.mc-atmosphere>i{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+.mc-atmosphere{
+  background:transparent!important;
+}
+.m-sheet-head,
+.mb-main-case,
+.mb-panel,
+.mb-contents,
+.case-stage,
+.desktop-bonus-animation,
+.m-bottom-nav,
+.m-product-card,
+.m-route-bonus:before,
+.m-route-opening:before{
+  background-image:none!important;
+}
+
+/* Flat parent surfaces — no wrapping panels */
+.page > .panel,
+.wishlist-page .panel,
+.case-panel,
+.me-frame,
+.mw-page .me-frame,
+.mb-main-case,
+.mb-panel,
+.dec-frame,
+.dec-visual,
+.dec-message{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.me-frame{
+  margin:0!important;
+  padding:0!important;
+  min-height:0!important;
+  border-radius:0!important;
+}
+.case-panel{
+  padding:0!important;
+  border-radius:0!important;
+}
+.case-stage,
+.desktop-bonus-animation{
+  border:0!important;
+  border-radius:var(--radius-lg)!important;
+  background:var(--panel)!important;
+  box-shadow:none!important;
+}
+
+/* Bonus / wishlist headings: white + larger */
+.bonus-heading h1,
+.bonus-heading h1 .blue,
+.mb-page-heading h1,
+.wishlist-page .page-head h1,
+.wishlist-page .page-head h1 .blue,
+.m-cart-heading h1{
+  color:#fff!important;
+  background:none!important;
+  -webkit-text-fill-color:#fff!important;
+  font-size:clamp(2.2rem,3.8vw,3.2rem)!important;
+  font-weight:800!important;
+  letter-spacing:-.04em;
+  line-height:1.05!important;
+}
+.bonus-heading p,
+.mb-page-heading>p,
+.wishlist-page .page-head p,
+.m-cart-heading p{
+  color:#fff!important;
+  opacity:.9;
+  font-size:clamp(1.05rem,1.45vw,1.3rem)!important;
+  font-weight:500;
+  line-height:1.45;
+}
+.mb-page-heading{
+  background:transparent!important;
+  border:0!important;
+}
+body:has(.mb-page){
+  background:var(--bg)!important;
+}
+
+/* Home banners on top (mobile) */
+.m-home-banners{
+  height:clamp(7.5rem,28vw,12rem)!important;
+  margin:0 0 1rem!important;
+  gap:.55rem!important;
+}
+.home-page .hero-grid{
+  margin-top:0;
+  order:-1;
+}
+.home-page{
+  display:flex;
+  flex-direction:column;
+}

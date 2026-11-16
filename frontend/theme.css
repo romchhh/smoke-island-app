@@ -3491,6 +3491,48 @@ body[data-route="mix"] .m-hero{
   .mp-dock{display:none!important}
 }
 
+/* Empty-state art: no black plate under basket / referral PNGs */
+.desktop-empty-cart .dec-visual,
+.desktop-referral-guest .dec-visual{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.desktop-empty-cart .dec-visual:after,
+.desktop-referral-guest .dec-visual:after{
+  display:none!important;
+}
+.desktop-empty-cart .dec-visual > .bonus-case-glow,
+.desktop-referral-guest .dec-visual > .bonus-case-glow,
+.desktop-empty-cart .dec-visual > .bonus-case-particles,
+.desktop-referral-guest .dec-visual > .bonus-case-particles{
+  display:none!important;
+}
+.desktop-empty-cart .dec-art,
+.desktop-referral-guest .dec-art,
+.desktop-empty-cart .dec-art > img,
+.desktop-referral-guest .dec-art > img{
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.referral-guest-art,
+.referral-guest-art > img{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.me-empty,
+.mw-page .me-empty{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.me-empty > img,
+.mw-page .me-empty > img{
+  background:transparent!important;
+}
+
 /* —— Mobile cart / wishlist empty: restore framed layout after flat-panel theme —— */
 @media(max-width:720px){
   .m-route-cart,
@@ -3535,38 +3577,34 @@ body[data-route="mix"] .m-hero{
     display:flex!important;
     flex-direction:column!important;
     align-items:stretch!important;
-    gap:.75rem!important;
+    gap:.85rem!important;
     min-height:calc(100dvh - 15.5rem - env(safe-area-inset-bottom,0px))!important;
-    margin:0 .7rem!important;
-    padding:.4rem .4rem 0!important;
-    border:1px solid transparent!important;
-    border-radius:1.15rem 1.15rem 0 0!important;
-    background:
-      radial-gradient(ellipse at 8% 18%,rgba(7,26,54,.55),transparent 62%),
-      linear-gradient(#03080e,#000) padding-box,
-      linear-gradient(#3370ff,#000 85%) border-box!important;
+    margin:0 .85rem!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
     box-shadow:none!important;
   }
   .me-empty{
     flex:0 0 auto!important;
     min-height:0!important;
     margin:0!important;
-    padding:1.15rem 1rem 1.25rem!important;
-    border:1px solid #123c78!important;
-    border-radius:1rem!important;
-    background:
-      radial-gradient(ellipse at 50% 0,rgba(7,52,117,.55),transparent 55%),
-      radial-gradient(ellipse at 100% 80%,rgba(12,34,69,.35),transparent 55%),
-      #080909!important;
+    padding:.85rem .5rem 1rem!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
     text-align:center!important;
   }
   .me-empty>img{
     display:block!important;
-    width:min(11.5rem,62vw)!important;
+    width:min(12.5rem,68vw)!important;
     height:auto!important;
-    max-height:9.5rem!important;
-    margin:0 auto .85rem!important;
+    max-height:10.5rem!important;
+    margin:0 auto .75rem!important;
     object-fit:contain!important;
+    background:transparent!important;
     filter:none!important;
   }
   .me-empty h2{

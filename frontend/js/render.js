@@ -32,7 +32,7 @@ function render() {
     opening: bonus,
     referrals,
     contact: contactPage,
-    wishlist: desktopWishlist,
+    wishlist: () => (isMobile() ? mobileCatalog(true) : desktopWishlist),
   };
   if (!pages[route]) route = "home";
   const mobile = isMobile();
@@ -59,11 +59,22 @@ function render() {
   const app = $("#app");
   if (!app) return;
   const body = pages[route]();
-  const mobileProductRoute =
-    mobile && (route === "product" || route === "mix");
-  if (mobileProductRoute) {
+  const mobileChromeRoutes = new Set([
+    "product",
+    "mix",
+    "cart",
+    "checkout",
+    "checkout-old",
+    "checkout-delivery",
+    "wishlist",
+    "bonus",
+    "opening",
+    "order-accepted",
+  ]);
+  if (mobile && mobileChromeRoutes.has(route)) {
+    const compact = route === "product" || route === "mix";
     app.innerHTML =
-      mobileHeader(true, route) +
+      mobileHeader(compact, route) +
       `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
       support() +
       mobileNav(route);

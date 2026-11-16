@@ -318,6 +318,7 @@ function mountSmokeAtmosphere() {
   document.body.prepend(layer);
 }
 function bonus() {
+  if (isMobile()) return mobileBonus();
   const costs = { Start: 10, Premium: 20, Exclusive: 100 },
     reward = activeBonusReward,
     opening = mobileBonusPhase === "opening";

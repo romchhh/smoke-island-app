@@ -939,6 +939,7 @@ function desktopCartSuggestions() {
   return `<section class="smart-cart"><div class="smart-cart-title"><span class="cart-smart-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z"/></svg> SMART CENA W KOSZYKU <small>• &nbsp; Im więcej kupisz - mniej płacisz za sztukę!</small></span><span class="green small">Możesz oszczędzić do ${money(suggestions.reduce((n, s) => n + s.saving, 0))}</span></div><div class="suggestions">${suggestions.map(({ p, next, missing, saving }) => `<div class="suggestion"><div class="suggestion-details"><h3>${productArt(p.id, "")}${esc(productById(p.id)[2])}</h3><div class="suggestion-progress"><div class="track"><div class="track-fill" style="width:${Math.min(100, (p.qty / next) * 100)}%"></div></div><span>${p.qty} / ${next} szt.</span></div><p>Brakuje ${missing} szt. do niższej ceny · Oszczędzisz <span class="green">${money(saving)}</span></p></div><a href="#mix" data-product="${esc(p.id)}">Dobierz ${missing === 1 ? "jeden" : missing}<br>${missing === 1 ? "produkt" : "produkty"} →</a></div>`).join("")}</div></section>`;
 }
 function cart() {
+  if (isMobile()) return mobileCart();
   const sub = cartSubtotal();
   if (!state.cart.length) return cartEmpty();
   const pages = Math.ceil(state.cart.length / 3);
@@ -1011,6 +1012,7 @@ function mobileOrderAccepted() {
   return `<div class="mc-accepted"><div class="mc-success" aria-hidden="true"><img src="assets/order-accepted-icon.png" alt=""></div><h1>Zamówienie przyjęte!</h1><button type="button" class="mc-order-number" data-action="copy-order" aria-label="Skopiuj numer zamówienia">#${esc(state.lastOrder.number)}</button><section class="mc-thankyou"><h2>Dziękujemy za zakup! 🎉</h2><p>Twoje zamówienie zostało zapisane i oczekuje na potwierdzenie. Dziękujemy za zaufanie i zapraszamy ponownie! 💙</p><p>W przypadku pytań lub problemów prosimy o kontakt z naszym managerem.</p><button class="m-primary" type="button" data-action="order-support">NAPISZ DO MANAGERA</button>${state.lastOrder.telegramNotified === false ? '<p class="mc-notification-note">Powiadomienie Telegram nie zostało potwierdzone. Zamówienie jest zapisane.</p>' : ""}</section><a class="m-secondary mc-return" href="#home">WRÓĆ DO SKLEPU</a></div>`;
 }
 function checkout(old = false) {
+  if (isMobile()) return mobileCheckout();
   const sub = cartSubtotal(),
     minor = Math.round(sub * 100),
     points = Math.floor((Math.round(checkoutTotal() * 100) * 3) / 10000);
@@ -1360,6 +1362,7 @@ function mountSmokeAtmosphere() {
   document.body.prepend(layer);
 }
 function bonus() {
+  if (isMobile()) return mobileBonus();
   const costs = { Start: 10, Premium: 20, Exclusive: 100 },
     reward = activeBonusReward,
     opening = mobileBonusPhase === "opening";
@@ -2743,7 +2746,7 @@ function render() {
     opening: bonus,
     referrals,
     contact: contactPage,
-    wishlist: desktopWishlist,
+    wishlist: () => (isMobile() ? mobileCatalog(true) : desktopWishlist),
   };
   if (!pages[route]) route = "home";
   const mobile = isMobile();
@@ -2770,11 +2773,22 @@ function render() {
   const app = $("#app");
   if (!app) return;
   const body = pages[route]();
-  const mobileProductRoute =
-    mobile && (route === "product" || route === "mix");
-  if (mobileProductRoute) {
+  const mobileChromeRoutes = new Set([
+    "product",
+    "mix",
+    "cart",
+    "checkout",
+    "checkout-old",
+    "checkout-delivery",
+    "wishlist",
+    "bonus",
+    "opening",
+    "order-accepted",
+  ]);
+  if (mobile && mobileChromeRoutes.has(route)) {
+    const compact = route === "product" || route === "mix";
     app.innerHTML =
-      mobileHeader(true, route) +
+      mobileHeader(compact, route) +
       `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
       support() +
       mobileNav(route);

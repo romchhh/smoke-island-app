@@ -562,6 +562,40 @@ function compactHTML(html) {
   return String(html).replace(/>\s+</g, "><").trim();
 }
 
+const FLAVOR_PALETTE = [
+  "#ff6b6b", "#ffa94d", "#ffd43b", "#69db7c", "#38d9a9",
+  "#4dabf7", "#748ffc", "#da77f2", "#f783ac", "#ff8787",
+  "#20c997", "#15aabf", "#845ef7", "#e64980", "#fd7e14",
+];
+
+function flavorColor(name, index = 0) {
+  const n = String(name || "").toLowerCase();
+  const rules = [
+    [/grape|jagod|berry|blueberry|blackcurrant|currant|porzeczk/, "#9b5de5"],
+    [/mint|mi[eę]t|menthol|ice|frost|frozen|ch[lł]od/, "#20c997"],
+    [/lemon|cytr|lime|citrus|lemoniad/, "#fcc419"],
+    [/cherry|wi[sś]n|cranberry|pomegranate|granat/, "#f03e3e"],
+    [/mango|peach|brzoskw|apricot|orange|fanta|pomara[nń]/, "#ff922b"],
+    [/apple|jab[lł]|pear|gruszk/, "#51cf66"],
+    [/banana|melon|watermelon|arbuz|ananas|pineapple/, "#94d82d"],
+    [/coconut|cola|coffee|tobacco|vanilla|wanili/, "#e8590c"],
+    [/aloe|kiwi|green|forest/, "#37b24d"],
+    [/dragon|pink|strawberry|trusk|malin|raspberry/, "#f06595"],
+    [/blue|niebies|ocean|breeze/, "#339af0"],
+    [/grape\s*slush|slush|fizzy/, "#9775fa"],
+  ];
+  for (const [re, color] of rules) if (re.test(n)) return color;
+  let h = 2166136261;
+  for (const c of n) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return FLAVOR_PALETTE[(h + Number(index || 0)) % FLAVOR_PALETTE.length];
+}
+
+function flavorSwatch(name, index = 0) {
+  const color = flavorColor(name, index);
+  return `<span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>`;
+}
+
+
 function home() {
   const categories = [...new Set(products.map((p) => p[2]).filter(Boolean))];
   const featured = products.slice(0, 8);
@@ -692,6 +726,7 @@ function flavorsHTML() {
       const f = esc(raw);
       const qty = quantities[i] || 0;
       const selected = mixMode ? qty > 0 : selectedFlavor === i;
+      const color = flavorColor(raw, i);
       const hint = selected
         ? mixMode
           ? `${qty} szt. w zestawie`
@@ -702,9 +737,9 @@ function flavorsHTML() {
         : "";
 
       return compactHTML(`
-        <div class="flavor ${selected ? "selected" : ""}" data-flavor-index="${i}">
+        <div class="flavor ${selected ? "selected" : ""}" data-flavor-index="${i}" style="--flavor-color:${color}">
           <button type="button" class="flavor-pick" data-action="flavor" data-i="${i}" aria-label="Wybierz ${f}" aria-pressed="${selected ? "true" : "false"}">
-            <span class="flavor-media">${img("fruit" + (i % 20), f)}</span>
+            ${flavorSwatch(raw, i)}
             <span class="flavor-copy">
               <span class="flavor-name">${f}</span>
               <span class="flavor-hint">${hint}</span>
@@ -819,6 +854,7 @@ function smartHTML() {
   `);
 }
 function product() {
+  if (isMobile()) return mobileProduct();
   if (!products.length) {
     const message = catalogUnavailable
       ? 'Katalog jest chwilowo niedostępny. Spróbuj odświeżyć stronę.'
@@ -1579,7 +1615,7 @@ function mobileFlavorRows(
   selectedOnly = false,
   productId = state.selectedProduct,
 ) {
-  const labels = productVariantNames(productId).map((s) => s.toUpperCase());
+  const labels = productVariantNames(productId);
   let entries = selectedOnly
     ? Object.keys(values)
         .filter((i) => values[i] > 0)
@@ -1588,16 +1624,109 @@ function mobileFlavorRows(
   if (!entries.length) return '<p class="muted">Brak aktywnych wariantów.</p>';
   return entries
     .map((i) => {
-      const label = esc(labels[i] || "WARIANT");
-      return `<div class="m-flavor-row"><span>${label}</span><div class="m-flavor-stepper"><button data-action="${actionPrefix}-minus" data-i="${i}" aria-label="Mniej ${label}">−</button><output>${values[i] || 0}</output><button data-action="${actionPrefix}-plus" data-i="${i}" aria-label="Więcej ${label}">+</button></div></div>`;
+      const raw = labels[i] || "Wariant";
+      const label = esc(raw);
+      const qty = values[i] || 0;
+      const color = flavorColor(raw, i);
+      const selected = qty > 0;
+      return compactHTML(`
+        <div class="m-flavor-row ${selected ? "is-selected" : ""}" style="--flavor-color:${color}">
+          <span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>
+          <span class="m-flavor-name">${label}</span>
+          <div class="m-flavor-stepper" role="group" aria-label="Ilość ${label}">
+            <button type="button" data-action="${actionPrefix}-minus" data-i="${i}" aria-label="Mniej ${label}">−</button>
+            <output>${qty}</output>
+            <button type="button" data-action="${actionPrefix}-plus" data-i="${i}" aria-label="Więcej ${label}">+</button>
+          </div>
+        </div>
+      `);
     })
     .join("");
 }
 function mobileProduct() {
-  if (!products.length)
-    return `${mobileHero()}<section class="m-product-list"><p class="muted">${catalogUnavailable ? "Katalog jest chwilowo niedostępny." : "Ładowanie produktu…"}</p></section>`;
+  if (!products.length) {
+    return `<section class="mp-page"><p class="muted">${catalogUnavailable ? "Katalog jest chwilowo niedostępny." : "Ładowanie produktu…"}</p></section>`;
+  }
+  const p = productById(state.selectedProduct);
   const qty = mobileTotal();
-  return `${mobileHero()}${mobileSection('<a href="#catalog">❮ &nbsp;Wróć do poprzedniej strony</a>', "Naciśnij, aby wrócić do asortymentu!")}<div class="m-product-list m-product-summary">${mobileProductCard(productById(state.selectedProduct), "product")}</div><div class="m-flavor-title"><span aria-hidden="true">• • ● ●</span><h2 class="m-pill">Wybór wariantów</h2><span aria-hidden="true">● ● • •</span></div><p class="m-flavor-caption">Wybierz kilka wariantów i zobacz jak zmieni się cena!</p><section class="m-flavor-list ${qty ? "with-selection" : ""}" aria-label="Wybór wariantów">${mobileFlavorRows(mobileQuantities)}</section>${qty ? '<p class="m-scroll-hint">Przewiń w dół, aby zobaczyć więcej wariantów</p><div class="m-fixed-action"><button class="m-primary" data-action="m-add-cart">DODAĆ DO KOSZYKA</button></div>' : ""}`;
+  const picked = Object.values(mobileQuantities).filter((v) => v > 0).length;
+  const base = productBasePrice(p[0]);
+  const price = unitPrice(Math.max(1, qty), base);
+  const saving = Math.max(0, (base - price) * qty);
+  const variants = productVariantNames(p[0]).length;
+
+  return compactHTML(`
+    <section class="mp-page">
+      <a class="mp-back" href="#catalog">← Katalog</a>
+      <header class="mp-hero">
+        <div class="mp-hero-media">${productArt(p[0], p[1])}</div>
+        <div class="mp-hero-copy">
+          <p class="mp-kicker">${esc(p[2] || "Produkt")}</p>
+          <h1>${esc(p[1])}</h1>
+          <p class="mp-price-line">
+            <strong>${money(price)}</strong>
+            <span>/ szt.${qty ? ` · ${qty} szt.` : ""}</span>
+          </p>
+          ${saving > 0 ? `<p class="mp-save">Oszczędzasz ${money(saving)}</p>` : `<p class="mp-hint">Im więcej sztuk, tym niższa cena</p>`}
+        </div>
+      </header>
+
+      <div class="mp-section-head">
+        <div>
+          <h2>Wybierz smaki</h2>
+          <p>${variants} wariantów · ustaw ilość przy wybranych</p>
+        </div>
+        <span class="mp-picked ${picked ? "" : "is-empty"}">${picked ? `${picked} wybrane` : "0 wybranych"}</span>
+      </div>
+
+      <label class="mp-search">
+        <span class="sr-only">Szukaj smaku</span>
+        <input id="mobile-flavor-filter" type="search" value="${esc(flavorFilter)}" placeholder="Szukaj smaku…" autocomplete="off" spellcheck="false">
+      </label>
+
+      <section class="m-flavor-list mp-flavor-list ${qty ? "with-selection" : ""}" id="mobile-flavors" aria-label="Wybór wariantów">
+        ${mobileFilteredFlavorRows()}
+      </section>
+
+      <div class="mp-dock">
+        <div class="mp-dock-meta">
+          <strong>${qty || 0} szt.</strong>
+          <span>${money(price * Math.max(qty, 0))}</span>
+        </div>
+        <button class="m-primary" data-action="m-add-cart" ${qty < 1 ? "disabled" : ""}>
+          Dodaj do koszyka
+        </button>
+      </div>
+    </section>
+  `);
+}
+function mobileFilteredFlavorRows() {
+  const labels = productVariantNames(state.selectedProduct);
+  const q = flavorFilter.trim().toLowerCase();
+  const values = mobileQuantities;
+  const entries = labels
+    .map((raw, i) => ({ raw, i }))
+    .filter(({ raw }) => !q || String(raw).toLowerCase().includes(q));
+  if (!labels.length) return '<p class="muted">Brak aktywnych wariantów.</p>';
+  if (!entries.length) return '<p class="muted">Brak smaków dla tego wyszukiwania.</p>';
+  return entries
+    .map(({ raw, i }) => {
+      const label = esc(raw);
+      const qty = values[i] || 0;
+      const color = flavorColor(raw, i);
+      return compactHTML(`
+        <div class="m-flavor-row ${qty ? "is-selected" : ""}" style="--flavor-color:${color}">
+          <span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>
+          <span class="m-flavor-name">${label}</span>
+          <div class="m-flavor-stepper" role="group" aria-label="Ilość ${label}">
+            <button type="button" data-action="m-flavor-minus" data-i="${i}" aria-label="Mniej ${label}">−</button>
+            <output>${qty}</output>
+            <button type="button" data-action="m-flavor-plus" data-i="${i}" aria-label="Więcej ${label}">+</button>
+          </div>
+        </div>
+      `);
+    })
+    .join("");
 }
 function mobileCart() {
   if (!state.cart.length)
@@ -1797,6 +1926,54 @@ document.addEventListener("click", (e) => {
   }
 });
 function renderMobileProductUpdate() {
+  const page = $(".mp-page");
+  const list = $("#mobile-flavors");
+  if (page && list) {
+    const scroll = list.scrollTop;
+    const focus = document.activeElement?.closest("[data-action]");
+    const action = focus?.dataset.action;
+    const index = focus?.dataset.i;
+    const qty = mobileTotal();
+    const picked = Object.values(mobileQuantities).filter((v) => v > 0).length;
+    const base = productBasePrice(state.selectedProduct);
+    const price = unitPrice(Math.max(1, qty), base);
+    const saving = Math.max(0, (base - price) * qty);
+
+    list.innerHTML = mobileFilteredFlavorRows();
+    list.scrollTop = scroll;
+
+    const pickedEl = $(".mp-picked");
+    if (pickedEl) {
+      pickedEl.textContent = picked ? `${picked} wybrane` : "0 wybranych";
+      pickedEl.classList.toggle("is-empty", !picked);
+    }
+    const priceLine = $(".mp-price-line");
+    if (priceLine) {
+      priceLine.innerHTML = `<strong>${money(price)}</strong><span>/ szt.${qty ? ` · ${qty} szt.` : ""}</span>`;
+    }
+    const saveEl = $(".mp-save, .mp-hint");
+    if (saveEl) {
+      saveEl.className = saving > 0 ? "mp-save" : "mp-hint";
+      saveEl.textContent =
+        saving > 0
+          ? `Oszczędzasz ${money(saving)}`
+          : "Im więcej sztuk, tym niższa cena";
+    }
+    const dockMeta = $(".mp-dock-meta");
+    if (dockMeta) {
+      dockMeta.innerHTML = `<strong>${qty || 0} szt.</strong><span>${money(price * Math.max(qty, 0))}</span>`;
+    }
+    const addBtn = $('.mp-dock [data-action="m-add-cart"]');
+    if (addBtn) addBtn.disabled = qty < 1;
+    list.classList.toggle("with-selection", qty > 0);
+
+    if (action)
+      $(`[data-action="${action}"][data-i="${index}"]`)?.focus({
+        preventScroll: true,
+      });
+    return;
+  }
+
   let scroll = $(".m-flavor-list")?.scrollTop || 0;
   const focus = document.activeElement?.closest("[data-action]");
   const action = focus?.dataset.action,
@@ -2079,10 +2256,17 @@ async function sendSupportMessage() {
   }
 }
 document.addEventListener("input", (e) => {
-  if (e.target.id !== "flavor-filter") return;
-  flavorFilter = e.target.value;
-  flavorPage = 0;
-  updateProduct();
+  if (e.target.id === "flavor-filter") {
+    flavorFilter = e.target.value;
+    flavorPage = 0;
+    updateProduct();
+    return;
+  }
+  if (e.target.id === "mobile-flavor-filter") {
+    flavorFilter = e.target.value;
+    const list = $("#mobile-flavors");
+    if (list) list.innerHTML = mobileFilteredFlavorRows();
+  }
 });
 document.addEventListener("input", (e) => {
   if (e.target.hasAttribute?.("data-support-draft"))
@@ -2585,12 +2769,23 @@ function render() {
   };
   const app = $("#app");
   if (!app) return;
-  app.innerHTML =
-    header(route) +
-    `<main class="shell si-page-enter" id="main">${pages[route]()}</main>` +
-    support() +
-    `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
-    (mobile ? mobileNav(route) : "");
+  const body = pages[route]();
+  const mobileProductRoute =
+    mobile && (route === "product" || route === "mix");
+  if (mobileProductRoute) {
+    app.innerHTML =
+      mobileHeader(true, route) +
+      `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
+      support() +
+      mobileNav(route);
+  } else {
+    app.innerHTML =
+      header(route) +
+      `<main class="shell si-page-enter" id="main">${body}</main>` +
+      support() +
+      `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
+      (mobile ? mobileNav(route) : "");
+  }
   document.title = "Smoke Island · " + (titles[route] || "Smoke Island");
   refreshSupport();
   animateMobileBonus();

@@ -236,10 +236,17 @@ async function sendSupportMessage() {
   }
 }
 document.addEventListener("input", (e) => {
-  if (e.target.id !== "flavor-filter") return;
-  flavorFilter = e.target.value;
-  flavorPage = 0;
-  updateProduct();
+  if (e.target.id === "flavor-filter") {
+    flavorFilter = e.target.value;
+    flavorPage = 0;
+    updateProduct();
+    return;
+  }
+  if (e.target.id === "mobile-flavor-filter") {
+    flavorFilter = e.target.value;
+    const list = $("#mobile-flavors");
+    if (list) list.innerHTML = mobileFilteredFlavorRows();
+  }
 });
 document.addEventListener("input", (e) => {
   if (e.target.hasAttribute?.("data-support-draft"))

@@ -7,6 +7,40 @@ function compactHTML(html) {
   return String(html).replace(/>\s+</g, "><").trim();
 }
 
+const FLAVOR_PALETTE = [
+  "#ff6b6b", "#ffa94d", "#ffd43b", "#69db7c", "#38d9a9",
+  "#4dabf7", "#748ffc", "#da77f2", "#f783ac", "#ff8787",
+  "#20c997", "#15aabf", "#845ef7", "#e64980", "#fd7e14",
+];
+
+function flavorColor(name, index = 0) {
+  const n = String(name || "").toLowerCase();
+  const rules = [
+    [/grape|jagod|berry|blueberry|blackcurrant|currant|porzeczk/, "#9b5de5"],
+    [/mint|mi[eę]t|menthol|ice|frost|frozen|ch[lł]od/, "#20c997"],
+    [/lemon|cytr|lime|citrus|lemoniad/, "#fcc419"],
+    [/cherry|wi[sś]n|cranberry|pomegranate|granat/, "#f03e3e"],
+    [/mango|peach|brzoskw|apricot|orange|fanta|pomara[nń]/, "#ff922b"],
+    [/apple|jab[lł]|pear|gruszk/, "#51cf66"],
+    [/banana|melon|watermelon|arbuz|ananas|pineapple/, "#94d82d"],
+    [/coconut|cola|coffee|tobacco|vanilla|wanili/, "#e8590c"],
+    [/aloe|kiwi|green|forest/, "#37b24d"],
+    [/dragon|pink|strawberry|trusk|malin|raspberry/, "#f06595"],
+    [/blue|niebies|ocean|breeze/, "#339af0"],
+    [/grape\s*slush|slush|fizzy/, "#9775fa"],
+  ];
+  for (const [re, color] of rules) if (re.test(n)) return color;
+  let h = 2166136261;
+  for (const c of n) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return FLAVOR_PALETTE[(h + Number(index || 0)) % FLAVOR_PALETTE.length];
+}
+
+function flavorSwatch(name, index = 0) {
+  const color = flavorColor(name, index);
+  return `<span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>`;
+}
+
+
 function home() {
   const categories = [...new Set(products.map((p) => p[2]).filter(Boolean))];
   const featured = products.slice(0, 8);
@@ -137,6 +171,7 @@ function flavorsHTML() {
       const f = esc(raw);
       const qty = quantities[i] || 0;
       const selected = mixMode ? qty > 0 : selectedFlavor === i;
+      const color = flavorColor(raw, i);
       const hint = selected
         ? mixMode
           ? `${qty} szt. w zestawie`
@@ -147,9 +182,9 @@ function flavorsHTML() {
         : "";
 
       return compactHTML(`
-        <div class="flavor ${selected ? "selected" : ""}" data-flavor-index="${i}">
+        <div class="flavor ${selected ? "selected" : ""}" data-flavor-index="${i}" style="--flavor-color:${color}">
           <button type="button" class="flavor-pick" data-action="flavor" data-i="${i}" aria-label="Wybierz ${f}" aria-pressed="${selected ? "true" : "false"}">
-            <span class="flavor-media">${img("fruit" + (i % 20), f)}</span>
+            ${flavorSwatch(raw, i)}
             <span class="flavor-copy">
               <span class="flavor-name">${f}</span>
               <span class="flavor-hint">${hint}</span>
@@ -264,6 +299,7 @@ function smartHTML() {
   `);
 }
 function product() {
+  if (isMobile()) return mobileProduct();
   if (!products.length) {
     const message = catalogUnavailable
       ? 'Katalog jest chwilowo niedostępny. Spróbuj odświeżyć stronę.'

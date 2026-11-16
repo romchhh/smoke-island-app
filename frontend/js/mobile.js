@@ -143,7 +143,7 @@ function mobileFlavorRows(
   selectedOnly = false,
   productId = state.selectedProduct,
 ) {
-  const labels = productVariantNames(productId).map((s) => s.toUpperCase());
+  const labels = productVariantNames(productId);
   let entries = selectedOnly
     ? Object.keys(values)
         .filter((i) => values[i] > 0)
@@ -152,16 +152,109 @@ function mobileFlavorRows(
   if (!entries.length) return '<p class="muted">Brak aktywnych wariantów.</p>';
   return entries
     .map((i) => {
-      const label = esc(labels[i] || "WARIANT");
-      return `<div class="m-flavor-row"><span>${label}</span><div class="m-flavor-stepper"><button data-action="${actionPrefix}-minus" data-i="${i}" aria-label="Mniej ${label}">−</button><output>${values[i] || 0}</output><button data-action="${actionPrefix}-plus" data-i="${i}" aria-label="Więcej ${label}">+</button></div></div>`;
+      const raw = labels[i] || "Wariant";
+      const label = esc(raw);
+      const qty = values[i] || 0;
+      const color = flavorColor(raw, i);
+      const selected = qty > 0;
+      return compactHTML(`
+        <div class="m-flavor-row ${selected ? "is-selected" : ""}" style="--flavor-color:${color}">
+          <span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>
+          <span class="m-flavor-name">${label}</span>
+          <div class="m-flavor-stepper" role="group" aria-label="Ilość ${label}">
+            <button type="button" data-action="${actionPrefix}-minus" data-i="${i}" aria-label="Mniej ${label}">−</button>
+            <output>${qty}</output>
+            <button type="button" data-action="${actionPrefix}-plus" data-i="${i}" aria-label="Więcej ${label}">+</button>
+          </div>
+        </div>
+      `);
     })
     .join("");
 }
 function mobileProduct() {
-  if (!products.length)
-    return `${mobileHero()}<section class="m-product-list"><p class="muted">${catalogUnavailable ? "Katalog jest chwilowo niedostępny." : "Ładowanie produktu…"}</p></section>`;
+  if (!products.length) {
+    return `<section class="mp-page"><p class="muted">${catalogUnavailable ? "Katalog jest chwilowo niedostępny." : "Ładowanie produktu…"}</p></section>`;
+  }
+  const p = productById(state.selectedProduct);
   const qty = mobileTotal();
-  return `${mobileHero()}${mobileSection('<a href="#catalog">❮ &nbsp;Wróć do poprzedniej strony</a>', "Naciśnij, aby wrócić do asortymentu!")}<div class="m-product-list m-product-summary">${mobileProductCard(productById(state.selectedProduct), "product")}</div><div class="m-flavor-title"><span aria-hidden="true">• • ● ●</span><h2 class="m-pill">Wybór wariantów</h2><span aria-hidden="true">● ● • •</span></div><p class="m-flavor-caption">Wybierz kilka wariantów i zobacz jak zmieni się cena!</p><section class="m-flavor-list ${qty ? "with-selection" : ""}" aria-label="Wybór wariantów">${mobileFlavorRows(mobileQuantities)}</section>${qty ? '<p class="m-scroll-hint">Przewiń w dół, aby zobaczyć więcej wariantów</p><div class="m-fixed-action"><button class="m-primary" data-action="m-add-cart">DODAĆ DO KOSZYKA</button></div>' : ""}`;
+  const picked = Object.values(mobileQuantities).filter((v) => v > 0).length;
+  const base = productBasePrice(p[0]);
+  const price = unitPrice(Math.max(1, qty), base);
+  const saving = Math.max(0, (base - price) * qty);
+  const variants = productVariantNames(p[0]).length;
+
+  return compactHTML(`
+    <section class="mp-page">
+      <a class="mp-back" href="#catalog">← Katalog</a>
+      <header class="mp-hero">
+        <div class="mp-hero-media">${productArt(p[0], p[1])}</div>
+        <div class="mp-hero-copy">
+          <p class="mp-kicker">${esc(p[2] || "Produkt")}</p>
+          <h1>${esc(p[1])}</h1>
+          <p class="mp-price-line">
+            <strong>${money(price)}</strong>
+            <span>/ szt.${qty ? ` · ${qty} szt.` : ""}</span>
+          </p>
+          ${saving > 0 ? `<p class="mp-save">Oszczędzasz ${money(saving)}</p>` : `<p class="mp-hint">Im więcej sztuk, tym niższa cena</p>`}
+        </div>
+      </header>
+
+      <div class="mp-section-head">
+        <div>
+          <h2>Wybierz smaki</h2>
+          <p>${variants} wariantów · ustaw ilość przy wybranych</p>
+        </div>
+        <span class="mp-picked ${picked ? "" : "is-empty"}">${picked ? `${picked} wybrane` : "0 wybranych"}</span>
+      </div>
+
+      <label class="mp-search">
+        <span class="sr-only">Szukaj smaku</span>
+        <input id="mobile-flavor-filter" type="search" value="${esc(flavorFilter)}" placeholder="Szukaj smaku…" autocomplete="off" spellcheck="false">
+      </label>
+
+      <section class="m-flavor-list mp-flavor-list ${qty ? "with-selection" : ""}" id="mobile-flavors" aria-label="Wybór wariantów">
+        ${mobileFilteredFlavorRows()}
+      </section>
+
+      <div class="mp-dock">
+        <div class="mp-dock-meta">
+          <strong>${qty || 0} szt.</strong>
+          <span>${money(price * Math.max(qty, 0))}</span>
+        </div>
+        <button class="m-primary" data-action="m-add-cart" ${qty < 1 ? "disabled" : ""}>
+          Dodaj do koszyka
+        </button>
+      </div>
+    </section>
+  `);
+}
+function mobileFilteredFlavorRows() {
+  const labels = productVariantNames(state.selectedProduct);
+  const q = flavorFilter.trim().toLowerCase();
+  const values = mobileQuantities;
+  const entries = labels
+    .map((raw, i) => ({ raw, i }))
+    .filter(({ raw }) => !q || String(raw).toLowerCase().includes(q));
+  if (!labels.length) return '<p class="muted">Brak aktywnych wariantów.</p>';
+  if (!entries.length) return '<p class="muted">Brak smaków dla tego wyszukiwania.</p>';
+  return entries
+    .map(({ raw, i }) => {
+      const label = esc(raw);
+      const qty = values[i] || 0;
+      const color = flavorColor(raw, i);
+      return compactHTML(`
+        <div class="m-flavor-row ${qty ? "is-selected" : ""}" style="--flavor-color:${color}">
+          <span class="flavor-swatch" style="--flavor:${color}" aria-hidden="true"></span>
+          <span class="m-flavor-name">${label}</span>
+          <div class="m-flavor-stepper" role="group" aria-label="Ilość ${label}">
+            <button type="button" data-action="m-flavor-minus" data-i="${i}" aria-label="Mniej ${label}">−</button>
+            <output>${qty}</output>
+            <button type="button" data-action="m-flavor-plus" data-i="${i}" aria-label="Więcej ${label}">+</button>
+          </div>
+        </div>
+      `);
+    })
+    .join("");
 }
 function mobileCart() {
   if (!state.cart.length)
@@ -361,6 +454,54 @@ document.addEventListener("click", (e) => {
   }
 });
 function renderMobileProductUpdate() {
+  const page = $(".mp-page");
+  const list = $("#mobile-flavors");
+  if (page && list) {
+    const scroll = list.scrollTop;
+    const focus = document.activeElement?.closest("[data-action]");
+    const action = focus?.dataset.action;
+    const index = focus?.dataset.i;
+    const qty = mobileTotal();
+    const picked = Object.values(mobileQuantities).filter((v) => v > 0).length;
+    const base = productBasePrice(state.selectedProduct);
+    const price = unitPrice(Math.max(1, qty), base);
+    const saving = Math.max(0, (base - price) * qty);
+
+    list.innerHTML = mobileFilteredFlavorRows();
+    list.scrollTop = scroll;
+
+    const pickedEl = $(".mp-picked");
+    if (pickedEl) {
+      pickedEl.textContent = picked ? `${picked} wybrane` : "0 wybranych";
+      pickedEl.classList.toggle("is-empty", !picked);
+    }
+    const priceLine = $(".mp-price-line");
+    if (priceLine) {
+      priceLine.innerHTML = `<strong>${money(price)}</strong><span>/ szt.${qty ? ` · ${qty} szt.` : ""}</span>`;
+    }
+    const saveEl = $(".mp-save, .mp-hint");
+    if (saveEl) {
+      saveEl.className = saving > 0 ? "mp-save" : "mp-hint";
+      saveEl.textContent =
+        saving > 0
+          ? `Oszczędzasz ${money(saving)}`
+          : "Im więcej sztuk, tym niższa cena";
+    }
+    const dockMeta = $(".mp-dock-meta");
+    if (dockMeta) {
+      dockMeta.innerHTML = `<strong>${qty || 0} szt.</strong><span>${money(price * Math.max(qty, 0))}</span>`;
+    }
+    const addBtn = $('.mp-dock [data-action="m-add-cart"]');
+    if (addBtn) addBtn.disabled = qty < 1;
+    list.classList.toggle("with-selection", qty > 0);
+
+    if (action)
+      $(`[data-action="${action}"][data-i="${index}"]`)?.focus({
+        preventScroll: true,
+      });
+    return;
+  }
+
   let scroll = $(".m-flavor-list")?.scrollTop || 0;
   const focus = document.activeElement?.closest("[data-action]");
   const action = focus?.dataset.action,

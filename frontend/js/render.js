@@ -58,12 +58,23 @@ function render() {
   };
   const app = $("#app");
   if (!app) return;
-  app.innerHTML =
-    header(route) +
-    `<main class="shell si-page-enter" id="main">${pages[route]()}</main>` +
-    support() +
-    `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
-    (mobile ? mobileNav(route) : "");
+  const body = pages[route]();
+  const mobileProductRoute =
+    mobile && (route === "product" || route === "mix");
+  if (mobileProductRoute) {
+    app.innerHTML =
+      mobileHeader(true, route) +
+      `<main class="m-main m-route-${route} si-page-enter" id="main">${body}</main>` +
+      support() +
+      mobileNav(route);
+  } else {
+    app.innerHTML =
+      header(route) +
+      `<main class="shell si-page-enter" id="main">${body}</main>` +
+      support() +
+      `<footer class="footer-links"><a href="#home">Strona główna</a><a href="#catalog">Katalog</a><a href="#referrals">Polecenia</a><a href="#contact">Kontakt</a></footer>` +
+      (mobile ? mobileNav(route) : "");
+  }
   document.title = "Smoke Island · " + (titles[route] || "Smoke Island");
   refreshSupport();
   animateMobileBonus();

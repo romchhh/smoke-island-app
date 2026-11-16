@@ -1593,24 +1593,23 @@ function mobileProductCard(p, mode = "catalog", index = -1) {
 }
 function mobileWishlist() {
   const list = products.filter((p) => state.wishlist.includes(p[0]));
-  return `<div class="mw-page"><div class="m-cart-heading"><h1>Wybrane</h1><p>Twoje ulubione produkty</p></div>${list.length ? `<div class="product-grid home-product-grid mw-products">${list.map(productCard).join("")}</div>` : '<div class="me-empty"><img src="assets/empty-basket.png" alt="Puste wybrane produkty"><h2>Twoje wybrane są puste</h2><p>Dodaj produkty z katalogu.</p></div>'}<a class="m-primary me-continue" href="#catalog">ZOBACZ KATALOG</a></div>`;
+  return `<div class="mw-page"><div class="m-cart-heading"><h1>Wybrane</h1><p>Twoje ulubione produkty</p></div>${list.length ? `<div class="product-grid home-product-grid mw-products">${list.map(productCard).join("")}</div>` : '<div class="me-empty"><img src="assets/wishlist-empty.png" alt="Puste wybrane produkty"><h2>Twoje wybrane są puste</h2><p>Dodaj produkty z katalogu.</p></div>'}<a class="m-primary me-continue" href="#catalog">ZOBACZ KATALOG</a></div>`;
 }
 function mobileCatalog(wishlist = false) {
-  const list = wishlist
-    ? products.filter((p) => state.wishlist.includes(p[0]))
-    : products.filter((p) => category === "Wszystkie" || p[2] === category);
+  if (wishlist) return mobileWishlist();
+  const list = products.filter(
+    (p) => category === "Wszystkie" || p[2] === category,
+  );
   const preferred = ["moon", "raya", "bc"];
   const ordered = [...list].sort((a, b) => {
     const ai = preferred.indexOf(a[0]),
       bi = preferred.indexOf(b[0]);
     return (ai < 0 ? Infinity : ai) - (bi < 0 ? Infinity : bi);
   });
-  const empty = wishlist
-    ? "Nie masz jeszcze wybranych produktów."
-    : catalogUnavailable
-      ? "Katalog jest chwilowo niedostępny."
-      : "Ładowanie katalogu…";
-  return `${wishlist ? '<div class="m-cart-heading"><h1>Wybrane</h1><p>Twoje ulubione produkty</p></div>' : mobileHero() + mobileSection(category === "Wszystkie" ? "Wszystkie produkty" : esc(category), "Najlepsze modele w jednym miejscu!", true)}<section class="m-product-list" aria-label="${wishlist ? "Wybrane produkty" : "Produkty"}">${ordered.length ? ordered.map((p) => mobileProductCard(p)).join("") : `<div class="m-empty"><p>${empty}</p><a class="m-primary" href="#catalog">ZOBACZ KATALOG</a></div>`}</section>`;
+  const empty = catalogUnavailable
+    ? "Katalog jest chwilowo niedostępny."
+    : "Ładowanie katalogu…";
+  return `${mobileHero() + mobileSection(category === "Wszystkie" ? "Wszystkie produkty" : esc(category), "Najlepsze modele w jednym miejscu!", true)}<section class="m-product-list" aria-label="Produkty">${ordered.length ? ordered.map((p) => mobileProductCard(p)).join("") : `<div class="m-empty"><p>${empty}</p><a class="m-primary" href="#catalog">ZOBACZ KATALOG</a></div>`}</section>`;
 }
 function mobileFlavorRows(
   values,
@@ -1807,12 +1806,11 @@ function adjustSheetFlavor(index, delta) {
   refreshMobileSmart();
 }
 function desktopWishlist() {
-  return `${breadcrumb("Wybrane")}<div class="page wishlist-page">${pageHead("Wybrane produkty", "Twoje ulubione produkty z katalogu.")}<div class="product-grid">${
-    products
-      .filter((p) => state.wishlist.includes(p[0]))
-      .map(productCard)
-      .join("") || '<p class="muted">Nie masz jeszcze wybranych produktów.</p>'
-  }</div></div>`;
+  const list = products.filter((p) => state.wishlist.includes(p[0]));
+  if (!list.length) {
+    return `<div class="desktop-empty-cart desktop-empty-wishlist"><header class="dec-heading"><div>${breadcrumb("Wybrane")}<h1>Wybrane</h1><p>0 ulubionych produktów</p></div>${banner()}</header><section class="dec-frame"><div class="dec-visual"><div class="dec-art"><img src="assets/wishlist-empty.png" alt="Puste wybrane produkty"></div><a class="primary dec-continue" href="#catalog">ZOBACZ KATALOG</a></div><div class="dec-message"><h2>Twoje wybrane są puste</h2><p>Dodaj produkty z katalogu do ulubionych.</p></div></section></div>`;
+  }
+  return `${breadcrumb("Wybrane")}<div class="page wishlist-page">${pageHead("Wybrane produkty", "Twoje ulubione produkty z katalogu.")}<div class="product-grid">${list.map(productCard).join("")}</div></div>`;
 }
 document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-action]");
@@ -2746,7 +2744,7 @@ function render() {
     opening: bonus,
     referrals,
     contact: contactPage,
-    wishlist: () => (isMobile() ? mobileCatalog(true) : desktopWishlist),
+    wishlist: () => (isMobile() ? mobileWishlist() : desktopWishlist()),
   };
   if (!pages[route]) route = "home";
   const mobile = isMobile();

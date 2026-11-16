@@ -32,7 +32,7 @@ function render() {
     opening: bonus,
     referrals,
     contact: contactPage,
-    wishlist: () => (isMobile() ? mobileCatalog(true) : desktopWishlist),
+    wishlist: () => (isMobile() ? mobileWishlist() : desktopWishlist()),
   };
   if (!pages[route]) route = "home";
   const mobile = isMobile();

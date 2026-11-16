@@ -3491,8 +3491,9 @@ body[data-route="mix"] .m-hero{
   .mp-dock{display:none!important}
 }
 
-/* Empty-state art: no black plate under basket / referral PNGs */
+/* Empty-state art: no black plate under basket / wishlist / referral PNGs */
 .desktop-empty-cart .dec-visual,
+.desktop-empty-wishlist .dec-visual,
 .desktop-referral-guest .dec-visual{
   background:transparent!important;
   border:0!important;
@@ -3500,18 +3501,23 @@ body[data-route="mix"] .m-hero{
   overflow:visible!important;
 }
 .desktop-empty-cart .dec-visual:after,
+.desktop-empty-wishlist .dec-visual:after,
 .desktop-referral-guest .dec-visual:after{
   display:none!important;
 }
 .desktop-empty-cart .dec-visual > .bonus-case-glow,
+.desktop-empty-wishlist .dec-visual > .bonus-case-glow,
 .desktop-referral-guest .dec-visual > .bonus-case-glow,
 .desktop-empty-cart .dec-visual > .bonus-case-particles,
+.desktop-empty-wishlist .dec-visual > .bonus-case-particles,
 .desktop-referral-guest .dec-visual > .bonus-case-particles{
   display:none!important;
 }
 .desktop-empty-cart .dec-art,
+.desktop-empty-wishlist .dec-art,
 .desktop-referral-guest .dec-art,
 .desktop-empty-cart .dec-art > img,
+.desktop-empty-wishlist .dec-art > img,
 .desktop-referral-guest .dec-art > img{
   background:transparent!important;
   box-shadow:none!important;

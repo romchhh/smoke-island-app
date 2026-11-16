@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "seed:demo": "node src/seed-demo.js",
+    "seed:live": "node src/seed-live-catalog.js",
     "test": "node --test test/input.test.js",
     "test:integration": "node test/integration.mjs"
   },

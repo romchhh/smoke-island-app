@@ -1,3 +1,7 @@
+# Host ports (same VPS as elf-duck-shop 3000–3006):
+#   8080 web · 3010 API · 3017 MongoDB
+name: smoke-island
+
 services:
   mongo:
     image: mongo:8.0
@@ -6,7 +10,6 @@ services:
     volumes:
       - mongo_data:/data/db
     ports:
-      # Host 3017 — avoids clash with elf-duck-shop (3000–3006) and system mongod on 27017
       - "3017:27017"
     healthcheck:
       test:
@@ -15,14 +18,15 @@ services:
           "mongosh",
           "--quiet",
           "--eval",
-          "try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}); 0 }",
+          "try { const s = rs.status(); if (s.ok && s.members.some(m => m.stateStr === 'PRIMARY')) quit(0); quit(1); } catch (e) { try { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}); } catch (e2) {} quit(1); }",
         ]
       interval: 5s
       timeout: 10s
-      retries: 20
-      start_period: 10s
+      retries: 30
+      start_period: 15s
 
   api:
+    image: smoke-island-api:local
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -56,17 +60,23 @@ services:
       TELEGRAM_SUPPORT_CHAT_ID: ${TELEGRAM_SUPPORT_CHAT_ID:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       EMAIL_FROM: ${EMAIL_FROM:-}
-    # Host 3010 — elf-duck-shop already uses 3000–3006 on the same VPS
     ports:
       - "3010:3000"
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
-      interval: 30s
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 40s
+      retries: 12
+      start_period: 60s
 
   web:
+    image: smoke-island-web:local
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -79,9 +89,7 @@ services:
 
   seed:
     profiles: ["seed"]
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: smoke-island-api:local
     depends_on:
       mongo:
         condition: service_healthy

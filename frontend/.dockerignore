@@ -1,6 +1,9 @@
 .git
 .gitignore
-README.txt
 Dockerfile
-vercel.json
+.dockerignore
 *.md
+*.txt
+.DS_Store
+.vercel
+vercel.json

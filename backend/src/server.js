@@ -182,8 +182,31 @@ async function handleClientSupportMedia(ctx){if(!env.TELEGRAM_SUPPORT_CHAT_ID)re
 function makeClientBot(){const token=env.TELEGRAM_CLIENT_BOT_TOKEN;if(!token||token===env.TELEGRAM_ADMIN_BOT_TOKEN)return null;const client=new Telegraf(token);client.start(ctx=>ctx.reply('Добро пожаловать в Smoke Island. Откройте магазин кнопкой ниже.',env.TELEGRAM_WEB_APP_URL?Markup.keyboard([[{text:'Открыть магазин',web_app:{url:env.TELEGRAM_WEB_APP_URL}}]]).resize():undefined));client.on('text',async ctx=>{const text=ctx.message.text.trim();if(!text||text.startsWith('/'))return;if(!env.TELEGRAM_SUPPORT_CHAT_ID)return ctx.reply('Поддержка временно недоступна.');let user=await User.findOne({telegramId:String(ctx.from.id),status:'ACTIVE'});if(!user)user=await createUser({telegramId:String(ctx.from.id),username:ctx.from.username,firstName:ctx.from.first_name||'Telegram',lastName:ctx.from.last_name||''});let thread=await Thread.findOne({$or:[{telegramId:String(ctx.from.id)},{owner:user._id}],status:'OPEN'});if(!thread)thread=await Thread.create({owner:user._id,telegramId:String(ctx.from.id),lastMessageAt:new Date()});else if(!thread.owner){thread.owner=user._id;await thread.save()}const message=await Message.create({thread:thread._id,senderRole:'CUSTOMER',senderId:String(ctx.from.id),text:text.slice(0,4000)});thread.lastMessageAt=new Date();await thread.save();try{const sent=await bot.telegram.sendMessage(env.TELEGRAM_SUPPORT_CHAT_ID,`Обращение #${thread.id}\nTelegram ID: ${ctx.from.id}\n${text.slice(0,3500)}`);message.telegramMessageId=String(sent.message_id);await message.save();return ctx.reply('Сообщение передано поддержке. Ответ придёт сюда.')}catch(e){console.error('client support notification failed',e.name);return ctx.reply('Не удалось передать сообщение поддержке. Попробуйте позже.')}});client.on('photo',handleClientSupportMedia);client.on('document',handleClientSupportMedia);return client}
 const clientBot=makeClientBot();
 app.use((err,req,res,next)=>{const status=err.status||((err.name==='CastError')?400:undefined)||((err instanceof z.ZodError)?400:err.code===11000?409:500);if(status>=500){const safe=String(err.message||'').replace(/mongodb\+srv:\/\/[^\s]+/g,'[redacted]').replace(/bot\d+:[A-Za-z0-9_-]+/g,'[redacted]').slice(0,180);console.error('request failed',req.get('x-request-id')||'no-request-id',err.name,safe)}res.status(status).json({error:{...(err.details?{details:err.details}:{}),code:err.message==='PROMO_INVALID'?'PROMO_INVALID':status===400?'VALIDATION_ERROR':status===409&&err.code===11000?'ACCOUNT_EXISTS':err.message==='NOT_FOUND'?'NOT_FOUND':err.message==='INSUFFICIENT_POINTS'?'INSUFFICIENT_POINTS':err.message==='INVALID_TRANSITION'?'INVALID_TRANSITION':err.message==='PRODUCT_UNAVAILABLE'?'PRODUCT_UNAVAILABLE':err.message==='INSUFFICIENT_STOCK'?'INSUFFICIENT_STOCK':err.message==='INSUFFICIENT_BONUS_POINTS'?'INSUFFICIENT_BONUS_POINTS':err.message==='BONUS_REWARD_UNAVAILABLE'?'BONUS_REWARD_UNAVAILABLE':err.message==='BONUS_REWARD_INVALID'?'BONUS_REWARD_INVALID':err.message==='EMAIL_NOT_CONFIGURED'?'EMAIL_NOT_CONFIGURED':err.message==='EMAIL_DELIVERY_FAILED'?'EMAIL_DELIVERY_FAILED':err.message==='EMAIL_CHALLENGE_EXPIRED'?'EMAIL_CHALLENGE_EXPIRED':err.message==='INVALID_EMAIL_CODE'?'INVALID_EMAIL_CODE':err.message==='EMAIL_CODE_LOCKED'?'EMAIL_CODE_LOCKED':err.message==='IDENTITY_CONFLICT'?'IDENTITY_CONFLICT':'INTERNAL_ERROR',...(status===400?{fields:err.issues?.map(x=>({path:x.path,message:x.message}))}:{})}})});
-await mongoose.connect(env.DATABASE_URL,{dbName:env.DATABASE_NAME});await User.updateMany({isGuest:{$exists:false}},{$set:{isGuest:false}});for(const user of await User.find({$or:[{referralCode:{$exists:false}},{referralCode:null}]}).select('_id').limit(1000)){await User.updateOne({_id:user._id},{$set:{referralCode:referralCode()}})}
-await Promise.all([Hold.init(),Promo.init(),Media.init(),AdminFlow.init(),Prize.init()]);await initializePrizeDefaults({mongoose,Product,Prize});await inventory.expire();const holdTimer=setInterval(()=>inventory.expire().catch(e=>console.error('Reservation cleanup failed',e.name)),60000);holdTimer.unref();
+async function connectMongo(retries=30){
+  let last;
+  for(let i=1;i<=retries;i++){
+    try{
+      await mongoose.connect(env.DATABASE_URL,{dbName:env.DATABASE_NAME,serverSelectionTimeoutMS:5_000});
+      await mongoose.connection.db.admin().command({ping:1});
+      console.log('MongoDB connected');
+      return;
+    }catch(error){
+      last=error;
+      console.error(`MongoDB connect attempt ${i}/${retries} failed:`,error.name||error.message);
+      await new Promise(r=>setTimeout(r,2_000));
+    }
+  }
+  throw last||new Error('MongoDB connection failed');
+}
+await connectMongo();
+await User.updateMany({isGuest:{$exists:false}},{$set:{isGuest:false}});
+for(const user of await User.find({$or:[{referralCode:{$exists:false}},{referralCode:null}]}).select('_id').limit(1000)){
+  await User.updateOne({_id:user._id},{$set:{referralCode:referralCode()}});
+}
+await Promise.all([Hold.init(),Promo.init(),Media.init(),AdminFlow.init(),Prize.init()]);
+try{await initializePrizeDefaults({mongoose,Product,Prize})}catch(e){console.error('Prize defaults init skipped',e.name||e.message)}
+await inventory.expire().catch(e=>console.error('Initial reservation cleanup failed',e.name));
+const holdTimer=setInterval(()=>inventory.expire().catch(e=>console.error('Reservation cleanup failed',e.name)),60000);holdTimer.unref();
 const port=Number(env.PORT||3000);const server=app.listen(port,'0.0.0.0',()=>console.log(`API listening on ${port}`));
 if(bot&&env.TELEGRAM_WEBHOOK_URL&&!env.TELEGRAM_WEBHOOK_SECRET)throw new Error('TELEGRAM_WEBHOOK_SECRET is required when webhook mode is enabled');if(bot)bot.telegram.setChatMenuButton({menuButton:{type:'default'}}).catch(e=>console.error('Telegram admin menu reset failed',e.name));if(clientBot&&env.TELEGRAM_WEB_APP_URL)clientBot.telegram.setChatMenuButton({menuButton:{type:'web_app',text:'Открыть магазин',web_app:{url:env.TELEGRAM_WEB_APP_URL}}}).catch(e=>console.error('Telegram client menu setup failed',e.name));if(bot&&env.TELEGRAM_WEBHOOK_URL){await bot.telegram.setWebhook(env.TELEGRAM_WEBHOOK_URL,{secret_token:env.TELEGRAM_WEBHOOK_SECRET});app.post(new URL(env.TELEGRAM_WEBHOOK_URL).pathname,bot.webhookCallback({secretToken:env.TELEGRAM_WEBHOOK_SECRET}))}else if(bot)bot.launch().catch(e=>console.error('admin bot startup failed',e.name));if(clientBot)clientBot.launch().catch(e=>console.error('client bot startup failed',e.name));
 for(const id of (env.TELEGRAM_ADMIN_IDS||'').split(',').map(s=>s.trim()).filter(Boolean)){await User.updateOne({telegramId:id},{$set:{role:'SUPER_ADMIN'}},{upsert:true,setDefaultsOnInsert:true})}

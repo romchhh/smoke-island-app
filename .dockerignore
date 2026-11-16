@@ -6,10 +6,10 @@
 **/.env
 **/.env.*
 !**/.env.example
-secrets
+!**/.env.docker.example
 *.log
 **/*.log
-agent-transcripts
-SHA256SUMS
-docs
+.DS_Store
 scripts
+deploy
+README.md

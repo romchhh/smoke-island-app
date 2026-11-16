@@ -39,13 +39,22 @@ Elf Duck на тому ж сервері: `elfduck-api` → 3000, `elfduck` → 
 ```bash
 cp .env.docker.example .env.docker
 # заповни секрети
-docker compose --env-file .env.docker up -d --build
-docker compose --env-file .env.docker --profile seed run --rm seed
+npm run docker:build    # BuildKit, кеш npm/apt
+npm run docker:up       # старт без примусового rebuild
+npm run docker:seed
 ```
 
 Сайт: http://localhost:8080 · health: http://localhost:8080/api/health
 
-Prod: у `.env.docker` постав `NODE_ENV=production` і HTTPS URL з `deploy/production.env.example`.
+Перезбірка:
+- `npm run docker:rebuild` — api + web
+- `npm run docker:rebuild:api` / `docker:rebuild:web` — лише змінений сервіс
+
+Образи: `smoke-island-api:local` / `smoke-island-web:local` (seed бере api-образ, без другого білду).
+
+Prod: у `.env.docker` постав `NODE_ENV=production` і **лише HTTPS** URL з `deploy/production.env.example` (інакше API впаде на старті).
+
+Якщо API `unhealthy` після першого запуску Mongo: `docker compose logs api` і за потреби скинь volume (`docker compose down -v`) лише на порожній dev-базі.
 
 ## Локально без Docker
 
@@ -86,7 +95,9 @@ Telegram OIDC: `…/api/v1/auth/telegram/callback`
 ## Корисні команди
 
 ```bash
+npm run docker:build
 npm run docker:up
+npm run docker:rebuild:api
 npm run docker:seed
 npm run docker:logs
 npm run docker:down

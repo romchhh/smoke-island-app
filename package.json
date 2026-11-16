@@ -13,10 +13,9 @@
     "docker:build": "DOCKER_BUILDKIT=1 docker compose --env-file .env.docker build",
     "docker:rebuild": "DOCKER_BUILDKIT=1 docker compose --env-file .env.docker up -d --build",
     "docker:rebuild:api": "DOCKER_BUILDKIT=1 docker compose --env-file .env.docker up -d --build --no-deps api",
-    "docker:rebuild:web": "DOCKER_BUILDKIT=1 docker compose --env-file .env.docker up -d --build --no-deps web",
     "docker:seed": "docker compose --env-file .env.docker --profile seed run --rm seed",
     "docker:down": "docker compose --env-file .env.docker down",
-    "docker:logs": "docker compose --env-file .env.docker logs -f api web",
+    "docker:logs": "docker compose --env-file .env.docker logs -f api",
     "test": "npm --prefix backend test",
     "test:integration": "npm --prefix backend run test:integration"
   },

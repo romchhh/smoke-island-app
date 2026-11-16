@@ -1,5 +1,6 @@
 # Host ports (same VPS as elf-duck-shop 3000–3006):
-#   8080 web · 3010 API · 3017 MongoDB
+#   3010 API · 3017 MongoDB
+# Nginx is NOT in Compose — use host nginx (deploy/nginx.conf.example).
 name: smoke-island
 
 services:
@@ -40,22 +41,22 @@ services:
       PORT: 3000
       DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/?replicaSet=rs0}
       DATABASE_NAME: ${DATABASE_NAME:-SmokeIslandLocal}
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
-      BACKEND_URL: ${BACKEND_URL:-http://localhost:8080}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080,http://127.0.0.1:8080}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8765}
+      BACKEND_URL: ${BACKEND_URL:-http://localhost:3010}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8765,http://127.0.0.1:8765}
       JWT_SECRET: ${JWT_SECRET:-change-me-docker-jwt-secret-32chars-min}
       SESSION_SECRET: ${SESSION_SECRET:-change-me-docker-session-secret-32chars}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
-      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/api/v1/auth/google/callback}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:3010/api/v1/auth/google/callback}
       TELEGRAM_ADMIN_BOT_TOKEN: ${TELEGRAM_ADMIN_BOT_TOKEN:-}
       TELEGRAM_ADMIN_IDS: ${TELEGRAM_ADMIN_IDS:-}
       TELEGRAM_CLIENT_BOT_TOKEN: ${TELEGRAM_CLIENT_BOT_TOKEN:-}
       TELEGRAM_CLIENT_BOT_USERNAME: ${TELEGRAM_CLIENT_BOT_USERNAME:-}
-      TELEGRAM_WEB_APP_URL: ${TELEGRAM_WEB_APP_URL:-http://localhost:8080}
+      TELEGRAM_WEB_APP_URL: ${TELEGRAM_WEB_APP_URL:-http://localhost:8765}
       TELEGRAM_OIDC_CLIENT_ID: ${TELEGRAM_OIDC_CLIENT_ID:-}
       TELEGRAM_OIDC_CLIENT_SECRET: ${TELEGRAM_OIDC_CLIENT_SECRET:-}
-      TELEGRAM_OIDC_REDIRECT_URI: ${TELEGRAM_OIDC_REDIRECT_URI:-http://localhost:8080/api/v1/auth/telegram/callback}
+      TELEGRAM_OIDC_REDIRECT_URI: ${TELEGRAM_OIDC_REDIRECT_URI:-http://localhost:3010/api/v1/auth/telegram/callback}
       TELEGRAM_ORDERS_CHAT_ID: ${TELEGRAM_ORDERS_CHAT_ID:-}
       TELEGRAM_SUPPORT_CHAT_ID: ${TELEGRAM_SUPPORT_CHAT_ID:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
@@ -74,21 +75,6 @@ services:
       timeout: 5s
       retries: 12
       start_period: 60s
-
-  web:
-    image: smoke-island-web:local
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    depends_on:
-      api:
-        condition: service_healthy
-    ports:
-      - "8080:80"
-    volumes:
-      # Live frontend + certbot webroot (−w ./frontend). Recreate web after changing this.
-      - ./frontend:/usr/share/nginx/html:ro
 
   seed:
     profiles: ["seed"]

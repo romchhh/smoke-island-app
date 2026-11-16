@@ -1,7 +1,5 @@
-# Host nginx (port 80/443) in front of Docker.
-# Static + ACME from the project frontend dir; /api → API container.
-#
-# Adjust root if the repo lives elsewhere, e.g. /root/smoke-island/frontend
+# Host nginx (80/443). Docker Compose runs only api (:3010) + mongo (:3017).
+# Adjust root if the repo lives elsewhere.
 
 server {
     listen 80;
@@ -30,6 +28,5 @@ server {
     location = /config.js { add_header Cache-Control "no-cache"; }
     location / { try_files $uri $uri/ /index.html; }
 
-    location ~* ^/(Dockerfile|nginx\.conf|\.dockerignore)$ { deny all; }
     location ~ /\. { deny all; }
 }

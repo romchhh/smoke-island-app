@@ -77,21 +77,13 @@ function mobileSection(title, subtitle = "", back = false) {
   return `<div class="m-section"><div class="m-section-title">${back ? '<a class="m-back-circle" href="#home" aria-label="Wróć do kategorii">❮</a>' : ""}<h2 class="m-pill">${title}</h2></div>${subtitle ? `<p>${subtitle}</p>` : ""}</div>`;
 }
 function mobileHome() {
-  const categories = [...new Set(products.map((p) => p[2]).filter(Boolean))];
+  const categories = homeCategoryList();
   const featured = products.slice(0, 6);
-  return `<div class="hero-grid m-home-banners"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div>${mobileSection("Kategorie", "Wybierz kategorię i zamów w kilka minut!")}<section class="m-categories" aria-label="Kategorie">${
+  return `<div class="m-home"><div class="hero-grid m-home-banners"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div>${mobileSection("Kategorie", "Wybierz kategorię i zamów w kilka minut!")}<section class="m-categories" aria-label="Kategorie">${
     categories
-      .map((cat) => {
-        const item = products.find((p) => p[2] === cat);
-        const media = categoryImages[cat]
-          ? categoryMedia(categoryImages[cat], cat)
-          : item
-            ? productArt(item[0], cat, "category-media")
-            : "";
-        return `<a class="category-tile" href="#catalog" data-category="${esc(cat)}" aria-label="Kategoria ${esc(cat)}">${media}<span class="category-shade" aria-hidden="true"></span><span class="category-copy"><strong>${esc(cat)}</strong><span class="category-pill"><span>Zobacz produkty</span><i aria-hidden="true">↗</i></span></span></a>`;
-      })
+      .map((cat) => categoryTileHTML(cat, "category-tile"))
       .join("") || '<p class="muted">Katalog ładuje się…</p>'
-  }</section>${mobileSection("Popularne", "Najczęściej wybierane produkty")}<div class="product-grid home-product-grid m-home-products">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div>${mobileSection("Informacja", "Promocje, nowości i ważne informacje!")}<div class="m-promo-carousel" aria-label="Promocje"><a href="#catalog"><img src="assets/mobile-sale-custom.png" alt="Gorąca wyprzedaż"></a><a class="m-promo-news" href="#catalog"><img src="assets/mobile-about-custom.png" alt="O nas — Smoke Island"></a></div>`;
+  }</section>${mobileSection("Popularne produkty", "Najczęściej wybierane produkty")}<div class="product-grid home-product-grid m-home-products">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div>${mobileSection("Informacja", "Promocje, nowości i ważne informacje!")}<div class="m-promo-carousel" aria-label="Promocje"><a href="#catalog"><img src="assets/mobile-sale-custom.png" alt="Gorąca wyprzedaż"></a><a class="m-promo-news" href="#catalog"><img src="assets/mobile-about-custom.png" alt="O nas — Smoke Island"></a></div></div>`;
 }
 const mobilePriceRail = (qty = 1) => {
   const tiers = [1, 3, 5, 10, 20, 50, 100];

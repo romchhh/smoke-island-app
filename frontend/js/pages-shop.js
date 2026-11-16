@@ -42,20 +42,12 @@ function flavorSwatch(name, index = 0) {
 
 
 function home() {
-  const categories = [...new Set(products.map((p) => p[2]).filter(Boolean))];
+  if (isMobile()) return mobileHome();
+  const categories = homeCategoryList();
   const featured = products.slice(0, 8);
   return `<div class="page home-page"><div class="hero-grid"><a class="hero-main" href="#catalog" aria-label="Gorąca wyprzedaż NOVA">${img("hero-sale", "GORĄCA WYPRZEDAŻ NOVA", "", { eager: true })}</a><a class="hero-small" href="#catalog" aria-label="Nowości">${img("hero-news", "NOWOŚCI W SMOKE ISLAND", "", { eager: true })}</a><a class="hero-small" href="#catalog">${img("hero-delivery", `DARMOWA DOSTAWA · Od ${FREE_SHIPPING} zł`, "", { eager: true })}</a></div><div class="section-row"><h2 class="section-title">Kategorie</h2><a class="section-link" href="#catalog">Wszystkie produkty ⟶</a></div><div class="categories">${
-    categories
-      .map((name) => {
-        const item = products.find((p) => p[2] === name);
-        const media = categoryImages[name]
-          ? categoryMedia(categoryImages[name], name)
-          : item
-            ? productArt(item[0], name, "category-media")
-            : "";
-        return `<a class="category category-tile" href="#catalog" data-category="${esc(name)}" aria-label="Kategoria ${esc(name)}">${media}<span class="category-shade" aria-hidden="true"></span><span class="category-copy"><strong>${esc(name)}</strong><span class="category-pill"><span>Zobacz produkty</span><i aria-hidden="true">↗</i></span></span></a>`;
-      })
-      .join("") || '<p class="muted">Katalog ładuje się…</p>'
+    categories.map((cat) => categoryTileHTML(cat)).join("") ||
+    '<p class="muted">Katalog ładuje się…</p>'
   }</div><div class="section-row"><h2 class="section-title">Popularne produkty</h2><a class="section-link" href="#catalog">Zobacz wszystkie ⟶</a></div><div class="product-grid home-product-grid">${featured.map(productCard).join("") || '<p class="muted">Katalog ładuje się…</p>'}</div></div>`;
 }
 
@@ -89,6 +81,7 @@ function catalogPagination(page, total) {
   return `<nav class="pagination" aria-label="Strony katalogu"><button data-page="${Math.max(1, page - 1)}" ${page === 1 ? "disabled" : ""} aria-label="Poprzednia strona">‹</button>${visible.map((n, i) => `${i && n - visible[i - 1] > 1 ? '<span class="pagination-gap" aria-hidden="true">…</span>' : ""}<button data-page="${n}" class="${page === n ? "active" : ""}" ${page === n ? 'aria-current="page"' : ""} aria-label="Strona ${n}">${n}</button>`).join("")}<button data-page="${Math.min(total, page + 1)}" ${page === total ? "disabled" : ""} aria-label="Następna strona">›</button></nav>`;
 }
 function catalog() {
+  if (isMobile()) return mobileCatalog();
   const categories = categoryOptions();
   let list = products.filter(
     (p) => category === "Wszystkie" || p[2] === category,

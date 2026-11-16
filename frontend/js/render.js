@@ -60,6 +60,10 @@ function render() {
   if (!app) return;
   const body = pages[route]();
   const mobileChromeRoutes = new Set([
+    "home",
+    "home-old",
+    "catalog",
+    "catalog-old",
     "product",
     "mix",
     "cart",
@@ -70,6 +74,8 @@ function render() {
     "bonus",
     "opening",
     "order-accepted",
+    "referrals",
+    "contact",
   ]);
   if (mobile && mobileChromeRoutes.has(route)) {
     const compact = route === "product" || route === "mix";

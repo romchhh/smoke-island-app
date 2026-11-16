@@ -45,12 +45,70 @@ const categoryMedia = (src, alt = "") => {
   if (!src) return "";
   if (/^https?:\/\/|^\//i.test(src))
     return `<img src="${esc(src)}" alt="${esc(alt)}" class="category-media" draggable="false" loading="lazy" decoding="async">`;
+  if (/\.(png|jpe?g|webp|gif)$/i.test(src))
+    return `<img src="${esc(src)}" alt="${esc(alt)}" class="category-media" draggable="false" loading="lazy" decoding="async">`;
   return img(src, alt, "category-media");
 };
 const categoryImages = {
-  Jednorazówki: "/assets/category-disposable.png",
-  Liquidy: "/assets/category-liquids.png",
-  Pody: "/assets/category-pods.jpg",
-  Cartidges: "/assets/category-cartridges.webp",
+  Jednorazówki: "assets/category-disposable.png",
+  Liquidy: "assets/category-liquids.png",
+  Pody: "assets/category-pods.jpg",
+  Cartidges: "assets/category-cartridges.webp",
+  Cartridges: "assets/category-cartridges.webp",
 };
+const HOME_CATEGORIES = [
+  {
+    name: "Jednorazówki",
+    image: "assets/category-disposable.png",
+    blurb: "Przeglądaj dostępne produkty w kategorii Jednorazówki.",
+  },
+  {
+    name: "Pody",
+    image: "assets/category-pods.jpg",
+    blurb: "Przeglądaj dostępne produkty w kategorii Pody.",
+  },
+  {
+    name: "Liquidy",
+    image: "assets/category-liquids.png",
+    blurb: "Przeglądaj dostępne produkty w kategorii Liquidy.",
+  },
+  {
+    name: "Cartidges",
+    image: "assets/category-cartridges.webp",
+    blurb: "Przeglądaj dostępne produkty w kategorii Cartidges.",
+    aliases: ["Cartridges", "Wkłady"],
+  },
+];
+function homeCategoryList() {
+  const present = new Set(products.map((p) => p[2]).filter(Boolean));
+  const curated = HOME_CATEGORIES.filter(
+    (c) =>
+      !present.size ||
+      present.has(c.name) ||
+      (c.aliases || []).some((a) => present.has(a)),
+  );
+  const known = new Set(
+    curated.flatMap((c) => [c.name, ...(c.aliases || [])]),
+  );
+  const extras = [...present]
+    .filter((name) => !known.has(name))
+    .map((name) => ({
+      name,
+      image: categoryImages[name] || "",
+      blurb: `Przeglądaj dostępne produkty w kategorii ${name}.`,
+    }));
+  return curated.length ? [...curated, ...extras] : extras;
+}
+function categoryTileHTML(cat, cls = "category category-tile") {
+  const item = products.find(
+    (p) =>
+      p[2] === cat.name || (cat.aliases || []).includes(p[2]),
+  );
+  const media = cat.image
+    ? categoryMedia(cat.image, cat.name)
+    : item
+      ? productArt(item[0], cat.name, "category-media")
+      : "";
+  return `<a class="${cls}" href="#catalog" data-category="${esc(cat.name)}" aria-label="Kategoria ${esc(cat.name)}">${media}<span class="category-shade" aria-hidden="true"></span><span class="category-copy"><strong>${esc(cat.name)}</strong><p>${esc(cat.blurb || `Przeglądaj dostępne produkty w kategorii ${cat.name}.`)}</p><span class="category-pill"><span>Zobacz produkty</span><i aria-hidden="true">↗</i></span></span></a>`;
+}
 

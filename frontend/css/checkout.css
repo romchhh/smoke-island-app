@@ -1,0 +1,1052 @@
+/* checkout.css */
+.filled-cart .suggestion-progress .track {
+  height: 0.48rem;
+  background: #20223d;
+}
+.filled-cart .suggestion-progress .track-fill {
+  background: linear-gradient(90deg, #2359c8 0%, #275ac2 55%, #222742 100%);
+}
+.filled-cart .suggestion-progress > span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #aaa7af;
+}
+.filled-cart .suggestion p {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #a8a6af;
+  margin-top: 0.7rem;
+}
+.filled-cart .suggestion p .green {
+  font-weight: 400;
+}
+.filled-cart .suggestion a {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #a877eb;
+}
+.filled-cart .cart-aside > .cart-continue {
+  line-height: 1;
+  gap: 1.7rem;
+}
+.filled-cart .cart-continue > svg {
+  width: 1.9rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  color: #509dff;
+  display: block;
+}
+.filled-cart .cart-continue > .cart-continue-label {
+  font: inherit;
+  line-height: 1;
+  color: inherit;
+  display: block;
+}
+.filled-cart .cart-shipping-progress {
+  display: block;
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+.filled-cart .cart-shipping-progress .section-row {
+  margin-bottom: 1.6rem;
+}
+.cart-shipping-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 4rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.1rem;
+  color: #bfc1cc;
+  font-weight: 600;
+}
+.cart-shipping-labels > span:first-child {
+  color: #5d9eff;
+}
+.cart-shipping-bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cart-shipping-track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 0.5rem;
+  background: #111a2d;
+  border-radius: 1rem;
+}
+.cart-shipping-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2149cf, #64afff 75%, #334661);
+}
+.cart-shipping-truck {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -56%);
+  font-size: 1.35rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.cart-free {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  border: 0;
+  border-radius: 0.65rem;
+  background: #0e3e39;
+  color: #00f7aa;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1;
+  flex-shrink: 0;
+}
+@media (min-width: 721px) and (max-width: 1100px) {
+  .filled-cart .smart-cart-title {
+    gap: 0.7rem;
+  }
+  .filled-cart .suggestion {
+    gap: 1.1rem;
+  }
+  .filled-cart .suggestion p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Order summary page: match reference hierarchy and spacing. */
+.checkout-page .page-head {
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+.checkout-page .page-head h1 {
+  font-size: 2.25rem;
+  font-weight: 500;
+}
+.checkout-page .page-head > div > p {
+  font-size: 1rem;
+  color: #aeb1b9;
+  margin-top: 0.55rem;
+}
+.checkout-page .points-banner {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  max-width: 45%;
+  padding: 0.7rem 1.3rem;
+  min-height: 6.3rem;
+  border: 1px solid #870ab3;
+  border-top: 2px solid #a31ede;
+  border-radius: 1.2rem;
+  background: radial-gradient(ellipse at 0 0, #3b0e5266, transparent 65%),
+    linear-gradient(110deg, #130c20, #20102f);
+  box-shadow: inset 0 4px 12px #8f2caf22;
+  text-align: left;
+}
+.checkout-page .points-banner > img {
+  width: 5rem;
+  height: 4.7rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.checkout-page .points-banner p {
+  font-size: 1.4rem;
+  margin: 0 0 0.45rem;
+  color: #c9c5d3;
+  white-space: nowrap;
+  line-height: 1.25;
+}
+.checkout-page .points-banner .purple {
+  color: #cf42ff;
+}
+.checkout-page .points-banner small {
+  font-size: 1rem;
+  color: #9f98aa;
+}
+.checkout-page .checkout-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+  align-items: start;
+}
+.checkout-page .summary-panel {
+  padding: 1.8rem 2.5rem 1.4rem;
+  border-radius: 1.25rem;
+  border-color: #123f82;
+  background: radial-gradient(ellipse at 15% 10%, #021a3670, transparent 55%),
+    #010307;
+}
+.checkout-page .summary-panel:first-child {
+  background-image: linear-gradient(#0e31522b 1px, transparent 1px),
+    linear-gradient(90deg, #0e31522b 1px, transparent 1px),
+    radial-gradient(ellipse at 15% 0, #031631, #010307 70%);
+  background-size:
+    5.2rem 3rem,
+    5.2rem 3rem,
+    auto;
+  background-repeat: repeat, repeat, no-repeat;
+}
+.checkout-page .checkout-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin-bottom: 1.1rem;
+  line-height: 1.25;
+  color: #c3c5cd;
+}
+.checkout-page .checkout-title > .icon {
+  width: 1.5rem;
+  height: 1.9rem;
+}
+.checkout-page .checkout-title > .blue {
+  font-size: 1.3rem !important;
+  font-weight: 400;
+  color: #6fa4ff;
+}
+.checkout-page .money-row {
+  font-size: 1.3rem;
+  color: #9fa1aa;
+  margin: 1rem 0 1.4rem;
+}
+.checkout-page .money-row b {
+  color: #76a3ff;
+  font-size: 1.35rem;
+}
+.checkout-page .cart-info {
+  vertical-align: middle;
+}
+.checkout-page .checkout-shipping .shipping-progress {
+  display: block;
+  margin: 1.4rem 0 1rem;
+  padding: 1.15rem 1.7rem 1.1rem;
+  border: 1px solid #2147c8;
+  border-radius: 1.5rem;
+  background: linear-gradient(120deg, #06132d, #07142d);
+}
+.checkout-page .shipping-progress .section-row {
+  font-size: 1rem;
+  color: #969eae;
+  margin-bottom: 1.2rem;
+}
+.checkout-page .shipping-progress .section-row strong {
+  font-size: 1.3rem;
+}
+.checkout-page .cart-shipping-labels {
+  font-size: 1rem;
+  margin-bottom: 0.7rem;
+}
+.checkout-page .cart-shipping-track {
+  height: 0.4rem;
+}
+.checkout-page .cart-free {
+  border-radius: 0.45rem;
+  font-size: 0.75rem;
+}
+.checkout-page .cart-shipping-truck {
+  font-size: 1.2rem;
+}
+.checkout-page .checkout-promo .promo-field {
+  position: relative;
+  padding: 0.85rem 1.6rem;
+  gap: 1.2rem;
+  margin: 0.9rem 0 1.3rem;
+  min-height: 4.1rem;
+  border-color: #0b326c;
+  border-radius: 1.25rem;
+  background: #010b18;
+  box-shadow: inset 0 0 8px #163a9b55;
+}
+.checkout-page .promo-field > span {
+  font-size: 0;
+  width: 1.8rem;
+  height: 1.3rem;
+  background: url("assets/bonus-ticket.webp") center/contain no-repeat;
+  flex-shrink: 0;
+}
+.checkout-page .promo-field label {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #87a5c7;
+  white-space: nowrap;
+}
+.checkout-page .promo-field input {
+  flex: 1;
+  width: 30%;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 0.5rem 1.8rem 0.5rem 0.3rem;
+  font-size: 0.85rem;
+}
+.checkout-page .promo-field input::placeholder {
+  color: transparent;
+}
+.checkout-page .promo-field input:focus {
+  outline: 1px solid #2460a0;
+}
+.checkout-page .promo-field input:focus::placeholder {
+  color: #9399a8;
+}
+.checkout-page .promo-field button {
+  position: absolute;
+  right: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #90aac5;
+  font-size: 1.5rem;
+}
+.checkout-page .money-row.total {
+  font-size: 1.7rem;
+  color: #c4c5cd;
+  margin: 1.3rem 0.4rem 1.8rem;
+}
+.checkout-page .money-row.total b {
+  font-size: 1.9rem;
+}
+.checkout-page .contact-panel {
+  padding: 1.1rem 1.15rem 1.2rem;
+  border: 1px solid #174178;
+  border-radius: 1.3rem;
+  background: linear-gradient(120deg, #00070e, #010305);
+  margin: 0;
+}
+.checkout-page .contact-panel > header {
+  padding: 0 0.7rem;
+  margin: 0 0 1.2rem;
+  border: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3rem;
+  color: #71a8ff;
+}
+.checkout-page .contact-panel > header small {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #bcbfc6;
+}
+.checkout-page .contact-fields {
+  display: grid;
+  gap: 0.8rem;
+}
+.checkout-page .contact-fields label {
+  position: relative;
+  display: block;
+}
+.checkout-page .contact-fields label:after {
+  content: "";
+  position: absolute;
+  right: 1.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid #8b8f98;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.checkout-page
+  .contact-fields
+  label:has(input:valid:not(:placeholder-shown)):after {
+  background: #0c456f;
+  border-color: #5aabff;
+}
+.checkout-page .contact-fields input {
+  width: 100%;
+  height: 3.5rem;
+  border: 1px solid #0d315e;
+  border-radius: 1rem;
+  background: linear-gradient(110deg, #0b0f18, #060a0d);
+  padding: 0.8rem 3.8rem 0.8rem 1.8rem;
+  color: #d1d3db;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.checkout-page .contact-fields input::placeholder {
+  color: #a9aab2;
+  opacity: 1;
+  font-size: 1rem;
+}
+.checkout-page .checkout-delivery {
+  padding: 1.8rem 2.5rem 1.9rem;
+  background: radial-gradient(ellipse at 0 0, #03132a88, transparent 60%),
+    linear-gradient(110deg, #000, #02070f);
+}
+.checkout-delivery-icon {
+  display: flex;
+  align-items: center;
+  width: 3.1rem;
+  height: 2.5rem;
+  color: #a2adbc;
+}
+.checkout-delivery-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.checkout-page .checkout-delivery > .muted {
+  font-size: 1.35rem !important;
+  margin-top: 0.7rem;
+  color: #9b9da7;
+}
+.checkout-page .delivery-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.3rem;
+  width: 100%;
+  min-height: 11.7rem;
+  padding: 2rem 3.6rem;
+  margin: 2.7rem 0 3.5rem;
+  border: 1px dashed #0a4a8a;
+  border-radius: 1.5rem;
+  background: #020a16;
+  text-align: center;
+}
+.checkout-page .delivery-empty > div {
+  flex: 1;
+}
+.checkout-page .delivery-empty strong {
+  display: block;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #c4c5cb;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.checkout-page .delivery-empty span {
+  display: block;
+  font-size: 1.5rem;
+  color: #999ba4;
+  line-height: 1.3;
+}
+.checkout-page .delivery-empty > b {
+  color: #1469e5;
+  font-size: 3rem;
+  font-weight: 300;
+}
+.checkout-page .checkout-confirm {
+  min-height: 6rem;
+  margin: 0;
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 500;
+  border-radius: 1.4rem;
+  background: radial-gradient(ellipse at 0 0, #073c95, transparent 38%),
+    radial-gradient(ellipse at 100% 100%, #063781, transparent 35%), #020b1d;
+}
+.checkout-page #order-status:empty {
+  display: none;
+}
+.checkout-page .delivery-option {
+  margin-top: 0;
+}
+.checkout-page .checkout-delivery > .text-btn {
+  margin: 1rem 0 1.5rem;
+}
+.checkout-page .checkout-delivery .contact-panel {
+  margin: 1rem 0;
+}
+.checkout-page .checkout-delivery .info-note {
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 721px) and (max-width: 1100px) {
+  .checkout-page .summary-panel,
+  .checkout-page .checkout-delivery {
+    padding: 1.5rem;
+  }
+  .checkout-page .points-banner {
+    max-width: 48%;
+    padding: 0.8rem;
+    gap: 0.6rem;
+  }
+  .checkout-page .points-banner p {
+    font-size: 1.05rem;
+    white-space: normal;
+  }
+  .checkout-page .points-banner small {
+    font-size: 0.8rem;
+  }
+  .checkout-page .points-banner > img {
+    width: 3.5rem;
+  }
+  .checkout-page .delivery-empty {
+    padding: 1.5rem;
+    min-height: 11rem;
+  }
+  .checkout-page .delivery-empty strong {
+    font-size: 1.6rem;
+  }
+  .checkout-page .delivery-empty span {
+    font-size: 1.2rem;
+  }
+  .checkout-page .checkout-confirm {
+    font-size: 1.4rem;
+  }
+  .checkout-page .promo-field label {
+    font-size: 0.85rem;
+  }
+  .checkout-page .contact-fields input {
+    padding-left: 1rem;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 720px) {
+  .checkout-page .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout-page .page-head {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .checkout-page .points-banner {
+    max-width: none;
+    width: 100%;
+  }
+  .checkout-page .points-banner p {
+    font-size: 1.05rem;
+    white-space: normal;
+  }
+  .checkout-page .points-banner small {
+    font-size: 0.8rem;
+  }
+  .checkout-page .points-banner > img {
+    width: 3rem;
+  }
+  .checkout-page .summary-panel,
+  .checkout-page .checkout-delivery {
+    padding: 1.2rem;
+  }
+  .checkout-page .delivery-empty {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    min-height: 10rem;
+  }
+  .checkout-page .delivery-empty strong {
+    font-size: 1.6rem;
+  }
+  .checkout-page .delivery-empty span {
+    font-size: 1.1rem;
+  }
+  .checkout-page .checkout-confirm {
+    font-size: 1.2rem;
+    min-height: 4.5rem;
+  }
+}
+
+/* Checkout supplied artwork and refined panel treatment. */
+.checkout-page {
+  position: relative;
+  padding-top: 1.6rem;
+}
+.checkout-page > .breadcrumb {
+  margin: 0 0 1.4rem;
+  font-size: 1rem;
+}
+.checkout-page .page-head {
+  min-height: 4.4rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-right: 43%;
+}
+.checkout-page .page-head .points-banner {
+  position: absolute;
+  top: 1.6rem;
+  right: 2rem;
+  width: 36rem;
+  max-width: 43%;
+  gap: 1rem;
+  padding: 0.55rem 1.3rem;
+  min-height: 6.4rem;
+}
+.checkout-page .points-banner > img {
+  width: 5rem;
+  height: 5rem;
+  filter: drop-shadow(0 0 6px #a42bff66);
+}
+.checkout-page .points-banner p {
+  font-size: 1.3rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.checkout-page .points-banner small {
+  font-size: 1rem;
+  font-weight: 400;
+}
+.checkout-page .summary-panel:first-child {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 15% 0, #031631, #010307 65%);
+}
+.checkout-page .summary-panel:first-child:before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 15rem;
+  pointer-events: none;
+  z-index: -1;
+  background-image: linear-gradient(#123c662e 1px, transparent 1px),
+    linear-gradient(90deg, #123c662e 1px, transparent 1px);
+  background-size: 5.2rem 3rem;
+  mask-image: linear-gradient(#000 0%, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(#000 0%, #000 70%, transparent 100%);
+}
+.checkout-page .cart-shipping-truck {
+  transform: translate(-50%, -56%) scaleX(-1);
+}
+.checkout-page .cart-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin-left: 0.6rem;
+  border: 0;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #c5c9d0;
+  background: linear-gradient(#303a4a, #111a29);
+  box-shadow: inset 0 1px 2px #ffffff0a;
+  vertical-align: middle;
+}
+.checkout-contact-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 400;
+}
+.checkout-contact-caption > img {
+  width: 1.2rem;
+  height: 1.6rem;
+  object-fit: contain;
+}
+.checkout-delivery-fields .checkout-contact-caption > img {
+  width: 2.5rem;
+  height: 1.8rem;
+}
+.checkout-page .field-count-total {
+  color: #78a9ff;
+}
+.checkout-page .checkout-delivery-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.68;
+}
+.checkout-page .checkout-delivery .delivery-option {
+  position: relative;
+  min-height: 11.6rem;
+  padding: 1.8rem 6rem 1.8rem 2.5rem;
+  border: 1px solid #1d65ad;
+  border-top-color: #a6bfd7;
+  border-right-color: #a6bfd7;
+  border-radius: 2.2rem;
+  background: radial-gradient(ellipse at 0 0, #12326299, transparent 75%),
+    linear-gradient(120deg, #04142b, #030b16);
+  box-shadow: inset 0 3px 6px #91bbf155;
+  align-items: center;
+}
+.checkout-page .checkout-delivery .delivery-option .option-main {
+  min-width: 0;
+}
+.checkout-page .delivery-option .option-main strong {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.checkout-page .delivery-option:not(.zabka) .carrier {
+  display: inline-flex;
+  width: 3.5rem;
+  height: 2.5rem;
+  font-size: 0;
+  background: #ffda00 url("assets/inpost.webp") center/contain no-repeat;
+  border-radius: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+.checkout-page .delivery-option .option-main p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #a9b1c1;
+  margin-top: 1.1rem;
+}
+.checkout-page .checkout-delivery .delivery-option .cost {
+  display: none;
+}
+.checkout-page .delivery-option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  right: 2.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  padding: 0;
+  border: 2px solid #164aff;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+}
+.checkout-page .delivery-option input[type="radio"]:checked {
+  background: radial-gradient(circle, #22b7ff 0 32%, transparent 35%);
+}
+.checkout-page .delivery-option .fast {
+  top: -1.25rem;
+  right: 1rem;
+  left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.3rem;
+  border: 1px solid #722498;
+  border-top-color: #9761b5;
+  border-radius: 1.1rem;
+  background: linear-gradient(#4d2b6a, #210e37);
+  box-shadow: inset 0 2px 5px #c097dc55;
+  color: #e9e2f6;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.checkout-page .checkout-delivery > .text-btn {
+  display: none;
+}
+.checkout-page .checkout-delivery .checkout-delivery-fields {
+  margin: 2.1rem 0 1.5rem;
+  padding: 1.4rem 1.5rem 1.8rem;
+  background: linear-gradient(115deg, #01060c, #030912);
+  border-color: #133a76;
+  border-radius: 1.6rem;
+}
+.checkout-page .checkout-delivery-fields > header {
+  margin-bottom: 1.8rem;
+  font-size: 1.5rem;
+}
+.checkout-page .checkout-labeled-field {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 3.5rem 0 1.9rem;
+  min-height: 5rem;
+  border: 1px solid #123d78;
+  border-radius: 1.2rem;
+  background: radial-gradient(ellipse at 0 100%, #09214b55, transparent 60%),
+    linear-gradient(#080e16, #050a10);
+}
+.checkout-page .checkout-labeled-field > span {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #c0c3cd;
+  flex-shrink: 0;
+  margin-right: 1.25rem;
+}
+.checkout-page .checkout-labeled-field input {
+  padding: 0.8rem 0;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 4rem;
+  border: 0 !important;
+  background: transparent;
+  border-radius: 0;
+  font-size: 1.35rem;
+  font-weight: 400;
+  box-shadow: none;
+  color: #aeb2bd;
+}
+.checkout-page .checkout-labeled-field input:focus {
+  outline: 0;
+}
+.checkout-page .checkout-labeled-field:focus-within {
+  outline: 1px solid #3e89e9;
+  outline-offset: 2px;
+}
+.checkout-page .checkout-labeled-field input::placeholder {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #9da0a9;
+}
+.checkout-page
+  .contact-fields
+  label:has(input:valid:not(:placeholder-shown)):after {
+  border: 1px solid #1550ff;
+  background: radial-gradient(circle, #21b6ff 0 35%, transparent 40%);
+}
+.checkout-page .checkout-delivery .info-note {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 1.4rem 1.9rem;
+  margin: 1.5rem 0;
+  border: 1px solid #142544;
+  border-radius: 1.3rem;
+  box-shadow: inset 0 2px 5px #627bac22;
+  background: #030a19;
+  color: #c2c4cf;
+  font-size: 1.35rem;
+  line-height: 1.4;
+}
+.checkout-page .info-note small {
+  display: block;
+  margin-top: 0.4rem;
+  color: #9d9fac;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+.checkout-help-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2.5rem;
+  height: 2.5rem;
+  border: 2px solid #0c75ff;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: 600;
+  color: #137eff;
+  box-shadow: 0 0 10px #1474ff55;
+}
+.checkout-page .checkout-confirm {
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+@media (max-width: 1100px) {
+  .checkout-page .points-banner p {
+    font-size: 1rem;
+    white-space: normal;
+  }
+  .checkout-page .points-banner small {
+    font-size: 0.8rem;
+  }
+  .checkout-page .page-head .points-banner {
+    right: 2rem;
+    padding: 0.5rem 0.8rem;
+    gap: 0.6rem;
+  }
+  .checkout-page .points-banner > img {
+    width: 3.5rem;
+    height: 4rem;
+  }
+  .checkout-page .checkout-labeled-field {
+    padding-left: 1rem;
+    padding-right: 2.5rem;
+  }
+  .checkout-page .checkout-labeled-field > span {
+    font-size: 1rem;
+    margin-right: 0.7rem;
+  }
+  .checkout-page .checkout-labeled-field input,
+  .checkout-page .checkout-labeled-field input::placeholder {
+    font-size: 1rem;
+  }
+  .checkout-page .delivery-option .option-main strong {
+    font-size: 1.1rem;
+  }
+  .checkout-page .delivery-option .option-main p {
+    font-size: 0.85rem;
+  }
+  .checkout-page .delivery-option .fast {
+    font-size: 0.85rem;
+  }
+  .checkout-page .checkout-delivery .info-note {
+    padding: 1rem;
+    font-size: 1rem;
+    gap: 1rem;
+  }
+  .checkout-page .info-note small {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 720px) {
+  .checkout-page .page-head {
+    padding-right: 0;
+    gap: 1rem;
+  }
+  .checkout-page .page-head .points-banner {
+    position: static;
+    width: 100%;
+    max-width: none;
+  }
+  .checkout-page .checkout-delivery .delivery-option {
+    padding: 1.5rem 4rem 1.5rem 1rem;
+  }
+  .checkout-page .delivery-option input[type="radio"] {
+    right: 1rem;
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+  .checkout-page .checkout-labeled-field {
+    min-height: 4rem;
+  }
+  .checkout-page .checkout-delivery-fields > header {
+    font-size: 1.2rem;
+  }
+  .checkout-page .checkout-delivery .checkout-delivery-fields {
+    padding: 1rem;
+  }
+}
+
+.checkout-page .checkout-delivery > .text-btn {
+  display: block;
+  margin: 0.8rem 0 0 auto;
+  font-size: 0.9rem;
+  color: #6fa8ff;
+}
+
+.checkout-page .contact-fields label.checkout-labeled-field {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.checkout-page .delivery-option:not(.zabka) .carrier {
+  background-blend-mode: multiply;
+}
+
+/* Equal checkout columns and compact selected-delivery stack. */
+@media (min-width: 721px) {
+  .checkout-page .checkout-layout {
+    align-items: stretch;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .checkout-page .checkout-layout > .summary-panel {
+    height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .checkout-page .checkout-delivery {
+    display: flex;
+    flex-direction: column;
+  }
+  .checkout-page .checkout-delivery > .checkout-title {
+    flex-shrink: 0;
+  }
+  .checkout-page .checkout-delivery > .muted {
+    margin-top: 0.15rem;
+    font-size: 1.25rem !important;
+  }
+  .checkout-page .checkout-delivery > div[style*="margin-top"] {
+    margin-top: 1.6rem !important;
+  }
+  .checkout-page .checkout-delivery .delivery-option {
+    min-height: 7.7rem;
+    padding: 1.15rem 5rem 1.15rem 1.9rem;
+    border-radius: 1.7rem;
+  }
+  .checkout-page .delivery-option .option-main strong {
+    font-size: 1.2rem;
+    gap: 0.8rem;
+  }
+  .checkout-page .delivery-option:not(.zabka) .carrier {
+    width: 2.6rem;
+    height: 1.8rem;
+  }
+  .checkout-page .delivery-option .option-main p {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    margin-top: 0.9rem;
+  }
+  .checkout-page .delivery-option input[type="radio"] {
+    width: 2.1rem;
+    height: 2.1rem;
+    right: 1.9rem;
+  }
+  .checkout-page .delivery-option .fast {
+    top: -1rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 0.9rem;
+  }
+  .checkout-page .checkout-delivery > .text-btn {
+    font-size: 0.75rem;
+    margin: 0.45rem 0 0 auto;
+    line-height: 1.2;
+    padding: 0.15rem 0;
+  }
+  .checkout-page .checkout-delivery .checkout-delivery-fields {
+    margin: 1rem 0 1.1rem;
+    padding: 1rem 1.1rem 1.3rem;
+    border-radius: 1.2rem;
+  }
+  .checkout-page .checkout-delivery-fields > header {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+  .checkout-delivery-fields .checkout-contact-caption > img {
+    width: 1.9rem;
+    height: 1.5rem;
+  }
+  .checkout-page .checkout-labeled-field {
+    min-height: 3.9rem;
+    padding-left: 1.65rem;
+    border-radius: 1rem;
+  }
+  .checkout-page .checkout-labeled-field > span {
+    font-size: 1.1rem;
+    margin-right: 1rem;
+  }
+  .checkout-page .checkout-labeled-field input {
+    min-height: 3.7rem;
+    font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  .checkout-page .checkout-labeled-field input::placeholder {
+    font-size: 1rem;
+  }
+  .checkout-page .checkout-delivery .info-note {
+    margin: 0 0 1.1rem;
+    padding: 1rem 1.4rem;
+    gap: 1.15rem;
+    min-height: 5.4rem;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    border-radius: 1rem;
+  }
+  .checkout-page .info-note small {
+    font-size: 0.95rem;
+    margin-top: 0.35rem;
+    line-height: 1.3;
+  }
+  .checkout-help-icon {
+    flex-basis: 2.15rem;
+    height: 2.15rem;
+    font-size: 1.5rem;
+  }
+  .checkout-page .checkout-delivery > .checkout-confirm {
+    margin-top: auto;
+    min-height: 5.1rem;
+    font-size: 1.5rem;
+  }
+  .checkout-page .page-head .points-banner {
+    width: max-content;
+    max-width: 46%;
+    padding: 0.6rem 1.3rem;
+    gap: 1rem;
+    min-height: 6.3rem;
+  }
+  .checkout-page .points-banner > div {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .checkout-page .points-banner p {
+    white-space: normal;
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+  .checkout-page .points-banner small {
+    display: block;
+    white-space: normal;
+    line-height: 1.3;
+  }
+}

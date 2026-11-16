@@ -1,0 +1,961 @@
+/* contact.css */
+
+/* Shared mobile atmosphere, navigation dimensions and native input behavior. */
+@media (max-width: 720px) {
+  :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix, .m-route-cart
+    )
+    .m-hero:before, :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix, .m-route-cart
+    )
+    .m-hero:after{
+    display: none;
+  }
+  :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix{
+    display: none;
+  }
+  body:has(.mb-page) .m-bottom-nav {
+    height: 64px;
+    bottom: calc(13px + env(safe-area-inset-bottom, 0px));
+    padding: 6px 10px;
+    border-radius: 19px;
+  }
+  body:has(.mb-page) .m-bottom-nav > a {
+    height: 50px;
+    font-size: 8px;
+    gap: 3px;
+    border-radius: 15px;
+  }
+  body:has(.mb-page) .m-bottom-nav > a > img {
+    height: 24px;
+    width: 26px;
+  }
+  body:has(.mb-page) .m-nav-heart {
+    font-size: 29px;
+    line-height: 24px;
+  }
+  body[data-layout="mobile"]
+    input:not([type="radio"]):not([type="checkbox"]):not([readonly]),
+  body[data-layout="mobile"] textarea,
+  body[data-layout="mobile"] select {
+    font-size: 16px !important;
+    min-width: 0;
+    max-width: 100%;
+    scroll-margin-block: 24px;
+  }
+  body[data-layout="mobile"] {
+    -webkit-text-size-adjust: 100%;
+  }
+  body.m-keyboard-open .m-bottom-nav,
+  body.m-keyboard-open .m-fixed-action,
+  body.m-keyboard-open .mc-confirm {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* Catalogue hero retains its illuminated dome above the section controls. */
+@media (max-width: 720px) {
+  :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix
+    )
+    .m-hero{
+    height: 121px;
+    padding: 22px 8px 0;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix
+    )
+    .m-hero:before{
+    display: block;
+    content: "";
+    position: absolute;
+    left: -15%;
+    right: -15%;
+    bottom: -2px;
+    height: 85px;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 110%,
+      #1767e5c9 0%,
+      #0c42a688 35%,
+      #06245433 60%,
+      transparent 78%
+    );
+    filter: blur(7px);
+  }
+  :is(
+      .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix
+    )
+    .m-hero:after{
+    display: block;
+    content: "";
+    position: absolute;
+    left: -15%;
+    width: 130%;
+    height: 100px;
+    top: 99px;
+    z-index: 0;
+    border-radius: 50% 50% 0 0;
+    border-top: 2px solid #064295;
+    background: radial-gradient(ellipse at 50% 0, #001127 0%, #000 65%);
+    box-shadow: 0 -7px 20px #1463cc3d;
+  }
+  body:has(
+      :is(
+        .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix
+      )
+    )
+    .mc-atmosphere{
+    height: 188px;
+    background: radial-gradient(
+        ellipse at 50% 108%,
+        #0b4eb8bb 0%,
+        #05295b66 33%,
+        transparent 70%
+      ),
+      radial-gradient(ellipse at 0 15%, #05204b88, transparent 65%),
+      radial-gradient(ellipse at 104% 4%, #073b9277, transparent 35%);
+  }
+  body:has(
+      :is(
+        .m-route-home, .m-route-catalog, .m-route-product, .m-route-mix
+      )
+    )
+    .mc-atmosphere:before{
+    background-image: linear-gradient(90deg, #125aa038 1px, transparent 1px),
+      linear-gradient(#125aa038 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: linear-gradient(#000 0%, #000 86%, transparent 100%);
+    -webkit-mask-image: linear-gradient(#000 0%, #000 86%, transparent 100%);
+  }
+}
+
+/* Contact: restrained blue glass, illuminated horizon and spacious conversation. */
+.contact-page .breadcrumb {
+  display: none;
+}
+.contact-hero h1 {
+  background: linear-gradient(90deg, #afafaf, #fff 33%, #6f6f6f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.contact-headset-art {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  margin: auto;
+  isolation: isolate;
+}
+.contact-headset-art:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, #1465bf99, transparent 65%);
+  z-index: -1;
+}
+.contact-headset-art > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(
+    ellipse 44% 65% at 50% 53%,
+    #000 30%,
+    transparent 90%
+  );
+}
+.contact-hero:after {
+  left: -3%;
+  right: -3%;
+  bottom: -10px;
+  height: 45px;
+  border-top: 1px solid #3d85ce;
+  box-shadow: 0 -15px 35px #146bcb44;
+  background: #010a18;
+  border-radius: 50% 50% 0 0;
+}
+.contact-channel,
+.contact-channel.active {
+  border: 1px solid #638caf;
+  border-top-color: #d5e1ed;
+  background: radial-gradient(ellipse at 0 0, #11345988, transparent 65%),
+    linear-gradient(120deg, #071426, #02080e);
+  box-shadow: inset 0 1px 5px #89b4d34d;
+}
+.support-contact-chat {
+  background: radial-gradient(ellipse at 90% 80%, #0d2b5277, transparent 70%),
+    linear-gradient(145deg, #07182d, #010a16 65%);
+  border-color: #4d8dc2;
+  border-top-color: #d1deeb;
+  box-shadow: inset 0 0 12px #15568a33;
+}
+.support-contact-chat .support-header-actions,
+.support-contact-chat .support-local-note {
+  display: none;
+}
+.support-contact-chat .support-chat-header {
+  border-bottom: 1px solid #294b6e;
+  background: linear-gradient(115deg, #081c33aa, #01080eb3);
+}
+.support-contact-chat .support-thread {
+  flex: 1;
+  min-height: 0;
+  background: radial-gradient(ellipse at 5% 85%, #12396d66, transparent 65%),
+    radial-gradient(ellipse at 95% 30%, #0d2b5866, transparent 65%);
+}
+.support-contact-chat .support-sample-label {
+  text-align: center;
+  color: #d5d9e2;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 12px 0;
+}
+.support-contact-chat .support-composer {
+  border-top: 1px solid #294b6e;
+  background: #020d1ccc;
+  align-items: center;
+}
+.support-contact-chat .support-input-wrap {
+  border: 1px solid #4e7da8;
+  background: linear-gradient(145deg, #19344d, #071222);
+  box-shadow: inset 0 1px 8px #6386aa55;
+}
+.support-contact-chat .support-composer > button {
+  border: 1px solid #6198c4;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 35% 10%, #285785, #031024 75%);
+  color: #e2eaf6;
+}
+.support-contact-chat .support-composer > .support-send {
+  background: linear-gradient(135deg, #008aff, #0446b0);
+  box-shadow: inset 0 0 5px #6bc9ff66;
+}
+@media (max-width: 720px) {
+  body[data-layout="mobile"]:has(.m-route-contact) {
+    background: #000;
+  }
+  .m-route-contact:before{
+    display: none;
+  }
+  body:has(.m-route-contact) .m-topbar {
+    height: 54px;
+    min-height: 54px;
+    margin: 13px 13px 0;
+    padding: 0 20px;
+    top: 0;
+    border-radius: 19px;
+    gap: 14px;
+  }
+  body:has(.m-route-contact) .m-logo {
+    width: 72px;
+  }
+  body:has(.m-route-contact) .m-points {
+    height: 32px;
+    min-width: 54px;
+    font-size: 15px;
+  }
+  body:has(.m-route-contact) .m-top-link.contact-active {
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid #2978ac;
+    background: linear-gradient(#0a2945, #030a14);
+    font-size: 10px;
+  }
+  body:has(.m-route-contact) .m-bottom-nav {
+    height: 64px;
+    bottom: calc(13px + env(safe-area-inset-bottom, 0px));
+    padding: 6px 10px;
+    border-radius: 19px;
+  }
+  body:has(.m-route-contact) .m-bottom-nav > a {
+    height: 50px;
+    font-size: 8px;
+    gap: 3px;
+    border-radius: 15px;
+  }
+  body:has(.m-route-contact) .m-bottom-nav > a > img {
+    height: 24px;
+    width: 26px;
+  }
+  body:has(.m-route-contact) .m-nav-heart {
+    font-size: 29px;
+    line-height: 24px;
+  }
+  .m-route-contact {
+    padding-bottom: 100px;
+    min-height: calc(100dvh - 67px);
+  }
+  .contact-page {
+    padding: 0 13px 8px;
+  }
+  .contact-hero {
+    padding-top: 28px;
+  }
+  .contact-hero h1 {
+    font-size: 27px;
+    line-height: 1.15;
+    margin: 0 auto;
+    font-weight: 650;
+  }
+  .contact-hero > p {
+    font-size: 12px;
+    line-height: 1.3;
+    margin: 8px 0 9px;
+    color: #d1d5df;
+  }
+  .contact-headset-art {
+    height: 98px;
+  }
+  .contact-hero:after {
+    height: 30px;
+    bottom: -7px;
+    left: -5%;
+    right: -5%;
+  }
+  .contact-channels {
+    gap: 10px;
+    margin: 12px 0 13px;
+  }
+  .contact-channel {
+    min-height: 50px;
+    padding: 7px 12px;
+    gap: 10px;
+    border-radius: 13px;
+  }
+  .contact-channel .support-avatar {
+    height: 31px;
+    width: 31px;
+    flex-shrink: 0;
+  }
+  .contact-channel strong {
+    font-size: 11px;
+    line-height: 1.15;
+  }
+  .contact-channel small {
+    font-size: 9px;
+    margin-top: 3px;
+    white-space: normal;
+  }
+  .contact-channel > svg {
+    width: 12px;
+    height: 12px;
+  }
+  .support-contact-chat {
+    height: 365px;
+    min-height: 365px;
+    border-radius: 19px;
+  }
+  .support-contact-chat .support-chat-header {
+    min-height: 50px;
+    padding: 9px 14px;
+    gap: 11px;
+  }
+  .support-contact-chat .support-chat-header > .support-avatar {
+    height: 32px;
+    width: 32px;
+  }
+  .support-contact-chat .support-chat-header h2 {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .support-contact-chat .support-chat-header p {
+    font-size: 9px;
+  }
+  .support-contact-chat .support-thread {
+    padding: 8px 13px;
+  }
+  .support-contact-chat .support-day {
+    font-size: 9px;
+    gap: 9px;
+    margin: 0;
+  }
+  .support-contact-chat .support-day span {
+    padding: 3px 12px;
+    border: 1px solid #4f789d;
+    border-radius: 15px;
+    background: linear-gradient(#19344b, #020c19);
+    box-shadow: inset 0 1px 3px #8ba7bc55;
+  }
+  .support-contact-chat .support-sample-label {
+    font-size: 9px;
+    margin: 9px 0;
+    line-height: 1.4;
+  }
+  .support-contact-chat .support-composer {
+    padding: 8px;
+    gap: 10px;
+  }
+  .support-contact-chat .support-composer > button {
+    width: 31px;
+    height: 31px;
+    flex-shrink: 0;
+    padding: 7px;
+  }
+  .support-contact-chat .support-input-wrap {
+    min-height: 31px;
+    border-radius: 20px;
+    padding: 0 7px 0 12px;
+  }
+  .support-contact-chat .support-input-wrap textarea {
+    min-width: 0;
+    height: 30px;
+    padding: 5px 0;
+    line-height: 20px;
+    font-weight: 400;
+    color: #dae3ee;
+  }
+  .support-contact-chat .support-input-wrap > button {
+    width: 23px;
+    height: 23px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  .support-contact-chat .support-bubble > p {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .support-contact-chat .support-message-meta {
+    font-size: 8px;
+  }
+}
+
+/* Supplied transparent headset, shown in full above the contact horizon. */
+.contact-headset-art > img {
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: normal;
+  mask-image: none;
+  -webkit-mask-image: none;
+  filter: drop-shadow(0 0 10px #1389ff33);
+}
+
+/* Contact heading follows the shared flat grid atmosphere. */
+.contact-hero:before,
+.contact-hero:after {
+  display: none;
+}
+.contact-hero {
+  padding: 28px 0 16px;
+}
+.contact-hero h1 {
+  font-weight: 400;
+}
+.contact-hero > p {
+  color: #aeb2bb;
+}
+@media (max-width: 720px) {
+  .contact-hero {
+    padding: 20px 12px 14px;
+  }
+  .contact-hero h1 {
+    font-size: 20px;
+    line-height: 1.25;
+    font-weight: 400;
+  }
+  .contact-hero > p {
+    font-size: 11px;
+    line-height: 1.3;
+    margin: 9px auto 0;
+    max-width: 290px;
+  }
+  .contact-channels {
+    margin-top: 14px;
+  }
+}
+
+/* Contact panels share the Bonusy dark surfaces and blue perimeter. */
+.contact-channel,
+.contact-channel.active {
+  border: 1px solid #173f7a;
+  border-top-color: #1f4a8e;
+  background: radial-gradient(ellipse at 50% 0, #08275988, transparent 70%),
+    linear-gradient(125deg, #030a13, #000 80%);
+  box-shadow: none;
+  color: #c4c5ca;
+}
+.support-contact-chat {
+  border: 1px solid #234aa5;
+  border-top-color: #234aa5;
+  background: radial-gradient(ellipse at 50% 0, #04245788, transparent 48%),
+    linear-gradient(125deg, #030a13, #000 70%);
+  box-shadow: none;
+}
+.support-contact-chat .support-chat-header {
+  background: radial-gradient(ellipse at 50% 0, #08275966, transparent 80%),
+    #02070e;
+  border-bottom: 1px solid #153369;
+}
+.support-contact-chat .support-thread {
+  background: radial-gradient(ellipse at 50% 12%, #06245855, transparent 65%),
+    #000;
+}
+.support-contact-chat .support-thread:before {
+  display: none;
+}
+.support-contact-chat .support-composer {
+  background: linear-gradient(125deg, #030c1a, #000);
+  border-top: 1px solid #153369;
+}
+.support-contact-chat .support-input-wrap {
+  border-color: #173f7a;
+  background: linear-gradient(120deg, #071220, #000);
+  box-shadow: none;
+}
+.support-contact-chat .support-composer > button {
+  border-color: #174a88;
+  background: linear-gradient(125deg, #0b2045, #020710);
+  box-shadow: none;
+}
+.support-contact-chat .support-composer > .support-send {
+  background: linear-gradient(135deg, #124baf, #062659);
+  box-shadow: inset 0 1px 5px #2371d233;
+}
+.support-contact-chat .support-day span {
+  border-color: #173f7a;
+  background: linear-gradient(120deg, #071220, #000);
+  box-shadow: none;
+}
+.contact-channel .support-avatar,
+.support-contact-chat .support-avatar {
+  border-color: #174a88;
+  box-shadow: 0 0 8px #0747a133;
+}
+@media (max-width: 720px) {
+  .contact-channel,
+  .contact-channel.active {
+    border-radius: 12px;
+  }
+  .support-contact-chat {
+    border-radius: 18px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Contact fills the available screen, ending 14px above the navigation. */
+  .m-route-contact {
+    min-height: 0;
+    overflow: visible;
+    padding-bottom: calc(91px + env(safe-area-inset-bottom, 0px));
+  }
+  .contact-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - 158px - env(safe-area-inset-bottom, 0px));
+    padding-bottom: 0;
+  }
+  .contact-page .contact-hero,
+  .contact-page .contact-channels {
+    flex-shrink: 0;
+  }
+  .contact-page .support-contact-chat {
+    flex: 1;
+    height: auto;
+    min-height: 300px;
+  }
+  /* Shared framed empty state and saved product list. */
+  body[data-layout="mobile"]:has(.m-route-wishlist) {
+    background: #000;
+  }
+  .m-route-wishlist:before{
+    display: none;
+  }
+  .m-route-wishlist {
+    padding-bottom: 91px;
+    min-height: 0;
+  }
+  :is(.m-route-wishlist, .m-route-cart) .m-cart-heading h1 {
+    font-size: 20px;
+    font-weight: 400;
+    background: linear-gradient(90deg, #afafaf, #fff 33%, #6f6f6f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  .m-route-wishlist .m-cart-heading {
+    height: 80px;
+    padding: 20px 10px 0;
+    text-align: center;
+  }
+  .m-route-wishlist .m-cart-heading p {
+    font-size: 11px;
+    margin-top: 8px;
+    color: #a5a9b1;
+  }
+  .me-frame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: calc(100dvh - 238px - env(safe-area-inset-bottom, 0px));
+    margin: 0 9px;
+    padding: 5px 5px 0;
+    border: 1px solid transparent;
+    border-radius: 18px 18px 0 0;
+    background:
+      radial-gradient(ellipse at 5% 20%, #071a3688, transparent 65%),
+      linear-gradient(#03080e, #000) padding-box,
+      linear-gradient(#3370ff, #000 85%) border-box;
+  }
+  .me-empty {
+    flex-shrink: 0;
+    min-height: 0;
+    padding: 12px 8px 16px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    text-align: center;
+  }
+  .me-empty > img {
+    display: block;
+    height: 118px;
+    width: 155px;
+    max-width: 85%;
+    object-fit: contain;
+    margin: 0 auto 10px;
+    background: transparent;
+    filter: none;
+  }
+  .me-empty h2 {
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 400;
+    margin: 0;
+    background: linear-gradient(90deg, #afafaf, #fff 33%, #6f6f6f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  .me-empty p {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #a1a3a7;
+    margin: 8px 0 0;
+  }
+  .me-continue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 44px;
+    margin-top: auto;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 24px;
+    background: linear-gradient(125deg, #0e3978, #0a2859);
+    border: 1px solid #247ddd;
+    border-top-color: #b7d1ed;
+    border-right-color: #b7d1ed;
+    box-shadow: inset 0 2px 5px #77a5d055;
+  }
+  .mw-products {
+    display: grid;
+    gap: 10px;
+  }
+  .mw-products .m-product-card {
+    margin: 0;
+    width: 100%;
+  }
+  body:has(.m-route-cart .me-frame) .m-route-cart {
+    padding-bottom: 91px;
+    min-height: 0;
+  }
+}
+
+/* Constrain conversation height independently of the message history. */
+@media (max-width: 720px) {
+  .m-route-contact {
+    height: calc(100dvh - 67px);
+    min-height: 0;
+    padding-bottom: calc(91px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .contact-page {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 0;
+  }
+  .contact-page .support-contact-chat {
+    flex: 1 1 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .support-contact-chat .support-chat-header,
+  .support-contact-chat .support-composer,
+  .support-contact-chat .support-pending-files {
+    flex-shrink: 0;
+  }
+  .support-contact-chat .support-thread {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .me-empty > img {
+    filter: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .m-bottom-nav > a > .m-nav-heart-image {
+    width: 27px;
+    height: 24px;
+    object-fit: contain;
+    opacity: 0.8;
+  }
+  .m-bottom-nav > a.active > .m-nav-heart-image {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+  .m-card-heart:not(.saved) > img {
+    opacity: 0.55;
+  }
+  .m-card-heart.saved > img {
+    opacity: 1;
+  }
+}
+
+/* Mobile bonus result and unclaimed rewards, shared across case states. */
+@media (max-width: 700px) {
+  .mb-page .mb-state-result .mb-case-view {
+    padding: 0;
+    min-height: 208px;
+    height: 208px;
+    background: radial-gradient(ellipse at 50% 42%, #0b3575aa, transparent 65%),
+      #000;
+  }
+  .mb-result-scene {
+    position: relative;
+    height: 100%;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .mb-result-label {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.3;
+    font-weight: 400;
+    color: #a4a5aa;
+    z-index: 3;
+    outline: 0;
+  }
+  
+  .mb-result-image {
+    position: absolute;
+    top: 16px;
+    left: 0;
+    right: 0;
+    height: 114px;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .mb-result-image > img {
+    display: block;
+    width: 140px !important;
+    height: 190px !important;
+    max-width: none;
+    margin: 0 auto;
+    object-fit: contain;
+    object-position: center top;
+    mix-blend-mode: normal;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .mb-page .mb-state-result .mb-claim-button {
+    position: absolute;
+    left: 50%;
+    top: 122px;
+    bottom: auto;
+    transform: translateX(-50%);
+    margin: 0;
+    width: 65%;
+    height: 40px;
+    min-height: 40px;
+    border: 1px solid #063a83;
+    border-radius: 9px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: radial-gradient(ellipse at 0 0, #0746a9, transparent 38%),
+      radial-gradient(ellipse at 100% 100%, #064bb9, transparent 40%), #010a1e;
+    box-shadow: inset 0 1px 5px #1857ae33;
+    z-index: 4;
+    color: #c4c5cc;
+  }
+  .mb-result-caption {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 19px;
+    margin: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #a4a5aa;
+    z-index: 3;
+  }
+  .mb-result-caption span {
+    color: #509cff;
+  }
+  .mb-pending-heading {
+    margin: 12px 6px 13px;
+    gap: 4px;
+    font-size: 10px;
+  }
+  .mb-pending-heading > span:last-child {
+    font-size: 9px;
+  }
+  .mb-pending-carousel {
+    padding: 12px 14px;
+    border: 1px solid #20499f;
+    border-radius: 16px;
+    background: radial-gradient(ellipse at 0 0, #061e4155, transparent 65%),
+      #000;
+    overflow: hidden;
+  }
+  .mb-pending-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .mb-pending-strip::-webkit-scrollbar {
+    display: none;
+  }
+  .mb-pending-card {
+    position: relative;
+    display: flex;
+    flex: 0 0 94%;
+    height: 130px;
+    min-width: 0;
+    border: 1px solid #0d336a;
+    border-radius: 19px;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 0 30%, #09295377, transparent 65%),
+      #080909;
+    scroll-snap-align: start;
+  }
+  .mb-pending-image {
+    position: relative;
+    width: 44%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .mb-pending-image > img {
+    position: absolute;
+    top: 9px;
+    left: 0;
+    width: 100%;
+    height: 175px;
+    object-fit: contain;
+    object-position: center top;
+  }
+  .mb-pending-copy {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    padding: 18px 10px 13px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .mb-pending-copy h3 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    color: #bfc0c3;
+  }
+  .mb-pending-copy p {
+    font-size: 10px;
+    line-height: 1.4;
+    margin: 7px 0 0;
+    color: #999;
+  }
+  .mb-pending-copy .m-primary {
+    margin-top: auto;
+    width: 100%;
+    min-height: 27px;
+    height: 27px;
+    font-size: 9px;
+    padding: 0 4px;
+    border-radius: 12px;
+  }
+  .mb-pending-empty {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #d5d7de;
+    white-space: nowrap;
+  }
+  .mb-pending-empty span {
+    color: #337aff;
+  }
+}
+
+/* Scope favorite artwork independently of the large product illustration. */
+body[data-layout="mobile"] .m-card-heart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+body[data-layout="mobile"] .m-product-card .m-card-heart > img {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: 14px !important;
+  max-height: 14px !important;
+  object-fit: contain !important;
+  transform: none !important;
+  margin: 0 !important;
+  filter: none;
+}
+html {
+  touch-action: pan-x pan-y;
+}
+button,
+a,
+input,
+textarea,
+select {
+  touch-action: manipulation;
+}

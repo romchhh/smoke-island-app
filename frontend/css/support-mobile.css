@@ -1,0 +1,299 @@
+/* support-mobile.css */
+@media (min-width: 480px) and (max-width: 720px) {
+  .m-main,
+  .m-topbar,
+  .m-bottom-nav {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .m-bottom-nav {
+    left: 0;
+    right: 0;
+  }
+  .m-fixed-action {
+    max-width: 450px;
+    margin: auto;
+  }
+  .m-smart-dialog {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .m-product-card.has-badge {
+    min-height: 155px;
+  }
+  .m-card-image {
+    height: 118px;
+    width: 58px;
+  }
+}
+@media (max-width: 359px) {
+  .m-topbar {
+    padding: 0 12px;
+    gap: 9px;
+  }
+  .m-logo {
+    width: 65px;
+  }
+  .m-top-link {
+    font-size: 9px;
+  }
+  .m-points {
+    min-width: 47px;
+    padding: 0 6px;
+    gap: 4px;
+  }
+  .m-hero h1 {
+    font-size: 18px;
+  }
+  .m-categories > a {
+    padding: 8px 12px;
+  }
+  .m-categories strong {
+    font-size: 11px;
+  }
+  .m-flavor-row {
+    padding: 8px 10px;
+  }
+  .m-flavor-row > span {
+    font-size: 10px;
+  }
+  .m-flavor-stepper {
+    gap: 4px;
+  }
+  .m-flavor-title {
+    margin-left: 23px;
+    margin-right: 23px;
+    gap: 6px;
+  }
+  .m-flavor-title > span {
+    letter-spacing: 1px;
+  }
+  .m-hit {
+    font-size: 8px;
+    right: 48px;
+    padding: 0 5px;
+  }
+  .m-card-smart {
+    width: 128px;
+    right: 39px;
+  }
+  .m-product-card h3 {
+    font-size: 11px;
+  }
+  .m-card-price {
+    font-size: 10px;
+  }
+  .m-sheet-head h3 {
+    font-size: 15px;
+  }
+  .m-active-price strong {
+    font-size: 11px;
+  }
+  .m-active-price > b {
+    font-size: 17px;
+  }
+  .m-savings {
+    font-size: 9px;
+    padding: 8px;
+  }
+  .m-smart-panel {
+    padding: 15px 12px;
+  }
+  .m-price-comparison {
+    width: 94%;
+  }
+  .m-sheet-scroll {
+    padding: 15px 10px 10px;
+  }
+}
+@media (max-width: 720px) {
+  .m-section {
+    margin-bottom: 14px;
+  }
+  .m-promo-carousel {
+    margin-top: 10px;
+  }
+  .m-promo-carousel > a > img {
+    object-position: 40% center;
+  }
+  .m-promo-carousel .m-promo-news {
+    padding: 0;
+  }
+  .m-promo-news > img {
+    height: 100% !important;
+    margin: 0;
+    object-fit: cover;
+  }
+  .m-sheet-flavors .m-flavor-row:last-child {
+    margin-bottom: 0;
+  }
+  .m-sheet-flavors:empty {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  body[data-layout="mobile"] #app {
+    display: flow-root;
+  }
+  .m-topbar {
+    position: sticky;
+    top: 13px;
+  }
+}
+@media (max-width: 720px) {
+  html {
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  .m-route-home{
+    padding-bottom: 93px;
+  }
+}
+
+/* Support: desktop widget, welcome notification and mobile contact page. */
+#support-layer {
+  position: relative;
+  z-index: 60;
+}
+.support-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  border: 1px solid #1462b1;
+  border-top-color: #a2c9fb;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 0, #113b85, #021024 70%);
+  box-shadow:
+    inset 0 0 9px #0758d966,
+    0 0 8px #0758d955;
+}
+.support-avatar > img {
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px #067dff);
+}
+.support-launcher {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 2.5rem;
+  width: 5.3rem;
+  height: 5.3rem;
+  border: 2px solid #4b9eff;
+  border-top-color: #b7e5ff;
+  border-radius: 50%;
+  background: radial-gradient(#0646ad, #001b67 65%, #000b2c);
+  box-shadow:
+    inset 0 0 9px #01d6ff99,
+    0 0 18px #1474ff99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.support-launcher > svg {
+  width: 52%;
+  height: 52%;
+  filter: drop-shadow(0 0 5px #15baff);
+}
+.support-launcher > span {
+  position: absolute;
+  right: 1px;
+  top: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #00fa42;
+  box-shadow: 0 0 9px #00ec5e;
+}
+.support-invitation {
+  position: fixed;
+  right: 2.5rem;
+  bottom: 8rem;
+  width: 28rem;
+  max-width: calc(100vw - 2rem);
+  padding: 1.3rem 1.8rem 1.3rem 1.4rem;
+  border: 1px solid #2b83ff;
+  border-top-color: #9cc9ff;
+  border-radius: 1.8rem;
+  background: radial-gradient(ellipse at 30% 0, #00318588, transparent 55%),
+    linear-gradient(120deg, #061127, #010612);
+  box-shadow:
+    inset 0 0 10px #0563db77,
+    0 0 12px #0077ff44;
+}
+.support-invitation:after {
+  content: "";
+  position: absolute;
+  right: 4rem;
+  bottom: -0.7rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid #338aff;
+  border-left: 0;
+  border-top: 0;
+  background: #06162c;
+  transform: rotate(45deg);
+}
+.support-invitation > div {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+}
+.support-invitation h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+.support-invitation p {
+  font-size: 1.03rem;
+  line-height: 1.45;
+  color: #d8e0ed;
+}
+.support-invitation .support-avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+.support-invitation-close {
+  position: absolute;
+  right: 0.7rem;
+  top: 0.6rem;
+  border: 0;
+  background: none;
+  color: #d5dfef;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+}
+.support-invitation-close svg {
+  width: 100%;
+  height: 100%;
+}
+.support-open-chat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  height: 3.2rem;
+  margin-top: 0.9rem;
+  border: 1px solid #70acff;
+  border-top-color: #c3ddff;
+  border-radius: 1.7rem;
+  background: linear-gradient(#0643af, #001a75);
+  box-shadow:
+    inset 0 0 8px #4986ff99,
+    0 0 7px #006dff66;
+  font-size: 1.05rem;
+  color: #edf5ff;
+}
+.support-open-chat svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}

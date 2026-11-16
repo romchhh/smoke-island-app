@@ -6,7 +6,8 @@ services:
     volumes:
       - mongo_data:/data/db
     ports:
-      - "27017:27017"
+      # Host 3017 — avoids clash with elf-duck-shop (3000–3006) and system mongod on 27017
+      - "3017:27017"
     healthcheck:
       test:
         [
@@ -55,8 +56,9 @@ services:
       TELEGRAM_SUPPORT_CHAT_ID: ${TELEGRAM_SUPPORT_CHAT_ID:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       EMAIL_FROM: ${EMAIL_FROM:-}
-    expose:
-      - "3000"
+    # Host 3010 — elf-duck-shop already uses 3000–3006 on the same VPS
+    ports:
+      - "3010:3000"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
       interval: 30s

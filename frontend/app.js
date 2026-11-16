@@ -2,7 +2,7 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const asset=name=>`assets/${name}.webp`;
 const img=(name,alt='',cls='',opts={})=>{const loading=opts.eager?' fetchpriority="high" decoding="async"':' loading="lazy" decoding="async"';return `<img src="${asset(name)}" alt="${alt}" class="${cls}" draggable="false"${loading}>`};
-const API_BASE=window.SMOKE_ISLAND_CONFIG?.apiBase||document.querySelector('meta[name="api-base"]')?.content||'http://localhost:3000/api/v1';
+const API_BASE=window.SMOKE_ISLAND_CONFIG?.apiBase||document.querySelector('meta[name="api-base"]')?.content||'http://localhost:3010/api/v1';
 const FREE_SHIPPING=950;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>`${Number(n).toLocaleString('pl-PL',{minimumFractionDigits:Number.isInteger(Number(n))?0:2,maximumFractionDigits:2})}zł`;

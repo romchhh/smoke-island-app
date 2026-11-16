@@ -718,9 +718,34 @@ a.category-tile:hover{
 .catalog-page .product-grid{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
 }
+.catalog-page .page-head h1,
+.catalog-page .page-head h1 .blue{
+  color:#fff!important;
+  background:none!important;
+  -webkit-text-fill-color:#fff!important;
+  font-size:clamp(2.35rem,4vw,3.35rem)!important;
+  font-weight:800!important;
+  letter-spacing:-.04em;
+  line-height:1.05!important;
+}
+.catalog-page .page-head p{
+  color:#fff!important;
+  opacity:.92;
+  font-size:clamp(1.1rem,1.55vw,1.35rem)!important;
+  font-weight:500;
+  line-height:1.45;
+  margin-top:.75rem!important;
+  max-width:38rem;
+}
 .catalog-page .catalog-count{
   margin:0 0 1.15rem!important;
-  color:var(--muted);
+  color:#fff;
+  font-size:1.05rem;
+}
+.catalog-page .catalog-count .blue{
+  color:#fff!important;
+  background:none!important;
+  -webkit-text-fill-color:#fff!important;
 }
 .catalog-tools .tabs{
   flex-wrap:wrap;
